@@ -304,6 +304,12 @@
             font-size: 0.72rem; font-weight: 600;
             background: #ccfbf1; color: #0f766e;
         }
+        .lang-chip {
+            display: inline-block; padding: 2px 10px; border-radius: 30px;
+            font-size: 0.72rem; font-weight: 600;
+            background: #fce7f3; color: #9d174d;
+            margin: 2px 4px 2px 0;
+        }
 
         /* ---------- TOAST ---------- */
         .toast-container {
@@ -347,9 +353,10 @@
             max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); position: relative;
         }
+        .modal-content.modal-wide { max-width: 940px; }
         .modal-content .close-modal {
             position: absolute; top: 12px; right: 18px; font-size: 1.6rem;
-            cursor: pointer; color: #94a3b8; transition: var(--transition);
+            cursor: pointer; color: #94a3b8; transition: var(--transition); z-index: 5;
         }
         .modal-content .close-modal:hover { color: #1e293b; }
         .modal-content svg { max-width: 100%; height: auto; }
@@ -404,6 +411,84 @@
         }
         .add-book-form .chip .remove-chip:hover { color: #dc2626; }
 
+        /* ---------- LANGUAGE PICKER ---------- */
+        .language-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .language-picker-card {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .language-picker-card:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+        }
+        .language-picker-card.selected {
+            border-color: var(--primary);
+            background: #dbeafe;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+        }
+        .language-picker-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+        html[dir="rtl"] .language-picker-card.selected::after {
+            right: auto;
+            left: 12px;
+        }
+        .language-picker-card .lang-flag {
+            font-size: 2.2rem;
+            line-height: 1;
+        }
+        .language-picker-card .lang-native {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1.05rem;
+        }
+        .language-picker-card .lang-en {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .chosen-info-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: linear-gradient(135deg, #eff6ff, #f5f3ff);
+            border: 1.5px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #1e40af;
+        }
+        .chosen-info-banner strong {
+            color: var(--primary-dark);
+        }
+
         /* ---------- CATEGORY BLOCK ---------- */
         .category-block {
             background: #ecfdf5; border: 1.5px solid #a7f3d0;
@@ -425,6 +510,10 @@
         .category-block input:focus {
             border-color: var(--success); outline: none;
             box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+        }
+        .category-block select {
+            width: 100%; padding: 9px 12px; border: 1.5px solid #a7f3d0;
+            border-radius: 9px; background: #fff;
         }
         @media (max-width: 500px) {
             .category-block .lang-row { grid-template-columns: 1fr; }
@@ -719,111 +808,113 @@
             <div class="tab-panel" id="panel-catalogue">
                 <div class="flex-between mb-12">
                     <h2><i class="fas fa-book" style="color:var(--primary);"></i> <span data-i18n="cat.title">Book Catalogue</span></h2>
-                    <button class="btn btn-primary staff-only" onclick="toggleAddBookForm()"><i class="fas fa-plus"></i> <span data-i18n="cat.addBook">Add Book</span></button>
+                    <button class="btn btn-primary admin-only" onclick="toggleAddBookForm()"><i class="fas fa-plus"></i> <span data-i18n="cat.addBook">Add Book</span></button>
                 </div>
 
-                <div id="addBookFormContainer" class="add-book-form hidden staff-only">
-                    <h3><i class="fas fa-plus-circle"></i> <span data-i18n="add.title">Add New Book — Advanced</span></h3>
+                <!-- ================= ADD BOOK — 2 STEP WIZARD (admin only) ================= -->
+                <div id="addBookFormContainer" class="add-book-form hidden admin-only">
 
-                    <div class="form-section">
-                        <div class="form-section-title" data-i18n="add.core">📘 Core Details</div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.titleLabel">Title *</label><input type="text" id="addTitle" placeholder="Book title" data-i18n-ph="add.titlePh" /></div>
-                            <div class="form-group"><label data-i18n="add.authorLabel">Author</label><input type="text" id="addAuthor" placeholder="Author name" data-i18n-ph="add.authorPh" /></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.isbn13">ISBN-13</label><input type="text" id="addIsbn13" placeholder="978-..." /></div>
-                            <div class="form-group"><label data-i18n="add.isbn10">ISBN-10</label><input type="text" id="addIsbn10" placeholder="..." /></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.publisher">Publisher</label><input type="text" id="addPublisher" placeholder="Publisher" data-i18n-ph="add.publisherPh" /></div>
-                            <div class="form-group"><label data-i18n="add.pubDate">Publication Date</label><input type="text" id="addPublicationDate" placeholder="e.g. 2020" data-i18n-ph="add.pubDatePh" /></div>
+                    <!-- STEP 1 — LANGUAGE PICKER -->
+                    <div id="addBookStep1">
+                        <h3><i class="fas fa-language"></i> <span data-i18n="add.step1">Step 1: Choose the Book Language</span></h3>
+                        <p class="text-muted" style="margin-bottom:14px;" data-i18n="add.step1Hint">Select the primary language of this book. English is listed first.</p>
+                        <div class="language-picker-grid" id="languagePickerGrid"></div>
+                        <div class="flex gap-8" style="margin-top:18px;">
+                            <button class="btn btn-outline" onclick="toggleAddBookForm()"><i class="fas fa-times"></i> <span data-i18n="common.cancel">Cancel</span></button>
                         </div>
                     </div>
 
-                    <!-- ============ CATEGORIES (EN / FR / AR) ============ -->
-                    <div class="form-section">
-                        <div class="form-section-title" data-i18n="add.categories">🏷️ Categories — English / Français / العربية</div>
-                        <div class="category-block">
-                            <div class="lang-row">
-                                <span class="lang-label"><i class="fas fa-flag"></i> English</span>
-                                <input type="text" id="addCategoryEn" placeholder="e.g. Science" data-i18n-ph="add.catEnPh" />
-                            </div>
-                            <div class="lang-row">
-                                <span class="lang-label"><i class="fas fa-flag"></i> Français</span>
-                                <input type="text" id="addCategoryFr" placeholder="ex. Science" data-i18n-ph="add.catFrPh" />
-                            </div>
-                            <div class="lang-row">
-                                <span class="lang-label"><i class="fas fa-flag"></i> العربية</span>
-                                <input type="text" id="addCategoryAr" placeholder="مثال: العلوم" data-i18n-ph="add.catArPh" />
-                            </div>
-                            <div class="lang-row" style="margin-top:12px;">
-                                <span class="lang-label"><i class="fas fa-list"></i> <span data-i18n="add.catPreset">Preset</span></span>
-                                <select id="addCategoryPreset"></select>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- STEP 2 — ALL DETAILS -->
+                    <div id="addBookStep2" class="hidden">
+                        <h3><i class="fas fa-plus-circle"></i> <span data-i18n="add.title">Add New Book — Advanced</span></h3>
 
-                    <div class="form-section">
-                        <div class="form-section-title" data-i18n="add.libraryMgmt">📚 Library Management</div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.ageLevel">Grade / Age Level</label><select id="addAgeLevel">
-                                <option value="" data-i18n="add.anyOption">Any</option>
-                                <option value="Preschool" data-i18n="grade.Preschool">Preschool</option>
-                                <option value="K" data-i18n="grade.K">K</option>
-                                <option value="1" data-i18n="grade.1">Grade 1</option>
-                                <option value="2" data-i18n="grade.2">Grade 2</option>
-                                <option value="3" data-i18n="grade.3">Grade 3</option>
-                                <option value="4" data-i18n="grade.4">Grade 4</option>
-                                <option value="5" data-i18n="grade.5">Grade 5</option>
-                            </select></div>
-                            <div class="form-group"><label data-i18n="add.fiction">Fiction / Nonfiction</label><select id="addFiction">
-                                <option value="fiction" data-i18n="add.fictionOpt">Fiction</option>
-                                <option value="nonfiction" data-i18n="add.nonfictionOpt">Nonfiction</option>
-                            </select></div>
+                        <div class="chosen-info-banner">
+                            <span><i class="fas fa-language"></i> <span data-i18n="add.languageChosen">Language</span>: <strong id="chosenLanguageLabel"></strong></span>
+                            <button class="btn btn-sm btn-outline" onclick="backToLanguageStep()">
+                                <i class="fas fa-arrow-left"></i> <span data-i18n="add.changeLanguage">Change Language</span>
+                            </button>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.numCopies">Number of Copies</label><input type="number" id="addCopies" value="1" min="1" /></div>
-                            <div class="form-group"><label data-i18n="add.barcodeLabel">Barcode (optional)</label><input type="text" id="addBarcode" placeholder="Scan or type barcode" data-i18n-ph="add.barcodePh" /></div>
+
+                        <div class="form-section">
+                            <div class="form-section-title" data-i18n="add.core">📘 Core Details</div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.titleLabel">Title *</label><input type="text" id="addTitle" placeholder="Book title" data-i18n-ph="add.titlePh" /></div>
+                                <div class="form-group"><label data-i18n="add.authorLabel">Author</label><input type="text" id="addAuthor" placeholder="Author name" data-i18n-ph="add.authorPh" /></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.isbn13">ISBN-13</label><input type="text" id="addIsbn13" placeholder="978-..." /></div>
+                                <div class="form-group"><label data-i18n="add.isbn10">ISBN-10</label><input type="text" id="addIsbn10" placeholder="..." /></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.publisher">Publisher</label><input type="text" id="addPublisher" placeholder="Publisher" data-i18n-ph="add.publisherPh" /></div>
+                                <div class="form-group"><label data-i18n="add.pubDate">Publication Date</label><input type="text" id="addPublicationDate" placeholder="e.g. 2020" data-i18n-ph="add.pubDatePh" /></div>
+                            </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.location">Location</label><input type="text" id="addLocation" placeholder="e.g. Main Library" data-i18n-ph="add.locationPh" value="Main Library" /></div>
-                            <div class="form-group"><label data-i18n="add.shelf">Call-Number</label><input type="text" id="addShelf" placeholder="e.g. FIC-A" data-i18n-ph="add.shelfPh" /></div>
+
+                        <div class="form-section">
+                            <div class="form-section-title" data-i18n="add.libraryMgmt">📚 Library Management</div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.ageLevel">Grade / Age Level</label><select id="addAgeLevel">
+                                    <option value="" data-i18n="add.anyOption">Any</option>
+                                    <option value="Preschool" data-i18n="grade.Preschool">Preschool</option>
+                                    <option value="K" data-i18n="grade.K">K</option>
+                                    <option value="1" data-i18n="grade.1">Grade 1</option>
+                                    <option value="2" data-i18n="grade.2">Grade 2</option>
+                                    <option value="3" data-i18n="grade.3">Grade 3</option>
+                                    <option value="4" data-i18n="grade.4">Grade 4</option>
+                                    <option value="5" data-i18n="grade.5">Grade 5</option>
+                                </select></div>
+                                <div class="form-group"><label data-i18n="add.fiction">Fiction / Nonfiction</label><select id="addFiction">
+                                    <option value="fiction" data-i18n="add.fictionOpt">Fiction</option>
+                                    <option value="nonfiction" data-i18n="add.nonfictionOpt">Nonfiction</option>
+                                </select></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.numCopies">Number of Copies</label><input type="number" id="addCopies" value="1" min="1" /></div>
+                                <div class="form-group"><label data-i18n="add.barcodeLabel">Barcode (optional)</label><input type="text" id="addBarcode" placeholder="Scan or type barcode" data-i18n-ph="add.barcodePh" /></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.location">Location</label><input type="text" id="addLocation" placeholder="e.g. Main Library" data-i18n-ph="add.locationPh" value="Main Library" /></div>
+                                <div class="form-group"><label data-i18n="add.shelf">Call-Number</label><input type="text" id="addShelf" placeholder="e.g. FIC-A" data-i18n-ph="add.shelfPh" /></div>
+                            </div>
                         </div>
+
+                        <div class="form-section">
+                            <div class="form-section-title" data-i18n="add.pypAlignment">🌍 PYP Alignment</div>
+                            <div class="form-group">
+                                <label data-i18n="add.learnerProfile">Learner Profile</label>
+                                <div class="chip-input" id="lpChipInput"><input type="text" id="lpInput" placeholder="Type and press Enter (e.g. Inquirer)" data-i18n-ph="add.lpPh" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="add.atl">ATL Skills</label>
+                                <div class="chip-input" id="atlChipInput"><input type="text" id="atlInput" placeholder="Type and press Enter (e.g. Thinking)" data-i18n-ph="add.atlPh" /></div>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="add.concepts">PYP Concepts</label>
+                                <div class="chip-input" id="conceptChipInput"><input type="text" id="conceptInput" placeholder="Type and press Enter (e.g. Form)" data-i18n-ph="add.conceptsPh" /></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.transTheme">Transdisciplinary Theme</label><input type="text" id="addTransTheme" placeholder="e.g. Sharing the Planet" data-i18n-ph="add.transThemePh" /></div>
+                                <div class="form-group"><label data-i18n="add.unit">Unit of Inquiry</label><input type="text" id="addUnit" placeholder="e.g. Water for Life" data-i18n-ph="add.unitPh" /></div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-section-title" data-i18n="add.additional">📝 Additional Information</div>
+                            <div class="form-group"><label data-i18n="add.summary">Summary</label><textarea id="addSummary" placeholder="Brief summary..." data-i18n-ph="add.summaryPh"></textarea></div>
+                            <div class="form-row">
+                                <div class="form-group"><label data-i18n="add.keywords">Keywords</label><input type="text" id="addKeywords" placeholder="Comma separated" data-i18n-ph="add.keywordsPh" /></div>
+                                <div class="form-group"><label data-i18n="add.subject">Subject</label><input type="text" id="addSubject" placeholder="e.g. Science" data-i18n-ph="add.subjectPh" /></div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-8" style="margin-top:16px;">
+                            <button class="btn btn-success" onclick="saveAdvancedBook()"><i class="fas fa-save"></i> <span data-i18n="add.saveBook">Save Book</span></button>
+                            <button class="btn btn-outline" onclick="backToLanguageStep()"><i class="fas fa-arrow-left"></i> <span data-i18n="add.changeLanguage">Change Language</span></button>
+                            <button class="btn btn-warning" onclick="clearAddBookForm()"><i class="fas fa-eraser"></i> <span data-i18n="common.clear">Clear</span></button>
+                        </div>
+                        <div id="addBookMsg" class="mt-12"></div>
                     </div>
-                    <div class="form-section">
-                        <div class="form-section-title" data-i18n="add.pypAlignment">🌍 PYP Alignment</div>
-                        <div class="form-group">
-                            <label data-i18n="add.learnerProfile">Learner Profile</label>
-                            <div class="chip-input" id="lpChipInput"><input type="text" id="lpInput" placeholder="Type and press Enter (e.g. Inquirer)" data-i18n-ph="add.lpPh" /></div>
-                        </div>
-                        <div class="form-group">
-                            <label data-i18n="add.atl">ATL Skills</label>
-                            <div class="chip-input" id="atlChipInput"><input type="text" id="atlInput" placeholder="Type and press Enter (e.g. Thinking)" data-i18n-ph="add.atlPh" /></div>
-                        </div>
-                        <div class="form-group">
-                            <label data-i18n="add.concepts">PYP Concepts</label>
-                            <div class="chip-input" id="conceptChipInput"><input type="text" id="conceptInput" placeholder="Type and press Enter (e.g. Form)" data-i18n-ph="add.conceptsPh" /></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.transTheme">Transdisciplinary Theme</label><input type="text" id="addTransTheme" placeholder="e.g. Sharing the Planet" data-i18n-ph="add.transThemePh" /></div>
-                            <div class="form-group"><label data-i18n="add.unit">Unit of Inquiry</label><input type="text" id="addUnit" placeholder="e.g. Water for Life" data-i18n-ph="add.unitPh" /></div>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <div class="form-section-title" data-i18n="add.additional">📝 Additional Information</div>
-                        <div class="form-group"><label data-i18n="add.summary">Summary</label><textarea id="addSummary" placeholder="Brief summary..." data-i18n-ph="add.summaryPh"></textarea></div>
-                        <div class="form-row">
-                            <div class="form-group"><label data-i18n="add.keywords">Keywords</label><input type="text" id="addKeywords" placeholder="Comma separated" data-i18n-ph="add.keywordsPh" /></div>
-                            <div class="form-group"><label data-i18n="add.subject">Subject</label><input type="text" id="addSubject" placeholder="e.g. Science" data-i18n-ph="add.subjectPh" /></div>
-                        </div>
-                    </div>
-                    <div class="flex gap-8" style="margin-top:16px;">
-                        <button class="btn btn-success" onclick="saveAdvancedBook()"><i class="fas fa-save"></i> <span data-i18n="add.saveBook">Save Book</span></button>
-                        <button class="btn btn-outline" onclick="toggleAddBookForm()"><i class="fas fa-times"></i> <span data-i18n="common.cancel">Cancel</span></button>
-                        <button class="btn btn-warning" onclick="clearAddBookForm()"><i class="fas fa-eraser"></i> <span data-i18n="common.clear">Clear</span></button>
-                    </div>
-                    <div id="addBookMsg" class="mt-12"></div>
                 </div>
 
                 <div class="card">
@@ -832,7 +923,7 @@
                             <thead>
                                 <tr>
                                     <th data-i18n="th.title">Title</th><th data-i18n="th.author">Author</th>
-                                    <th data-i18n="th.category">Category</th>
+                                    <th data-i18n="th.language">Language</th>
                                     <th data-i18n="th.isbn">ISBN</th><th data-i18n="th.grade">Grade</th>
                                     <th data-i18n="th.copies">Copies</th><th data-i18n="th.available">Available</th><th data-i18n="th.barcode">Barcode</th><th data-i18n="th.actions">Actions</th>
                                 </tr>
@@ -857,7 +948,6 @@
                             <option value="isbn" data-i18n="search.fieldIsbn">ISBN</option>
                             <option value="subject" data-i18n="search.fieldSubject">Subject</option>
                             <option value="keyword" data-i18n="search.fieldKeyword">Keyword</option>
-                            <option value="category" data-i18n="search.fieldCategory">Category</option>
                             <option value="grade" data-i18n="search.fieldGrade">Grade</option>
                             <option value="pyp" data-i18n="search.fieldPyp">Learner Profile / ATL / Concept</option>
                         </select>
@@ -1113,7 +1203,6 @@
                 <div class="card"><div class="card-title"><i class="fas fa-coins"></i> <span data-i18n="pur.summary">Budget Summary</span></div><div id="budgetSummary"><p class="text-muted" data-i18n="rep.noData">No data.</p></div></div>
             </div>
 
-            <!-- ================= EMAIL OUTBOX ================= -->
             <div class="tab-panel" id="panel-emails">
                 <h2><i class="fas fa-envelope-open-text" style="color:var(--secondary);"></i> <span data-i18n="emails.title">Email Outbox</span></h2>
                 <div class="card">
@@ -1128,7 +1217,6 @@
                 </div>
             </div>
 
-            <!-- ================= USER ACCOUNTS (ADMIN ONLY) ================= -->
             <div class="tab-panel" id="panel-users">
                 <h2><i class="fas fa-users-cog" style="color:var(--primary);"></i> <span data-i18n="usr.title">User Accounts</span></h2>
                 <div class="card" style="background:#eff6ff;border:1px solid #bfdbfe;">
@@ -1186,7 +1274,6 @@
                 </div>
             </div>
 
-            <!-- ================= SETTINGS (ADMIN ONLY) ================= -->
             <div class="tab-panel" id="panel-settings">
                 <h2><i class="fas fa-cog" style="color:var(--gray);"></i> <span data-i18n="set.title">Settings</span></h2>
                 <div class="card">
@@ -1335,6 +1422,7 @@
 
                 'th.title': 'Title',
                 'th.author': 'Author',
+                'th.language': 'Language',
                 'th.category': 'Category',
                 'th.isbn': 'ISBN',
                 'th.grade': 'Grade',
@@ -1422,7 +1510,23 @@
                 'cat.notAvailTitle': 'Not available',
                 'cat.deleteConfirm': 'Delete this book?',
                 'cat.deleted': 'Book deleted.',
+                'cat.edit': 'Edit',
+                'cat.editTitle': 'Edit this book',
 
+                'edit.title': 'Edit Book',
+                'edit.heading': 'Editing: {title}',
+                'edit.saveBtn': 'Save Changes',
+                'edit.saved': '✅ "{title}" updated successfully.',
+                'edit.notFound': 'Book not found.',
+                'edit.barcodeExists': 'This barcode is already used by another book.',
+                'edit.copiesTooFew': 'Copies cannot be fewer than the active loans ({n}).',
+                'edit.activeLoans': 'Active loans: {n}',
+
+                'add.step1': 'Step 1: Choose the Book Language',
+                'add.step1Hint': 'Select the primary language of this book. English is listed first.',
+                'add.languageChosen': 'Language',
+                'add.changeLanguage': 'Change Language',
+                'add.chooseLanguage': 'Please choose a language first.',
                 'add.title': 'Add New Book — Advanced',
                 'add.core': '📘 Core Details',
                 'add.titleLabel': 'Title *',
@@ -1738,13 +1842,13 @@
                 'view.barcode': 'Barcode',
                 'view.summary': 'Summary',
                 'view.category': 'Category',
+                'view.language': 'Language',
                 'view.pyp': 'PYP',
                 'view.notAssigned': 'Not assigned',
                 'view.noSummary': 'No summary',
 
                 'sync.syncing': 'Syncing...',
 
-                /* ---- EMAIL TEMPLATES ---- */
                 'mail.borrowSubject': '📚 Borrow Confirmation — {book}',
                 'mail.borrowBody': 'Dear {name},\n\nThis is an automatic confirmation that the following book has been borrowed from the {library} library:\n\n• Book: {book}\n• Author: {author}\n• Barcode: {barcode}\n• Borrow date: {borrowDate}\n• Due date: {dueDate}\n\nPlease return the book on or before the due date.\n\nKind regards,\n{library} — Library Management System',
                 'mail.returnSubject': '📗 Return Confirmation — {book}',
@@ -1840,6 +1944,7 @@
 
                 'th.title': 'العنوان',
                 'th.author': 'المؤلف',
+                'th.language': 'اللغة',
                 'th.category': 'التصنيف',
                 'th.isbn': 'ISBN',
                 'th.grade': 'الصف',
@@ -1927,7 +2032,23 @@
                 'cat.notAvailTitle': 'غير متوفر',
                 'cat.deleteConfirm': 'حذف هذا الكتاب؟',
                 'cat.deleted': 'تم حذف الكتاب.',
+                'cat.edit': 'تعديل',
+                'cat.editTitle': 'تعديل هذا الكتاب',
 
+                'edit.title': 'تعديل الكتاب',
+                'edit.heading': 'تعديل: {title}',
+                'edit.saveBtn': 'حفظ التعديلات',
+                'edit.saved': '✅ تم تحديث "{title}" بنجاح.',
+                'edit.notFound': 'لم يتم العثور على الكتاب.',
+                'edit.barcodeExists': 'هذا الباركود مستخدم بالفعل لكتاب آخر.',
+                'edit.copiesTooFew': 'لا يمكن أن يكون عدد النسخ أقل من الإعارات النشطة ({n}).',
+                'edit.activeLoans': 'الإعارات النشطة: {n}',
+
+                'add.step1': 'الخطوة 1: اختر لغة الكتاب',
+                'add.step1Hint': 'اختر اللغة الأساسية لهذا الكتاب. الإنجليزية هي الأولى في القائمة.',
+                'add.languageChosen': 'اللغة',
+                'add.changeLanguage': 'تغيير اللغة',
+                'add.chooseLanguage': 'الرجاء اختيار لغة أولاً.',
                 'add.title': 'إضافة كتاب جديد — متقدم',
                 'add.core': '📘 التفاصيل الأساسية',
                 'add.titleLabel': 'العنوان *',
@@ -2243,13 +2364,13 @@
                 'view.barcode': 'الباركود',
                 'view.summary': 'الملخص',
                 'view.category': 'التصنيف',
+                'view.language': 'اللغة',
                 'view.pyp': 'PYP',
                 'view.notAssigned': 'غير مُعيَّن',
                 'view.noSummary': 'لا يوجد ملخص',
 
                 'sync.syncing': 'جارٍ المزامنة...',
 
-                /* ---- EMAIL TEMPLATES ---- */
                 'mail.borrowSubject': '📚 تأكيد إعارة — {book}',
                 'mail.borrowBody': 'عزيزي/عزيزتي {name}،\n\nهذا تأكيد تلقائي بأن الكتاب التالي قد تمت استعارته من مكتبة {library}:\n\n• الكتاب: {book}\n• المؤلف: {author}\n• الباركود: {barcode}\n• تاريخ الاستعارة: {borrowDate}\n• تاريخ الإرجاع: {dueDate}\n\nيرجى إرجاع الكتاب في موعده أو قبله.\n\nمع التحية،\n{library} — نظام إدارة المكتبة',
                 'mail.returnSubject': '📗 تأكيد إرجاع — {book}',
@@ -2310,6 +2431,17 @@
         }
 
         // ================================================================
+        //  BOOK LANGUAGES
+        // ================================================================
+        const BOOK_LANGUAGES = [
+            { code: 'English', native: 'English',  en: 'English',  flag: '🇬🇧' },
+            { code: 'French',  native: 'Français', en: 'French',   flag: '🇫🇷' },
+            { code: 'Arabic',  native: 'العربية',  en: 'Arabic',   flag: '🇸🇦' },
+        ];
+
+        let selectedAddLanguage = null;
+
+        // ================================================================
         //  BOOK CATEGORIES (EN / FR / AR)
         // ================================================================
         const CATEGORY_PRESETS = [
@@ -2327,23 +2459,56 @@
         ];
 
         function populateCategoryPresets() {
-            const sel = document.getElementById('addCategoryPreset');
-            if (!sel) return;
-            const previous = sel.value;
-            sel.innerHTML = `<option value="">${t('add.catPresetChoose')}</option>` +
-                CATEGORY_PRESETS.map((c, i) =>
-                    `<option value="${i}">${c.en} · ${c.fr} · ${c.ar}</option>`).join('');
-            if (previous && CATEGORY_PRESETS[previous]) sel.value = previous;
+            renderLanguagePicker();
+            updateChosenLanguageLabel();
         }
 
-        function applyCategoryPreset() {
-            const sel = document.getElementById('addCategoryPreset');
-            if (!sel || sel.value === '') return;
-            const c = CATEGORY_PRESETS[parseInt(sel.value)];
-            if (!c) return;
-            document.getElementById('addCategoryEn').value = c.en;
-            document.getElementById('addCategoryFr').value = c.fr;
-            document.getElementById('addCategoryAr').value = c.ar;
+        function renderLanguagePicker() {
+            const grid = document.getElementById('languagePickerGrid');
+            if (!grid) return;
+            grid.innerHTML = BOOK_LANGUAGES.map(l => {
+                const isSelected = selectedAddLanguage === l.code;
+                const showEn = l.native !== l.en;
+                return `<div class="language-picker-card ${isSelected ? 'selected' : ''}"
+                             onclick="selectLanguage('${l.code}')">
+                    <div class="lang-flag">${l.flag}</div>
+                    <div class="lang-native">${escapeHtml(l.native)}</div>
+                    ${showEn ? `<div class="lang-en">${escapeHtml(l.en)}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        function selectLanguage(code) {
+            if (!BOOK_LANGUAGES.find(l => l.code === code)) return;
+            selectedAddLanguage = code;
+            renderLanguagePicker();
+            goToAddStep2();
+        }
+
+        function goToAddStep2() {
+            if (!selectedAddLanguage) {
+                toast(t('add.chooseLanguage'), 'error');
+                return;
+            }
+            document.getElementById('addBookStep1').classList.add('hidden');
+            document.getElementById('addBookStep2').classList.remove('hidden');
+            updateChosenLanguageLabel();
+            setTimeout(() => document.getElementById('addTitle')?.focus(), 120);
+        }
+
+        function backToLanguageStep() {
+            document.getElementById('addBookStep2').classList.add('hidden');
+            document.getElementById('addBookStep1').classList.remove('hidden');
+            renderLanguagePicker();
+            document.getElementById('addBookMsg').innerHTML = '';
+        }
+
+        function updateChosenLanguageLabel() {
+            const label = document.getElementById('chosenLanguageLabel');
+            if (!label) return;
+            const l = BOOK_LANGUAGES.find(x => x.code === selectedAddLanguage);
+            if (!l) { label.textContent = ''; return; }
+            label.textContent = `${l.flag} ${l.native} (${l.en})`;
         }
 
         function getCategoryLabel(book) {
@@ -2355,6 +2520,11 @@
         function getCategorySearchText(book) {
             const c = (book && book.categories) || {};
             return `${c.en || ''} ${c.fr || ''} ${c.ar || ''}`;
+        }
+
+        function getLanguageFlag(langCode) {
+            const l = BOOK_LANGUAGES.find(x => x.code === langCode);
+            return l ? l.flag : '🌐';
         }
 
         // ================================================================
@@ -2585,51 +2755,52 @@
             }
         }
 
-        // Tabs a student is allowed to see
-        const STUDENT_TABS = ['borrowing', 'mybooks', 'search', 'pyp'];
+        // Role-based permission configuration:
+        // - admin: full access to everything
+        // - all other roles (librarian, teacher, student): only Catalogue (view-only), Search, My Books, PYP Finder
+        const ADMIN_TABS = ['dashboard', 'catalogue', 'search', 'borrowing', 'mybooks', 'pyp',
+                            'requests', 'teachers', 'students', 'reports', 'purchases', 'emails', 'users', 'settings'];
+        const NON_ADMIN_TABS = ['catalogue', 'search', 'mybooks', 'pyp'];
 
         function applyRolePermissions() {
             if (!currentUser) return;
             document.getElementById('currentUserDisplay').textContent = currentUser.displayName;
             document.getElementById('userAvatar').textContent = currentUser.displayName.charAt(0).toUpperCase();
 
-            const isStudent = currentUser.role === 'student';
-            const isStaff = currentUser.role === 'librarian' || currentUser.role === 'admin';
             const isAdmin = currentUser.role === 'admin';
 
-            // Staff / admin blocks (forms, buttons, tabs...)
+            document.querySelectorAll('.nav-tabs button').forEach(btn => {
+                const tab = btn.dataset.tab;
+                if (isAdmin) {
+                    btn.classList.remove('hidden-tab');
+                } else {
+                    if (!NON_ADMIN_TABS.includes(tab)) {
+                        btn.classList.add('hidden-tab');
+                    } else {
+                        btn.classList.remove('hidden-tab');
+                    }
+                }
+            });
+
+            // Hide all staff-only and admin-only elements for non-admins
             document.querySelectorAll('.staff-only').forEach(el => {
-                el.classList.toggle('hidden-tab', !isStaff);
+                el.classList.toggle('hidden', !isAdmin);
+                el.classList.toggle('hidden-tab', !isAdmin);
             });
             document.querySelectorAll('.admin-only').forEach(el => {
+                el.classList.toggle('hidden', !isAdmin);
                 el.classList.toggle('hidden-tab', !isAdmin);
             });
 
-            // Students only keep: Borrow/Return, My Books, Search, PYP Finder
-            document.querySelectorAll('.nav-tabs button').forEach(btn => {
-                const tab = btn.dataset.tab;
-                if (isStudent && !STUDENT_TABS.includes(tab)) {
-                    btn.classList.add('hidden-tab');
-                }
-            });
-
-            // Notification bell is visible for everyone
             const bell = document.getElementById('notifBell');
             bell.classList.remove('hidden');
 
-            // Student self-service borrow notice
             const notice = document.getElementById('borrowNotice');
-            if (notice) notice.classList.toggle('hidden', !isStudent);
+            if (notice) notice.classList.add('hidden');
 
-            // Lock the student ID field for students
             const borrowStudentInput = document.getElementById('borrowStudentId');
             if (borrowStudentInput) {
-                if (isStudent && currentUser.studentId) {
-                    borrowStudentInput.value = currentUser.studentId;
-                    borrowStudentInput.readOnly = true;
-                } else {
-                    borrowStudentInput.readOnly = false;
-                }
+                borrowStudentInput.readOnly = false;
             }
 
             applyRoleTexts();
@@ -2655,7 +2826,8 @@
             if (document.getElementById('returnDate')) document.getElementById('returnDate').value = td;
             if (document.getElementById('purchaseDate')) document.getElementById('purchaseDate').value = td;
 
-            const defaultTab = (currentUser && currentUser.role === 'student') ? 'borrowing' : 'dashboard';
+            // Default tab: admin -> dashboard, everyone else -> catalogue
+            const defaultTab = (currentUser && currentUser.role === 'admin') ? 'dashboard' : 'catalogue';
             document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
             const btn = document.querySelector('.nav-tabs button[data-tab="' + defaultTab + '"]');
             if (btn) btn.classList.add('active');
@@ -2715,7 +2887,7 @@
         });
 
         // ================================================================
-        //  EMAIL SERVICE (simulated outbox + mailto)
+        //  EMAIL SERVICE
         // ================================================================
         function getAdminEmails() {
             const list = (data.users || [])
@@ -2743,12 +2915,6 @@
             return email;
         }
 
-        /**
-         * Sends the borrow / return confirmation to:
-         *  - the system (notification + outbox record)
-         *  - the administrator email(s)
-         *  - the student email
-         */
         function sendBorrowReturnEmails(action, loan, book, student) {
             const library = (data.settings && data.settings.libraryName) || 'PYP Library';
             const recipients = [];
@@ -2882,8 +3048,8 @@
             if (!currentUser) return;
             const badge = document.getElementById('requestsTabBadge');
             if (!badge) return;
-            const isStaff = currentUser.role === 'librarian' || currentUser.role === 'admin';
-            if (!isStaff) { badge.classList.add('hidden'); return; }
+            const isAdmin = currentUser.role === 'admin';
+            if (!isAdmin) { badge.classList.add('hidden'); return; }
             const pending = (data.requests || []).filter(r => r.status === 'pending').length;
             if (pending > 0) {
                 badge.textContent = pending;
@@ -2894,7 +3060,7 @@
         }
 
         function renderMyBooksTabBadge() {
-            if (!currentUser || currentUser.role !== 'student') return;
+            if (!currentUser) return;
             const badge = document.getElementById('myBooksTabBadge');
             if (!badge) return;
             const student = getCurrentStudent();
@@ -3024,12 +3190,16 @@
         // ================================================================
         let currentScanner = null;
 
-        function openModal(html) {
+        function openModal(html, wide) {
+            const modalContent = document.querySelector('#barcodeModal .modal-content');
+            if (modalContent) modalContent.classList.toggle('modal-wide', !!wide);
             document.getElementById('modalBody').innerHTML = html;
             document.getElementById('barcodeModal').classList.add('active');
         }
         function closeModal() {
             document.getElementById('barcodeModal').classList.remove('active');
+            const modalContent = document.querySelector('#barcodeModal .modal-content');
+            if (modalContent) modalContent.classList.remove('modal-wide');
             if (currentScanner) {
                 currentScanner.stop().then(() => { currentScanner = null; }).catch(() => {});
             }
@@ -3234,11 +3404,13 @@
         }
 
         function renderMyBooks() {
-            if (!currentUser || currentUser.role !== 'student') return;
+            if (!currentUser) return;
             const student = getCurrentStudent();
             const myBooksBody = document.getElementById('myBooksTableBody');
             const myHistoryBody = document.getElementById('myHistoryTableBody');
             const myPending = document.getElementById('myPendingRequests');
+            if (!myBooksBody) return;
+
             if (!student) {
                 myBooksBody.innerHTML = `<tr><td colspan="5" class="text-muted text-center">${t('my.profileNotFound')}</td></tr>`;
                 myHistoryBody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">${t('my.noHistory')}</td></tr>`;
@@ -3303,15 +3475,16 @@
                 tbody.innerHTML = `<tr><td colspan="9" class="text-muted text-center">${t('cat.noBooks')}</td></tr>`;
                 return;
             }
-            const isStaff = currentUser && (currentUser.role === 'librarian' || currentUser.role === 'admin');
+            const isAdmin = currentUser && currentUser.role === 'admin';
             const isStudent = currentUser && currentUser.role === 'student';
             let html = '';
             data.books.forEach(b => {
                 const avail = getAvailableCopies(b);
                 const barcodeDisplay = b.barcode && b.barcode.trim() ? b.barcode : '–';
-                const catLabel = getCategoryLabel(b);
+                const langFlag = getLanguageFlag(b.language);
                 let actions = `<button class="btn btn-sm btn-primary" onclick="viewBook('${b.id}')"><i class="fas fa-eye"></i></button>`;
-                if (isStaff) {
+                if (isAdmin) {
+                    actions += ` <button class="btn btn-sm btn-outline" onclick="editBook('${b.id}')" title="${t('cat.editTitle')}"><i class="fas fa-pen"></i> ${t('cat.edit')}</button>`;
                     actions += ` <button class="btn btn-sm btn-warning" onclick="showBarcode('${b.id}')"><i class="fas fa-barcode"></i></button>`;
                     actions += ` <button class="btn btn-sm btn-danger" onclick="deleteBook('${b.id}')"><i class="fas fa-trash"></i></button>`;
                 }
@@ -3325,7 +3498,7 @@
                 html += `<tr>
                     <td><strong>${escapeHtml(b.title)}</strong></td>
                     <td>${escapeHtml(b.author || '-')}</td>
-                    <td><span class="cat-tag">${escapeHtml(catLabel)}</span></td>
+                    <td><span class="lang-chip">${langFlag} ${escapeHtml(b.language || 'English')}</span></td>
                     <td>${escapeHtml(b.isbn13 || b.isbn10 || '-')}</td>
                     <td>${b.ageLevel ? (t('grade.' + b.ageLevel) || b.ageLevel) : '-'}</td>
                     <td>${b.copies}</td>
@@ -3341,11 +3514,9 @@
             const b = data.books.find(book => book.id === id);
             if (!b) { toast(t('toast.bookNotFound'), 'error'); return; }
             const avail = getAvailableCopies(b);
-            const c = b.categories || {};
-            const catText = [c.en, c.fr, c.ar].filter(Boolean).join(' / ') || '—';
             const parts = [
                 `<strong>${escapeHtml(b.title)}</strong> ${t('common.by')} ${escapeHtml(b.author || t('common.unknown'))}`,
-                `${t('view.category')}: ${escapeHtml(catText)}`,
+                `${t('view.language')}: ${getLanguageFlag(b.language)} ${escapeHtml(b.language || 'English')}`,
                 `${t('view.isbn')}: ${escapeHtml(b.isbn13 || b.isbn10 || '-')} | ${t('view.gradeLabel')}: ${b.ageLevel ? (t('grade.' + b.ageLevel) || b.ageLevel) : '-'}`,
                 `${t('view.copies')}: ${b.copies} | ${t('view.available')}: ${avail}`,
                 `${t('view.location')}: ${escapeHtml(b.location || '-')} | ${t('view.shelf')}: ${escapeHtml(b.shelf || '-')}`,
@@ -3357,7 +3528,7 @@
         }
 
         function deleteBook(id) {
-            if (!currentUser || (currentUser.role !== 'librarian' && currentUser.role !== 'admin')) {
+            if (!currentUser || currentUser.role !== 'admin') {
                 toast(t('add.permissionDenied'), 'error'); return;
             }
             if (!confirm(t('cat.deleteConfirm'))) return;
@@ -3367,6 +3538,231 @@
             saveData();
             renderAll();
             toast(t('cat.deleted'), 'success');
+        }
+
+        // ================================================================
+        //  ✏️  EDIT BOOK  (admin only)
+        // ================================================================
+        let editingBookId = null;
+        let editLpChips = [];
+        let editAtlChips = [];
+        let editConceptChips = [];
+
+        function editBook(bookId) {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
+            const b = data.books.find(x => x.id === bookId);
+            if (!b) { toast(t('toast.bookNotFound'), 'error'); return; }
+
+            editingBookId = b.id;
+            editLpChips = [...(b.learnerProfile || [])];
+            editAtlChips = [...(b.atl || [])];
+            editConceptChips = [...(b.pypConcepts || [])];
+
+            const ageValues = ['', 'Preschool', 'K', '1', '2', '3', '4', '5'];
+            const ageOptions = ageValues.map(v =>
+                `<option value="${v}"${(b.ageLevel || '') === v ? ' selected' : ''}>` +
+                `${v === '' ? t('add.anyOption') : (t('grade.' + v) || v)}</option>`
+            ).join('');
+
+            const langOptions = BOOK_LANGUAGES.map(l =>
+                `<option value="${l.code}"${(b.language || 'English') === l.code ? ' selected' : ''}>${l.flag} ${l.native} (${l.en})</option>`
+            ).join('');
+
+            const activeLoans = data.loans.filter(l => l.bookId === b.id && l.status === 'borrowed').length;
+
+            const html = `
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+                <div class="add-book-form" style="margin:0;background:#fff;border-style:solid;">
+                    <h3><i class="fas fa-pen"></i> ${t('edit.heading', { title: escapeHtml(b.title) })}</h3>
+
+                    <div class="form-section">
+                        <div class="form-section-title">${t('add.core')}</div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.titleLabel')}</label><input type="text" id="editTitle" value="${escapeHtml(b.title)}" /></div>
+                            <div class="form-group"><label>${t('add.authorLabel')}</label><input type="text" id="editAuthor" value="${escapeHtml(b.author || '')}" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.isbn13')}</label><input type="text" id="editIsbn13" value="${escapeHtml(b.isbn13 || '')}" /></div>
+                            <div class="form-group"><label>${t('add.isbn10')}</label><input type="text" id="editIsbn10" value="${escapeHtml(b.isbn10 || '')}" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.publisher')}</label><input type="text" id="editPublisher" value="${escapeHtml(b.publisher || '')}" /></div>
+                            <div class="form-group"><label>${t('add.pubDate')}</label><input type="text" id="editPublicationDate" value="${escapeHtml(b.publicationDate || '')}" /></div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">${t('add.libraryMgmt')}</div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('th.language')}</label><select id="editLanguage">${langOptions}</select></div>
+                            <div class="form-group"><label>${t('add.fiction')}</label><select id="editFiction">
+                                <option value="fiction"${b.fiction !== 'nonfiction' ? ' selected' : ''}>${t('add.fictionOpt')}</option>
+                                <option value="nonfiction"${b.fiction === 'nonfiction' ? ' selected' : ''}>${t('add.nonfictionOpt')}</option>
+                            </select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.ageLevel')}</label><select id="editAgeLevel">${ageOptions}</select></div>
+                            <div class="form-group"><label>${t('add.numCopies')}</label><input type="number" id="editCopies" min="1" value="${b.copies || 1}" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.barcodeLabel')}</label><input type="text" id="editBarcode" value="${escapeHtml(b.barcode || '')}" /></div>
+                            <div class="form-group"><label>${t('add.location')}</label><input type="text" id="editLocation" value="${escapeHtml(b.location || '')}" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.shelf')}</label><input type="text" id="editShelf" value="${escapeHtml(b.shelf || '')}" /></div>
+                            <div class="form-group"></div>
+                        </div>
+                        <p class="text-muted" style="font-size:0.78rem;">${t('edit.activeLoans', { n: activeLoans })}</p>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">${t('add.pypAlignment')}</div>
+                        <div class="form-group">
+                            <label>${t('add.learnerProfile')}</label>
+                            <div class="chip-input" id="edit_lpChipInput"><input type="text" id="edit_lpInput" placeholder="${t('add.lpPh')}" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label>${t('add.atl')}</label>
+                            <div class="chip-input" id="edit_atlChipInput"><input type="text" id="edit_atlInput" placeholder="${t('add.atlPh')}" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label>${t('add.concepts')}</label>
+                            <div class="chip-input" id="edit_conceptChipInput"><input type="text" id="edit_conceptInput" placeholder="${t('add.conceptsPh')}" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.transTheme')}</label><input type="text" id="editTransTheme" value="${escapeHtml(b.transdisciplinaryTheme || '')}" /></div>
+                            <div class="form-group"><label>${t('add.unit')}</label><input type="text" id="editUnit" value="${escapeHtml(b.unitOfInquiry || '')}" /></div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">${t('add.additional')}</div>
+                        <div class="form-group"><label>${t('add.summary')}</label><textarea id="editSummary">${escapeHtml(b.summary || '')}</textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>${t('add.keywords')}</label><input type="text" id="editKeywords" value="${escapeHtml(b.keywords || '')}" /></div>
+                            <div class="form-group"><label>${t('add.subject')}</label><input type="text" id="editSubject" value="${escapeHtml(b.subject || '')}" /></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-8" style="margin-top:16px;">
+                        <button class="btn btn-success" onclick="saveEditedBook()"><i class="fas fa-save"></i> ${t('edit.saveBtn')}</button>
+                        <button class="btn btn-outline" onclick="closeModal()"><i class="fas fa-times"></i> ${t('common.cancel')}</button>
+                    </div>
+                </div>
+            `;
+
+            openModal(html, true);
+
+            renderEditChips('lp');
+            renderEditChips('atl');
+            renderEditChips('concept');
+            setupEditChipInput('edit_lpInput', 'lp');
+            setupEditChipInput('edit_atlInput', 'atl');
+            setupEditChipInput('edit_conceptInput', 'concept');
+        }
+
+        function renderEditChips(type) {
+            const container = document.getElementById('edit_' + type + 'ChipInput');
+            if (!container) return;
+            container.querySelectorAll('.chip').forEach(el => el.remove());
+            let arr = [];
+            if (type === 'lp') arr = editLpChips;
+            else if (type === 'atl') arr = editAtlChips;
+            else arr = editConceptChips;
+
+            arr.forEach((val, idx) => {
+                const chip = document.createElement('span');
+                chip.className = 'chip';
+                chip.innerHTML = `${escapeHtml(val)} <span class="remove-chip" data-type="${type}" data-index="${idx}">&times;</span>`;
+                container.insertBefore(chip, container.querySelector('input'));
+            });
+
+            container.querySelectorAll('.remove-chip').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tp = this.dataset.type;
+                    const i = parseInt(this.dataset.index);
+                    if (tp === 'lp') editLpChips.splice(i, 1);
+                    else if (tp === 'atl') editAtlChips.splice(i, 1);
+                    else editConceptChips.splice(i, 1);
+                    renderEditChips(tp);
+                });
+            });
+        }
+
+        function setupEditChipInput(inputId, type) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const val = this.value.trim().replace(/,$/, '');
+                    if (val) {
+                        if (type === 'lp') editLpChips.push(val);
+                        else if (type === 'atl') editAtlChips.push(val);
+                        else editConceptChips.push(val);
+                        this.value = '';
+                        renderEditChips(type);
+                    }
+                }
+            });
+        }
+
+        function saveEditedBook() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
+            const b = data.books.find(x => x.id === editingBookId);
+            if (!b) { toast(t('edit.notFound'), 'error'); closeModal(); return; }
+
+            const title = document.getElementById('editTitle').value.trim();
+            if (!title) { toast(t('add.titleRequired'), 'error'); return; }
+
+            const copies = parseInt(document.getElementById('editCopies').value) || 1;
+            const activeLoans = data.loans.filter(l => l.bookId === b.id && l.status === 'borrowed').length;
+            if (copies < activeLoans) {
+                toast(t('edit.copiesTooFew', { n: activeLoans }), 'error');
+                return;
+            }
+
+            const barcode = document.getElementById('editBarcode').value.trim();
+            if (barcode && data.books.some(x =>
+                    x.id !== b.id && (x.barcode === barcode || x.accessionNumber === barcode))) {
+                toast(t('edit.barcodeExists'), 'error');
+                return;
+            }
+
+            b.title = title;
+            b.author = document.getElementById('editAuthor').value.trim();
+            b.isbn13 = document.getElementById('editIsbn13').value.trim();
+            b.isbn10 = document.getElementById('editIsbn10').value.trim();
+            b.publisher = document.getElementById('editPublisher').value.trim();
+            b.publicationDate = document.getElementById('editPublicationDate').value.trim();
+            b.language = document.getElementById('editLanguage').value || 'English';
+            b.fiction = document.getElementById('editFiction').value;
+            b.copies = copies;
+            b.barcode = barcode;
+            b.location = document.getElementById('editLocation').value.trim();
+            b.shelf = document.getElementById('editShelf').value.trim();
+            b.learnerProfile = [...editLpChips];
+            b.atl = [...editAtlChips];
+            b.pypConcepts = [...editConceptChips];
+            b.transdisciplinaryTheme = document.getElementById('editTransTheme').value.trim();
+            b.unitOfInquiry = document.getElementById('editUnit').value.trim();
+            b.summary = document.getElementById('editSummary').value.trim();
+            b.keywords = document.getElementById('editKeywords').value.trim();
+            b.subject = document.getElementById('editSubject').value.trim();
+            b.updatedAt = new Date().toISOString();
+
+            (data.requests || []).forEach(r => {
+                if (r.bookId === b.id) r.bookTitle = b.title;
+            });
+
+            saveData();
+            renderAll();
+            closeModal();
+            toast(t('edit.saved', { title: b.title }), 'success');
         }
 
         function renderLoans() {
@@ -3563,7 +3959,6 @@
                 studentId: role === 'student' ? id : null,
             });
 
-            // If it is a student, also create a student profile so borrowing works
             if (role === 'student' && !data.students.find(s => s.studentId === id)) {
                 data.students.push({
                     id: generateId(), name, grade: '', class: '', studentId: id,
@@ -3614,7 +4009,7 @@
             saveData();
             document.getElementById('resetPwdUsername').value = '';
             document.getElementById('resetPwdNew').value = '';
-            toast(t('usr.pwdReseted') || t('usr.pwdReset', { username }), 'success');
+            toast(t('usr.pwdReset', { username }), 'success');
         }
 
         // ================================================================
@@ -3698,7 +4093,7 @@
         }
 
         function approveRequest(requestId) {
-            if (!currentUser || (currentUser.role !== 'librarian' && currentUser.role !== 'admin')) {
+            if (!currentUser || currentUser.role !== 'admin') {
                 toast(t('add.permissionDenied'), 'error'); return;
             }
             const req = (data.requests || []).find(r => r.id === requestId);
@@ -3720,7 +4115,6 @@
             req.processedDate = today();
             req.processedBy = currentUser.displayName;
 
-            // System notification + emails (admin + student)
             pushNotification(
                 t('notif.borrowedMsg', { student: student.name, book: book.title, due: loan.dueDate }),
                 'borrow',
@@ -3734,7 +4128,7 @@
         }
 
         function rejectRequest(requestId) {
-            if (!currentUser || (currentUser.role !== 'librarian' && currentUser.role !== 'admin')) {
+            if (!currentUser || currentUser.role !== 'admin') {
                 toast(t('add.permissionDenied'), 'error'); return;
             }
             const req = (data.requests || []).find(r => r.id === requestId);
@@ -3750,7 +4144,7 @@
         }
 
         function simulateStudentRequest() {
-            if (!currentUser || (currentUser.role !== 'librarian' && currentUser.role !== 'admin')) {
+            if (!currentUser || currentUser.role !== 'admin') {
                 toast(t('set.simulateOnlyStaff'), 'error'); return;
             }
             const availableBooks = data.books.filter(b => isBookAvailable(b));
@@ -3776,16 +4170,22 @@
         }
 
         // ================================================================
-        //  ADD BOOK FORM
+        //  ADD BOOK FORM  (2-step wizard: language → details) — admin only
         // ================================================================
         let lpChips = [];
         let atlChips = [];
         let conceptChips = [];
 
         function toggleAddBookForm() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
             const container = document.getElementById('addBookFormContainer');
             container.classList.toggle('hidden');
-            if (!container.classList.contains('hidden')) document.getElementById('addTitle').focus();
+            if (!container.classList.contains('hidden')) {
+                backToLanguageStep();
+                renderLanguagePicker();
+            }
         }
 
         function clearAddBookForm() {
@@ -3795,11 +4195,6 @@
             document.getElementById('addIsbn10').value = '';
             document.getElementById('addPublisher').value = '';
             document.getElementById('addPublicationDate').value = '';
-            document.getElementById('addCategoryEn').value = '';
-            document.getElementById('addCategoryFr').value = '';
-            document.getElementById('addCategoryAr').value = '';
-            const preset = document.getElementById('addCategoryPreset');
-            if (preset) preset.value = '';
             document.getElementById('addAgeLevel').value = '';
             document.getElementById('addFiction').value = 'fiction';
             document.getElementById('addCopies').value = '1';
@@ -3817,6 +4212,9 @@
             document.getElementById('atlInput').value = '';
             document.getElementById('conceptInput').value = '';
             document.getElementById('addBookMsg').innerHTML = '';
+            selectedAddLanguage = null;
+            renderLanguagePicker();
+            backToLanguageStep();
         }
 
         function setupChipInput(inputId, chipArrayName) {
@@ -3864,22 +4262,17 @@
         }
 
         function saveAdvancedBook() {
-            if (!currentUser || (currentUser.role !== 'librarian' && currentUser.role !== 'admin')) {
+            if (!currentUser || currentUser.role !== 'admin') {
                 toast(t('add.permissionDenied'), 'error'); return;
+            }
+            if (!selectedAddLanguage) {
+                toast(t('add.chooseLanguage'), 'error');
+                backToLanguageStep();
+                return;
             }
             const title = document.getElementById('addTitle').value.trim();
             if (!title) {
                 document.getElementById('addBookMsg').innerHTML = `<span class="badge badge-red">${t('add.titleRequired')}</span>`;
-                return;
-            }
-
-            // ---- Categories (EN / FR / AR) ----
-            const catEn = document.getElementById('addCategoryEn').value.trim();
-            const catFr = document.getElementById('addCategoryFr').value.trim();
-            const catAr = document.getElementById('addCategoryAr').value.trim();
-            if (!catEn && !catFr && !catAr) {
-                document.getElementById('addBookMsg').innerHTML = `<span class="badge badge-red">${t('add.catRequired')}</span>`;
-                document.getElementById('addCategoryEn').focus();
                 return;
             }
 
@@ -3893,7 +4286,9 @@
                 publicationDate: document.getElementById('addPublicationDate').value.trim(),
                 isbn10: document.getElementById('addIsbn10').value.trim(),
                 isbn13: document.getElementById('addIsbn13').value.trim(),
-                edition: '', language: 'English', pages: 0, format: 'hardcover',
+                edition: '',
+                language: selectedAddLanguage,
+                pages: 0, format: 'hardcover',
                 price: 0, currency: 'USD', purchaseDate: '', supplier: '',
                 accessionNumber: 'ACC-' + Date.now(), barcode: barcode, copies: copies,
                 location: document.getElementById('addLocation').value.trim() || 'Main Library',
@@ -3905,8 +4300,7 @@
                 fiction: document.getElementById('addFiction').value,
                 ageLevel: document.getElementById('addAgeLevel').value,
                 readingLevel: '', series: '', seriesNumber: '',
-                // trilingual category
-                categories: { en: catEn, fr: catFr, ar: catAr },
+                categories: { en: '', fr: '', ar: '' },
                 learnerProfile: [...lpChips], atl: [...atlChips], pypConcepts: [...conceptChips],
                 transdisciplinaryTheme: document.getElementById('addTransTheme').value.trim(),
                 unitOfInquiry: document.getElementById('addUnit').value.trim(),
@@ -3916,8 +4310,8 @@
             saveData();
             renderAll();
             toast(t('add.bookAdded', { title: book.title, copies }), 'success');
-            document.getElementById('addBookMsg').innerHTML = `<span class="badge badge-green">${t('add.saved', { title: book.title })}</span>`;
             clearAddBookForm();
+            document.getElementById('addBookFormContainer').classList.add('hidden');
         }
 
         // ================================================================
@@ -3933,7 +4327,7 @@
             if (query) {
                 results = results.filter(b => {
                     const searchable = field === 'all' ?
-                        `${b.title} ${b.author} ${b.isbn13} ${b.isbn10} ${b.subject} ${b.keywords} ${b.summary} ${b.ageLevel} ${(b.learnerProfile||[]).join(' ')} ${(b.atl||[]).join(' ')} ${b.barcode} ${b.accessionNumber} ${getCategorySearchText(b)}`
+                        `${b.title} ${b.author} ${b.isbn13} ${b.isbn10} ${b.subject} ${b.keywords} ${b.summary} ${b.ageLevel} ${b.language} ${(b.learnerProfile||[]).join(' ')} ${(b.atl||[]).join(' ')} ${b.barcode} ${b.accessionNumber}`
                         .toLowerCase() :
                         (() => {
                             switch (field) {
@@ -3942,7 +4336,6 @@
                                 case 'isbn': return b.isbn13 + b.isbn10;
                                 case 'subject': return b.subject;
                                 case 'keyword': return b.keywords;
-                                case 'category': return getCategorySearchText(b);
                                 case 'grade': return b.ageLevel;
                                 case 'pyp': return (b.learnerProfile || []).join(' ') + ' ' + (b.atl || []).join(' ') + ' ' + (b.pypConcepts || []).join(' ');
                                 default: return '';
@@ -3959,21 +4352,25 @@
                 el.innerHTML = `<p class="text-muted">${t('search.noResults')}</p>`;
                 return;
             }
+            const isAdmin = currentUser && currentUser.role === 'admin';
             const isStudent = currentUser && currentUser.role === 'student';
             let html = `<p>${t('search.found', { n: results.length })}</p>`;
             results.forEach(b => {
                 const avail = getAvailableCopies(b);
                 const barcodeDisplay = b.barcode && b.barcode.trim() ? b.barcode : '–';
                 const gradeLabel = b.ageLevel ? (t('grade.' + b.ageLevel) || b.ageLevel) : '-';
-                const catLabel = getCategoryLabel(b);
+                const langFlag = getLanguageFlag(b.language);
                 let actionBtn = '';
                 if (isStudent && avail > 0) {
                     actionBtn = `<button class="btn btn-sm btn-success" onclick="requestBook('${b.id}')"><i class="fas fa-hand-holding-heart"></i> ${t('cat.request')}</button>`;
                 } else if (isStudent) {
                     actionBtn = `<span class="badge badge-red">${t('common.notAvailable')}</span>`;
                 }
+                if (isAdmin) {
+                    actionBtn += ` <button class="btn btn-sm btn-outline" onclick="editBook('${b.id}')"><i class="fas fa-pen"></i> ${t('cat.edit')}</button>`;
+                }
                 html += `<div class="book-mini">
-                    <span><span class="title">${escapeHtml(b.title)}</span> <span class="meta">${t('common.by')} ${escapeHtml(b.author || t('common.unknown'))} • <span class="cat-tag">${escapeHtml(catLabel)}</span> • ${gradeLabel} • ${avail} ${t('common.available')} • ${t('view.barcode')}: ${escapeHtml(barcodeDisplay)}</span></span>
+                    <span><span class="title">${escapeHtml(b.title)}</span> <span class="meta">${t('common.by')} ${escapeHtml(b.author || t('common.unknown'))} • <span class="lang-chip">${langFlag} ${escapeHtml(b.language || 'English')}</span> • ${gradeLabel} • ${avail} ${t('common.available')} • ${t('view.barcode')}: ${escapeHtml(barcodeDisplay)}</span></span>
                     <span>${actionBtn || `<span class="badge ${avail > 0 ? 'badge-green' : 'badge-red'}">${avail > 0 ? t('common.available') : t('common.borrowedStatus')}</span>`}</span>
                 </div>`;
             });
@@ -3989,14 +4386,10 @@
         }
 
         function borrowBook() {
-            if (!currentUser) return;
-            const isStaff = currentUser.role === 'librarian' || currentUser.role === 'admin';
-            const isStudent = currentUser.role === 'student';
-            if (!isStaff && !isStudent) { toast(t('borrow.onlyStaff'), 'error'); return; }
-
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('borrow.onlyStaff'), 'error'); return;
+            }
             let studentId = document.getElementById('borrowStudentId').value.trim();
-            if (isStudent) studentId = currentUser.studentId;
-
             const barcode = document.getElementById('borrowBookBarcode').value.trim();
             const borrowDate = document.getElementById('borrowDate').value || today();
             const loanDays = (data.settings && data.settings.loanDays) || 14;
@@ -4014,24 +4407,22 @@
                 id: generateId(), bookId: book.id, studentId: student.id, teacherId: null,
                 borrowDate: borrowDate, dueDate: dueDate, returnDate: null,
                 status: 'borrowed',
-                librarian: isStudent ? student.name : currentUser.displayName,
+                librarian: currentUser.displayName,
                 copyNumber: 1,
             };
             data.loans.push(loan);
 
-            // 1) to the system
             pushNotification(
                 t('notif.borrowedMsg', { student: student.name, book: book.title, due: dueDate }),
                 'borrow',
                 { studentId: student.id, bookId: book.id }
             );
-            // 2) to the admin + the student by email
             sendBorrowReturnEmails('borrow', loan, book, student);
 
             saveData();
             renderAll();
             resultEl.innerHTML = `<span class="badge badge-green">${t('borrow.success', { book: escapeHtml(book.title), student: escapeHtml(student.name), due: dueDate })}</span>`;
-            document.getElementById('borrowStudentId').value = isStudent ? (currentUser.studentId || '') : '';
+            document.getElementById('borrowStudentId').value = '';
             document.getElementById('borrowBookBarcode').value = '';
             document.getElementById('borrowDate').value = today();
             document.getElementById('borrowDueDate').value = addDays(today(), loanDays);
@@ -4039,11 +4430,9 @@
         }
 
         function returnBook() {
-            if (!currentUser) return;
-            const isStaff = currentUser.role === 'librarian' || currentUser.role === 'admin';
-            const isStudent = currentUser.role === 'student';
-            if (!isStaff && !isStudent) { toast(t('borrow.onlyStaffReturn'), 'error'); return; }
-
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('borrow.onlyStaffReturn'), 'error'); return;
+            }
             const barcode = document.getElementById('returnBookBarcode').value.trim();
             const returnDate = document.getElementById('returnDate').value || today();
             const resultEl = document.getElementById('returnResult');
@@ -4054,26 +4443,16 @@
             let loan = data.loans.find(l => l.bookId === book.id && l.status === 'borrowed');
             if (!loan) { resultEl.innerHTML = `<span class="badge badge-red">${t('borrow.notBorrowed')}</span>`; return; }
 
-            if (isStudent) {
-                const myStudent = getCurrentStudent();
-                if (!myStudent || loan.studentId !== myStudent.id) {
-                    resultEl.innerHTML = `<span class="badge badge-red">${t('borrow.notYourLoan')}</span>`;
-                    return;
-                }
-            }
-
             loan.status = 'returned';
             loan.returnDate = returnDate;
 
             const student = data.students.find(s => s.id === loan.studentId);
 
-            // 1) to the system
             pushNotification(
                 t('notif.returnedMsg', { student: student ? student.name : t('common.unknown'), book: book.title }),
                 'return',
                 { studentId: loan.studentId, bookId: book.id }
             );
-            // 2) to the admin + the student by email
             sendBorrowReturnEmails('return', loan, book, student);
 
             saveData();
@@ -4085,6 +4464,9 @@
         }
 
         function addTeacher() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
             const name = document.getElementById('teacherName').value.trim();
             const grade = document.getElementById('teacherGrade').value;
             const email = document.getElementById('teacherEmail').value.trim();
@@ -4106,6 +4488,9 @@
         }
 
         function addStudent() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
             const name = document.getElementById('studentName').value.trim();
             const grade = document.getElementById('studentGrade').value;
             const cls = document.getElementById('studentClass').value.trim();
@@ -4134,6 +4519,9 @@
         }
 
         function importStudentsFromExcel() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
             const input = document.getElementById('studentExcelInput');
             const file = input.files[0];
             if (!file) { toast(t('stu.selectFile'), 'error'); return; }
@@ -4206,6 +4594,7 @@
 
             const el = document.getElementById('pypResults');
             if (results.length === 0) { el.innerHTML = `<p class="text-muted">${t('pyp.noResults')}</p>`; return; }
+            const isAdmin = currentUser && currentUser.role === 'admin';
             const isStudent = currentUser && currentUser.role === 'student';
             let html = `<p>${t('pyp.found', { n: results.length })}</p><div class="flex" style="flex-wrap:wrap;gap:6px;">`;
             results.forEach(b => {
@@ -4214,13 +4603,16 @@
                 const conceptTags = (b.pypConcepts || []).map(c => `<span class="pyp-tag" style="background:#fef3c7;color:#92400e;">${t('concept.' + c) || c}</span>`).join(' ');
                 const availBool = isBookAvailable(b);
                 const gradeLabel = b.ageLevel ? (t('grade.' + b.ageLevel) || b.ageLevel) : '-';
-                const catLabel = getCategoryLabel(b);
+                const langFlag = getLanguageFlag(b.language);
                 let actionBtn = '';
                 if (isStudent && availBool) {
                     actionBtn = `<button class="btn btn-sm btn-success" onclick="requestBook('${b.id}')"><i class="fas fa-hand-holding-heart"></i> ${t('cat.request')}</button>`;
                 }
+                if (isAdmin) {
+                    actionBtn += ` <button class="btn btn-sm btn-outline" onclick="editBook('${b.id}')"><i class="fas fa-pen"></i> ${t('cat.edit')}</button>`;
+                }
                 html += `<div class="book-mini" style="flex-direction:column;align-items:flex-start;width:100%;">
-                    <span><span class="title">${escapeHtml(b.title)}</span> <span class="meta">${t('common.by')} ${escapeHtml(b.author || t('common.unknown'))} • <span class="cat-tag">${escapeHtml(catLabel)}</span> • ${gradeLabel}</span>
+                    <span><span class="title">${escapeHtml(b.title)}</span> <span class="meta">${t('common.by')} ${escapeHtml(b.author || t('common.unknown'))} • <span class="lang-chip">${langFlag} ${escapeHtml(b.language || 'English')}</span> • ${gradeLabel}</span>
                     <span class="badge ${availBool ? 'badge-green' : 'badge-red'}">${availBool ? t('common.available') : t('common.borrowedStatus')}</span>
                     ${actionBtn}</span>
                     <div class="tag-group">${lpTags} ${atlTags} ${conceptTags}</div>
@@ -4232,6 +4624,9 @@
         }
 
         function recordPurchase() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
             const title = document.getElementById('purchaseTitle').value.trim();
             const supplier = document.getElementById('purchaseSupplier').value.trim();
             const price = parseFloat(document.getElementById('purchasePrice').value);
@@ -4270,6 +4665,9 @@
         }
 
         function exportData() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -4279,6 +4677,9 @@
         }
 
         function importData(event) {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); event.target.value = ''; return;
+            }
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -4300,17 +4701,18 @@
         }
 
         function exportCSV() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                toast(t('add.permissionDenied'), 'error'); return;
+            }
             if (data.books.length === 0) { toast(t('set.noBooksExport'), 'error'); return; }
-            const headers = ['Title', 'Author', 'Category_EN', 'Category_FR', 'Category_AR', 'ISBN', 'Grade',
+            const headers = ['Title', 'Author', 'Language', 'ISBN', 'Grade',
                 'Copies', 'Available', 'Fiction', 'Subject', 'Summary',
                 'LearnerProfile', 'ATL', 'PYPConcepts', 'Barcode'];
             let csv = headers.join(',') + '\n';
             data.books.forEach(b => {
                 const avail = getAvailableCopies(b);
-                const c = b.categories || {};
                 const row = [
-                    `"${b.title}"`, `"${b.author || ''}"`,
-                    `"${c.en || ''}"`, `"${c.fr || ''}"`, `"${c.ar || ''}"`,
+                    `"${b.title}"`, `"${b.author || ''}"`, `"${b.language || 'English'}"`,
                     `"${b.isbn13 || b.isbn10 || ''}"`,
                     `"${b.ageLevel || ''}"`, b.copies, avail, `"${b.fiction || ''}"`, `"${b.subject || ''}"`,
                     `"${(b.summary || '').replace(/"/g,'""')}"`, `"${(b.learnerProfile || []).join('; ')}"`,
@@ -4352,29 +4754,28 @@
             if (data.books.length > 0) return;
             const sampleBooks = [
                 { title: 'The Lorax', author: 'Dr. Seuss', isbn13: '978-0394823379', ageLevel: '3', copies: 5,
-                    fiction: 'fiction', summary: 'A classic story about environmental responsibility.',
-                    categories: { en: 'Environment', fr: 'Environnement', ar: 'البيئة' },
+                    fiction: 'fiction', language: 'English',
+                    summary: 'A classic story about environmental responsibility.',
                     learnerProfile: ['Caring', 'Thinker'], atl: ['Thinking', 'Research'],
                     pypConcepts: ['Responsibility', 'Causation'], subject: 'Environment' },
                 { title: 'The Giving Tree', author: 'Shel Silverstein', isbn13: '978-0060256654', ageLevel: '2',
-                    copies: 3, fiction: 'fiction', summary: 'A story about giving and love.',
-                    categories: { en: 'Values', fr: 'Valeurs', ar: 'القيم' },
+                    copies: 3, fiction: 'fiction', language: 'English',
+                    summary: 'A story about giving and love.',
                     learnerProfile: ['Caring', 'Reflective'], atl: ['Social', 'Self-management'],
                     pypConcepts: ['Change', 'Connection'], subject: 'Values' },
                 { title: 'The Water Princess', author: 'Susan Verde', isbn13: '978-0399172588', ageLevel: '1',
-                    copies: 4, fiction: 'fiction', summary: 'A story about water scarcity and resilience.',
-                    categories: { en: 'Water', fr: 'Eau', ar: 'الماء' },
+                    copies: 4, fiction: 'fiction', language: 'English',
+                    summary: 'A story about water scarcity and resilience.',
                     learnerProfile: ['Risk-taker', 'Open-minded'], atl: ['Research', 'Communication'],
                     pypConcepts: ['Function', 'Responsibility'], subject: 'Water' },
                 { title: 'The Polar Bear', author: 'Jenni Desmond', isbn13: '978-0763690679', ageLevel: '4',
-                    copies: 2, fiction: 'nonfiction', summary: 'A nonfiction exploration of polar bears and climate change.',
-                    categories: { en: 'Animals', fr: 'Animaux', ar: 'الحيوانات' },
+                    copies: 2, fiction: 'nonfiction', language: 'English',
+                    summary: 'A nonfiction exploration of polar bears and climate change.',
                     learnerProfile: ['Knowledgeable', 'Thinker'], atl: ['Research', 'Thinking'],
                     pypConcepts: ['Change', 'Causation'], subject: 'Animals' },
                 { title: 'The Boy Who Harnessed the Wind', author: 'William Kamkwamba', isbn13: '978-0803735118',
-                    ageLevel: '5', copies: 3, fiction: 'nonfiction',
+                    ageLevel: '5', copies: 3, fiction: 'nonfiction', language: 'English',
                     summary: 'A true story about innovation and determination.',
-                    categories: { en: 'Innovation', fr: 'Innovation', ar: 'الابتكار' },
                     learnerProfile: ['Risk-taker', 'Inquirer'], atl: ['Thinking', 'Self-management'],
                     pypConcepts: ['Function', 'Change'], subject: 'Innovation' },
             ];
@@ -4382,12 +4783,13 @@
                 data.books.push({
                     id: generateId(), ...b,
                     illustrator: '', publisher: '', publicationDate: '', isbn10: '',
-                    edition: '', language: 'English', pages: 0, format: 'hardcover',
+                    edition: '', pages: 0, format: 'hardcover',
                     price: 0, currency: 'USD', purchaseDate: '', supplier: '',
                     accessionNumber: 'ACC-' + Date.now() + i, barcode: 'BAR-' + Date.now() + i,
                     location: 'Main Library', shelf: 'FIC-' + (b.fiction === 'fiction' ? 'F' : 'NF') + i,
                     dewey: '', callNumber: '', cover: '', keywords: '', readingLevel: '',
                     series: '', seriesNumber: '', transdisciplinaryTheme: '', unitOfInquiry: '',
+                    categories: { en: '', fr: '', ar: '' },
                     condition: 'Good', status: 'available', createdAt: today(),
                 });
             });
@@ -4417,9 +4819,6 @@
         setupChipInput('atlInput', 'atl');
         setupChipInput('conceptInput', 'concept');
         renderChips('lp'); renderChips('atl'); renderChips('concept');
-
-        const catPresetSel = document.getElementById('addCategoryPreset');
-        if (catPresetSel) catPresetSel.addEventListener('change', applyCategoryPreset);
 
         // Auto-login if session exists
         const session = loadSession();
