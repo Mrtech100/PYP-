@@ -26,7 +26,7 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .app { max-width: 1400px; margin: 0 auto; background: #fff; border-radius: var(--radius);
   box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; min-height: 95vh; }
 
-/* ============ LOGIN ============ */
+/* LOGIN */
 .login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
   display: flex; align-items: center; justify-content: center; z-index: 100000; padding: 20px; overflow-y: auto; }
@@ -51,16 +51,11 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .login-card .login-error { background: #fee2e2; color: #991b1b; padding: 10px 14px; border-radius: 10px;
   font-size: .85rem; margin-bottom: 14px; display: none; }
 .login-card .login-error.show { display: block; }
-.login-card .emergency-reset { display: block; width: 100%; margin-top: 12px; padding: 8px;
-  background: transparent; border: 1.5px dashed var(--danger); color: var(--danger);
-  border-radius: 10px; font-size: .8rem; font-weight: 600; transition: .25s; }
-.login-card .emergency-reset:hover { background: #fee2e2; }
 
-/* ============ HEADER ============ */
+/* HEADER */
 .app-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff;
   padding: 18px 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
 .app-header h1 { font-weight: 700; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
-.app-header h1 i { font-size: 1.8rem; }
 .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .user-badge { background: rgba(255,255,255,.18); padding: 6px 16px; border-radius: 30px;
   font-size: .9rem; display: flex; align-items: center; gap: 8px; }
@@ -73,22 +68,21 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .cloud-status.online { background: rgba(34,197,94,.3); }
 .cloud-status.offline { background: rgba(239,68,68,.3); }
 
-/* ============ NAV ============ */
+/* NAV */
 .nav-tabs { display: flex; flex-wrap: wrap; gap: 4px; background: #f1f5f9; padding: 8px 16px;
   border-bottom: 1px solid var(--gray-light); }
 .nav-tabs button { background: transparent; border: none; padding: 8px 18px; border-radius: 30px;
   font-weight: 500; font-size: .9rem; color: #475569; transition: .25s; display: flex; align-items: center; gap: 8px; }
 .nav-tabs button:hover { background: #dbeafe; color: var(--primary); }
 .nav-tabs button.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,.3); }
-.nav-tabs button.hidden-tab { display: none !important; }
 
-/* ============ MAIN ============ */
+/* MAIN */
 .main-content { padding: 24px 28px; flex: 1; overflow-y: auto; background: #fafcff; }
 .tab-panel { display: none; animation: fadeIn .3s ease; }
 .tab-panel.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ============ CARDS ============ */
+/* CARDS */
 .card { background: #fff; border-radius: var(--radius); padding: 20px 24px;
   box-shadow: var(--shadow); border: 1px solid #edf2f7; margin-bottom: 20px; }
 .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 14px;
@@ -98,7 +92,7 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 @media (max-width: 900px) { .grid-2, .grid-4 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 600px) { .grid-2, .grid-4 { grid-template-columns: 1fr; } .main-content { padding: 16px; } }
 
-/* ============ FORMS ============ */
+/* FORMS */
 .form-group { margin-bottom: 14px; }
 .form-group label { display: block; font-weight: 500; font-size: .85rem; color: #475569; margin-bottom: 4px; }
 .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px;
@@ -109,7 +103,7 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
 
-/* ============ BUTTONS ============ */
+/* BUTTONS */
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none;
   border-radius: 30px; font-weight: 600; font-size: .9rem; transition: .25s; background: var(--gray-light); color: #1e293b; }
 .btn-primary { background: var(--primary); color: #fff; }
@@ -128,33 +122,34 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .btn-block { width: 100%; justify-content: center; }
 .btn:disabled { opacity: .6; cursor: not-allowed; }
 
-/* ============ TABLE ============ */
+/* TABLE */
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 table th { background: #f1f5f9; text-align: left; padding: 12px 14px; font-weight: 600; color: #334155;
   border-bottom: 2px solid #e2e8f0; }
 table td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
 table tr:hover td { background: #f8fafc; }
-html[dir="rtl"] table th, html[dir="rtl"] table td { text-align: right; }
 .badge { display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: .75rem; font-weight: 600; }
 .badge-green { background: #dcfce7; color: #166534; }
 .badge-red { background: #fee2e2; color: #991b1b; }
 .badge-yellow { background: #fef9c3; color: #854d0e; }
 .badge-blue { background: #dbeafe; color: #1e40af; }
 .badge-gray { background: #f1f5f9; color: #475569; }
+.badge-purple { background: #ede9fe; color: #5b21b6; }
+.badge-orange { background: #ffedd5; color: #9a3412; }
 
-/* ============ STATS ============ */
+/* STATS */
 .stat-card { background: #fff; padding: 18px 20px; border-radius: var(--radius);
   border: 1px solid #edf2f7; box-shadow: var(--shadow); text-align: center; }
 .stat-card .number { font-size: 2rem; font-weight: 700; color: var(--primary); }
 .stat-card .label { font-size: .85rem; color: #64748b; margin-top: 4px; }
 
-/* ============ SEARCH ============ */
+/* SEARCH */
 .search-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
 .search-bar input, .search-bar select { padding: 10px 16px; border: 1.5px solid var(--gray-light);
   border-radius: 30px; flex: 1; min-width: 160px; background: #fff; }
 
-/* ============ TOAST ============ */
+/* TOAST */
 .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 99999;
   display: flex; flex-direction: column; gap: 10px; }
 .toast { padding: 14px 22px; border-radius: var(--radius); color: #fff; font-weight: 500;
@@ -165,7 +160,7 @@ html[dir="rtl"] table th, html[dir="rtl"] table td { text-align: right; }
 .toast-warning { background: var(--warning); }
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ============ MISC ============ */
+/* MISC */
 .flex { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .flex-between { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
 .mt-12 { margin-top: 12px; } .mb-12 { margin-bottom: 12px; }
@@ -181,12 +176,22 @@ html[dir="rtl"] table th, html[dir="rtl"] table td { text-align: right; }
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 .request-card .info { flex: 1; min-width: 200px; }
 .request-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-html[dir="rtl"] .book-mini { border-left: none; border-right: 4px solid var(--primary); }
-html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(--warning); }
 
-/* ================================================================
-   MODALS
-   ================================================================ */
+/* LEGACY BANNER */
+.legacy-banner {
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  border: 2px solid #f59e0b; border-radius: var(--radius);
+  padding: 14px 18px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  color: #78350f;
+}
+.legacy-banner i { font-size: 1.4rem; color: #d97706; }
+.legacy-banner .text { flex: 1; min-width: 200px; }
+.legacy-banner strong { display: block; font-size: .95rem; margin-bottom: 2px; }
+.legacy-banner .sub { font-size: .82rem; opacity: .85; }
+.legacy-banner .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* MODALS */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(15, 23, 42, .55);
   backdrop-filter: blur(4px); z-index: 50000;
@@ -195,7 +200,6 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
 }
 .modal-overlay.active { display: flex; animation: modalFadeIn .2s ease; }
 @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-
 .modal {
   background: #fff; border-radius: 16px; box-shadow: var(--shadow-lg);
   width: 100%; max-width: 720px; overflow: hidden;
@@ -203,7 +207,6 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
   display: flex; flex-direction: column;
 }
 @keyframes modalPop { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
 .modal-header {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff; padding: 20px 26px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -221,7 +224,6 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
   font-size: 1.1rem; transition: .2s;
 }
 .modal-close:hover { background: rgba(255,255,255,.3); transform: rotate(90deg); }
-
 .modal-body { padding: 22px 26px; max-height: calc(100vh - 260px); overflow-y: auto; }
 .modal-footer {
   padding: 16px 26px; background: #f8fafc; border-top: 1px solid var(--gray-light);
@@ -242,21 +244,15 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
   width: 26px; height: 26px; border-radius: 8px; background: #dbeafe; color: var(--primary);
   display: flex; align-items: center; justify-content: center; font-size: .8rem;
 }
-
 .dup-warning {
   display: none; margin-top: 6px; padding: 10px 14px;
   border-radius: 10px; font-size: .82rem; line-height: 1.5;
   background: #fef9c3; border: 1.5px solid #fde047; color: #854d0e;
-  animation: dupPop .25s ease;
 }
 .dup-warning.show { display: block; }
 .dup-warning.danger { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
-.dup-warning i { margin-right: 6px; }
-.dup-warning strong { font-weight: 700; }
-.dup-warning .dup-meta { display: block; font-size: .75rem; opacity: .85; margin-top: 3px; }
-@keyframes dupPop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ============ LANGUAGE PICKER ============ */
+/* LANGUAGE PICKER */
 .language-picker-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 12px; margin-bottom: 6px;
@@ -292,7 +288,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
 </head>
 <body>
 
-<!-- ========================= LOGIN ========================= -->
+<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <div class="logo">
@@ -310,13 +306,12 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password"
              onkeydown="if(event.key==='Enter')handleLogin()" />
     </div>
-    <button class="btn-login" onclick="handleLogin()">
-      <i class="fas fa-sign-in-alt"></i> Sign In
-    </button>
+    <button class="btn-login" onclick="handleLogin()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+    <div id="loginHint" class="text-muted text-center mt-12" style="font-size:.8rem;"></div>
   </div>
 </div>
 
-<!-- ========================= MAIN APP ========================= -->
+<!-- MAIN APP -->
 <div class="app hidden" id="app">
   <header class="app-header">
     <h1><i class="fas fa-book-open"></i> PYP Library</h1>
@@ -349,6 +344,24 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
 
   <div class="main-content">
 
+    <!-- LEGACY BANNER (shown when old + new data both exist) -->
+    <div id="legacyBanner" class="legacy-banner hidden">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div class="text">
+        <strong>Old data detected</strong>
+        <span class="sub" id="legacyBannerText">You are seeing legacy + new data merged together.</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-sm btn-warning" onclick="openLegacyInspector()">
+          <i class="fas fa-eye"></i> Inspect
+        </button>
+        <button class="btn btn-sm btn-success" onclick="mergeLegacyToCloud()">
+          <i class="fas fa-code-branch"></i> Merge to Firestore
+        </button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
     <div class="tab-panel active" id="panel-dashboard">
       <h2 style="margin-bottom:16px;"><i class="fas fa-chart-pie" style="color:var(--primary);"></i> Dashboard</h2>
       <div class="grid-4">
@@ -369,17 +382,25 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- CATALOGUE -->
     <div class="tab-panel" id="panel-catalogue">
       <div class="flex-between mb-12">
         <h2><i class="fas fa-book" style="color:var(--primary);"></i> Book Catalogue</h2>
         <button class="btn btn-primary staff-only" onclick="openLanguagePicker()"><i class="fas fa-plus"></i> Add Book</button>
       </div>
       <div class="card">
+        <div class="flex-between mb-12">
+          <span class="text-muted" id="catalogueCount">—</span>
+          <label class="text-muted" style="font-size:.85rem; cursor:pointer;">
+            <input type="checkbox" id="showLegacySources" checked onchange="renderCatalogue()" style="vertical-align:middle; margin-right:4px;" />
+            Show source badges
+          </label>
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr>
               <th>Title</th><th>Author</th><th>Grade</th><th>Language</th>
-              <th>Copies</th><th>Available</th><th>Barcode</th><th>Actions</th>
+              <th>Copies</th><th>Available</th><th>Barcode</th><th>Source</th><th>Actions</th>
             </tr></thead>
             <tbody id="catalogueTableBody"></tbody>
           </table>
@@ -387,6 +408,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- SEARCH -->
     <div class="tab-panel" id="panel-search">
       <h2 style="margin-bottom:16px;"><i class="fas fa-search" style="color:var(--primary);"></i> Search</h2>
       <div class="card">
@@ -406,6 +428,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       <div id="searchResults" class="card"><p class="text-muted">Enter search terms above.</p></div>
     </div>
 
+    <!-- BORROW / RETURN -->
     <div class="tab-panel" id="panel-borrowing">
       <h2 style="margin-bottom:16px;"><i class="fas fa-exchange-alt" style="color:var(--primary);"></i> Borrow / Return</h2>
       <div class="grid-2">
@@ -430,13 +453,14 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
         <div class="card-title"><i class="fas fa-list"></i> Current Loans</div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Book</th><th>Borrower</th><th>Borrowed</th><th>Due</th><th>Status</th></tr></thead>
+            <thead><tr><th>Book</th><th>Borrower</th><th>Borrowed</th><th>Due</th><th>Status</th><th>Source</th></tr></thead>
             <tbody id="loansTableBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
+    <!-- MY BOOKS -->
     <div class="tab-panel" id="panel-mybooks">
       <h2 style="margin-bottom:16px;"><i class="fas fa-book-reader" style="color:var(--primary);"></i> My Books</h2>
       <div class="card">
@@ -450,6 +474,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- PYP FINDER -->
     <div class="tab-panel" id="panel-pyp">
       <h2 style="margin-bottom:16px;"><i class="fas fa-globe-asia" style="color:var(--secondary);"></i> PYP Book Finder</h2>
       <div class="card">
@@ -462,24 +487,12 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
           </select></div>
           <div class="form-group"><label>Unit / Theme</label><input type="text" id="pypUnit" placeholder="e.g. Sharing the Planet" /></div>
         </div>
-        <div class="form-row">
-          <div class="form-group"><label>Learner Profile</label><select id="pypLP">
-            <option value="">Any</option>
-            <option>Inquirer</option><option>Knowledgeable</option><option>Thinker</option>
-            <option>Communicator</option><option>Principled</option><option>Open-minded</option>
-            <option>Caring</option><option>Risk-taker</option><option>Balanced</option><option>Reflective</option>
-          </select></div>
-          <div class="form-group"><label>ATL Skill</label><select id="pypATL">
-            <option value="">Any</option>
-            <option>Thinking</option><option>Research</option><option>Communication</option>
-            <option>Social</option><option>Self-management</option>
-          </select></div>
-        </div>
         <button class="btn btn-primary btn-block" onclick="pypFind()"><i class="fas fa-search"></i> Find PYP Books</button>
       </div>
       <div id="pypResults" class="card"><p class="text-muted">Use the filters above to find PYP-aligned books.</p></div>
     </div>
 
+    <!-- REQUESTS -->
     <div class="tab-panel" id="panel-requests">
       <h2 style="margin-bottom:16px;"><i class="fas fa-clipboard-list" style="color:var(--warning);"></i> Borrow Requests</h2>
       <div class="card">
@@ -488,23 +501,22 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- STUDENTS -->
     <div class="tab-panel" id="panel-students">
       <h2 style="margin-bottom:16px;"><i class="fas fa-user-graduate" style="color:var(--success);"></i> Students</h2>
-
       <div class="card" style="background: #f8fafc; border: 2px dashed #93c5fd;">
         <div class="flex-between">
           <div>
-            <div class="card-title" style="margin-bottom:4px;"><i class="fas fa-file-excel" style="color:var(--success);"></i> Bulk Import Students</div>
-            <p class="text-muted">Upload an Excel (.xlsx) or CSV file with columns: <b>Name, ID, Grade, Password</b>.</p>
+            <div class="card-title" style="margin-bottom:4px;"><i class="fas fa-file-excel" style="color:var(--success);"></i> Bulk Import</div>
+            <p class="text-muted">Excel/CSV with columns: <b>Name, ID, Grade, Password</b>.</p>
           </div>
           <div class="flex">
-            <button class="btn btn-outline" onclick="downloadStudentTemplate()"><i class="fas fa-download"></i> Download Template</button>
+            <button class="btn btn-outline" onclick="downloadStudentTemplate()"><i class="fas fa-download"></i> Template</button>
             <input type="file" id="studentImportFile" accept=".xlsx, .xls, .csv" style="display:none;" onchange="importStudents(event)" />
             <button class="btn btn-success" onclick="document.getElementById('studentImportFile').click()"><i class="fas fa-upload"></i> Select File</button>
           </div>
         </div>
       </div>
-
       <div class="card">
         <div class="card-title"><i class="fas fa-user-plus"></i> Add Single Student</div>
         <div class="form-row">
@@ -525,6 +537,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- TEACHERS -->
     <div class="tab-panel" id="panel-teachers">
       <h2 style="margin-bottom:16px;"><i class="fas fa-chalkboard-teacher" style="color:var(--secondary);"></i> Teachers</h2>
       <div class="card">
@@ -539,6 +552,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- REPORTS -->
     <div class="tab-panel" id="panel-reports">
       <h2 style="margin-bottom:16px;"><i class="fas fa-chart-bar" style="color:var(--primary);"></i> Reports</h2>
       <div class="grid-4">
@@ -549,6 +563,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- PURCHASES -->
     <div class="tab-panel" id="panel-purchases">
       <h2 style="margin-bottom:16px;"><i class="fas fa-shopping-cart" style="color:var(--warning);"></i> Purchases</h2>
       <div class="card">
@@ -565,6 +580,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       <div class="card"><div class="card-title">History</div><div id="purchaseHistory"></div></div>
     </div>
 
+    <!-- EMAILS -->
     <div class="tab-panel" id="panel-emails">
       <h2 style="margin-bottom:16px;"><i class="fas fa-envelope-open-text" style="color:var(--secondary);"></i> Email Outbox</h2>
       <div class="card">
@@ -576,12 +592,13 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- USERS -->
     <div class="tab-panel" id="panel-users">
       <h2 style="margin-bottom:16px;"><i class="fas fa-users-cog" style="color:var(--primary);"></i> User Accounts</h2>
       <div class="card">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Name</th><th>User ID</th><th>Role</th><th>Actions</th></tr></thead>
+            <thead><tr><th>Name</th><th>User ID</th><th>Role</th><th>Source</th><th>Actions</th></tr></thead>
             <tbody id="userAccountsTableBody"></tbody>
           </table>
         </div>
@@ -605,6 +622,7 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
       </div>
     </div>
 
+    <!-- SETTINGS -->
     <div class="tab-panel" id="panel-settings">
       <h2 style="margin-bottom:16px;"><i class="fas fa-cog" style="color:var(--gray);"></i> Settings</h2>
       <div class="card">
@@ -616,13 +634,21 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
         <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> Save</button>
       </div>
       <div class="card">
-        <div class="card-title"><i class="fas fa-file-import"></i> Data</div>
+        <div class="card-title"><i class="fas fa-code-branch"></i> Legacy Data</div>
+        <p class="text-muted mb-12" id="legacySummary">Checking for legacy data…</p>
+        <div class="flex">
+          <button class="btn btn-warning" onclick="openLegacyInspector()"><i class="fas fa-eye"></i> Inspect Legacy Data</button>
+          <button class="btn btn-success" onclick="mergeLegacyToCloud()"><i class="fas fa-code-branch"></i> Merge Legacy → Firestore</button>
+          <button class="btn btn-danger" onclick="deleteLegacyData()"><i class="fas fa-trash"></i> Delete Legacy Data</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fas fa-file-import"></i> Backups</div>
         <div class="flex">
           <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Export JSON</button>
           <button class="btn btn-outline" onclick="document.getElementById('importFileInput').click()"><i class="fas fa-file-import"></i> Import JSON</button>
           <input type="file" id="importFileInput" accept=".json,application/json" style="display:none;" onchange="importData(event)" />
         </div>
-        <p class="text-muted mt-12">Import replaces the entire cloud library with the file's contents.</p>
       </div>
       <div class="card">
         <div class="card-title"><i class="fas fa-database"></i> Reset</div>
@@ -633,7 +659,32 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
   </div>
 </div>
 
-<!-- MODAL: LANGUAGE PICKER -->
+<!-- LEGACY INSPECTOR MODAL -->
+<div class="modal-overlay" id="legacyModal">
+  <div class="modal" style="max-width: 900px;" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="title">
+        <i class="fas fa-code-branch"></i>
+        <div>
+          <h2>Legacy Data Inspector</h2>
+          <p>Raw old-format data still stored on the parent document.</p>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeLegacyInspector()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body" id="legacyInspectorBody">
+      <p class="text-muted">Loading…</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeLegacyInspector()"><i class="fas fa-times"></i> Close</button>
+      <button class="btn btn-success" onclick="mergeLegacyToCloud()"><i class="fas fa-code-branch"></i> Merge into Firestore</button>
+    </div>
+  </div>
+</div>
+
+<!-- LANGUAGE PICKER MODAL -->
 <div class="modal-overlay" id="languageModal">
   <div class="modal" style="max-width: 650px;" role="dialog" aria-modal="true">
     <div class="modal-header">
@@ -644,25 +695,19 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
           <p>Select the primary language for this new book.</p>
         </div>
       </div>
-      <button class="modal-close" onclick="closeLanguagePicker()" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
+      <button class="modal-close" onclick="closeLanguagePicker()" aria-label="Close"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
       <div class="language-picker-grid" id="langPickerGrid"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeLanguagePicker()">
-        <i class="fas fa-times"></i> Cancel
-      </button>
-      <button class="btn btn-primary" onclick="proceedToBookForm()" id="langNextBtn" disabled>
-        Next <i class="fas fa-arrow-right"></i>
-      </button>
+      <button class="btn btn-ghost" onclick="closeLanguagePicker()"><i class="fas fa-times"></i> Cancel</button>
+      <button class="btn btn-primary" onclick="proceedToBookForm()" id="langNextBtn" disabled>Next <i class="fas fa-arrow-right"></i></button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: ADD / EDIT BOOK -->
+<!-- BOOK MODAL -->
 <div class="modal-overlay" id="bookModal">
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-header">
@@ -670,14 +715,11 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
         <i class="fas fa-book-medical" id="bookModalIcon"></i>
         <div>
           <h2 id="bookModalTitle">Add New Book</h2>
-          <p id="bookModalSubtitle">Fill in the details below. Fields marked * are required.</p>
+          <p id="bookModalSubtitle">Fields marked * are required.</p>
         </div>
       </div>
-      <button class="modal-close" onclick="closeBookModal()" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
+      <button class="modal-close" onclick="closeBookModal()" aria-label="Close"><i class="fas fa-times"></i></button>
     </div>
-
     <div class="modal-body">
       <div class="chosen-info-banner" id="chosenLangBanner">
         <span><i class="fas fa-language"></i> Language: <strong id="chosenLanguageLabel">—</strong></span>
@@ -685,83 +727,48 @@ html[dir="rtl"] .request-card { border-left: none; border-right: 4px solid var(-
           <i class="fas fa-arrow-left"></i> Change
         </button>
       </div>
-
       <div class="form-section">
         <div class="form-section-head"><i class="fas fa-info"></i> Core Details</div>
         <div class="form-group">
           <label>Title <span style="color:var(--danger);">*</span></label>
-          <input type="text" id="bookFormTitle" placeholder="e.g. The Very Hungry Caterpillar"
-                 oninput="checkDuplicateLive()" />
+          <input type="text" id="bookFormTitle" oninput="checkDuplicateLive()" />
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Author</label>
-            <input type="text" id="bookFormAuthor" placeholder="e.g. Eric Carle" oninput="checkDuplicateLive()" />
-          </div>
-          <div class="form-group">
-            <label>Grade / Age Level</label>
+          <div class="form-group"><label>Author</label><input type="text" id="bookFormAuthor" oninput="checkDuplicateLive()" /></div>
+          <div class="form-group"><label>Grade / Age Level</label>
             <select id="bookFormGrade">
-              <option value="">Any</option>
-              <option value="Preschool">Preschool</option>
-              <option value="K">K</option>
-              <option value="1">Grade 1</option>
-              <option value="2">Grade 2</option>
-              <option value="3">Grade 3</option>
-              <option value="4">Grade 4</option>
-              <option value="5">Grade 5</option>
+              <option value="">Any</option><option value="Preschool">Preschool</option><option value="K">K</option>
+              <option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option>
+              <option value="4">Grade 4</option><option value="5">Grade 5</option>
             </select>
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>ISBN-13</label>
-            <input type="text" id="bookFormIsbn13" placeholder="978-…" oninput="checkDuplicateLive()" />
-          </div>
-          <div class="form-group">
-            <label>ISBN-10</label>
-            <input type="text" id="bookFormIsbn10" placeholder="…" oninput="checkDuplicateLive()" />
-          </div>
+          <div class="form-group"><label>ISBN-13</label><input type="text" id="bookFormIsbn13" oninput="checkDuplicateLive()" /></div>
+          <div class="form-group"><label>ISBN-10</label><input type="text" id="bookFormIsbn10" oninput="checkDuplicateLive()" /></div>
         </div>
         <div class="dup-warning" id="dupWarning"></div>
       </div>
-
       <div class="form-section">
         <div class="form-section-head"><i class="fas fa-boxes-stacked"></i> Inventory</div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Number of Copies <span style="color:var(--danger);">*</span></label>
-            <input type="number" id="bookFormCopies" min="1" value="1" />
-          </div>
-          <div class="form-group">
-            <label>Barcode / Accession</label>
-            <input type="text" id="bookFormBarcode" placeholder="Leave blank to auto-generate" oninput="checkDuplicateLive()" />
-          </div>
+          <div class="form-group"><label>Copies <span style="color:var(--danger);">*</span></label>
+            <input type="number" id="bookFormCopies" min="1" value="1" /></div>
+          <div class="form-group"><label>Barcode</label>
+            <input type="text" id="bookFormBarcode" placeholder="Leave blank to auto-generate" oninput="checkDuplicateLive()" /></div>
         </div>
       </div>
-
       <div class="form-section">
-        <div class="form-section-head"><i class="fas fa-globe"></i> Extra Information</div>
+        <div class="form-section-head"><i class="fas fa-globe"></i> Extra</div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Publisher</label>
-            <input type="text" id="bookFormPublisher" placeholder="Publisher name" />
-          </div>
-          <div class="form-group">
-            <label>Publication Year</label>
-            <input type="text" id="bookFormYear" placeholder="e.g. 2020" />
-          </div>
+          <div class="form-group"><label>Publisher</label><input type="text" id="bookFormPublisher" /></div>
+          <div class="form-group"><label>Year</label><input type="text" id="bookFormYear" /></div>
         </div>
-        <div class="form-group">
-          <label>Summary / Notes</label>
-          <textarea id="bookFormSummary" placeholder="Brief description…"></textarea>
-        </div>
+        <div class="form-group"><label>Summary</label><textarea id="bookFormSummary"></textarea></div>
       </div>
     </div>
-
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeBookModal()">
-        <i class="fas fa-times"></i> Cancel
-      </button>
+      <button class="btn btn-ghost" onclick="closeBookModal()"><i class="fas fa-times"></i> Cancel</button>
       <button class="btn btn-primary" id="bookFormSaveBtn" onclick="saveBookForm()">
         <i class="fas fa-save"></i> <span id="bookFormSaveLabel">Save Book</span>
       </button>
@@ -777,7 +784,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, signInAnonymously, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, setDoc, deleteDoc,
+  getFirestore, doc, getDoc, setDoc, deleteDoc, deleteField,
   collection, onSnapshot, query, serverTimestamp,
   runTransaction, writeBatch, enableIndexedDbPersistence, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -800,7 +807,7 @@ let db, auth, unsubscribers = [];
 const FB = {
   ready: false,
 
-  /* ---------- single-doc helpers ---------- */
+  /* single-doc helpers */
   async upsertDoc(col, id, data) {
     await setDoc(doc(db, 'libraries', LIBRARY_ID, col, id),
       { ...data, _updatedAt: serverTimestamp() }, { merge: true });
@@ -813,7 +820,7 @@ const FB = {
       { settings, _updatedAt: serverTimestamp() }, { merge: true });
   },
 
-  /* ---------- atomic borrow / return ---------- */
+  /* atomic borrow / return */
   async borrowAtomic(bookId, studentId, borrowDate, dueDate) {
     const bookRef = doc(db, 'libraries', LIBRARY_ID, 'books', bookId);
     const loanRef = doc(collection(db, 'libraries', LIBRARY_ID, 'loans'));
@@ -830,7 +837,6 @@ const FB = {
     });
     return loanRef.id;
   },
-
   async returnAtomic(loanId, returnDate) {
     const loanRef = doc(db, 'libraries', LIBRARY_ID, 'loans', loanId);
     await runTransaction(db, async (tx) => {
@@ -841,35 +847,124 @@ const FB = {
       const bookRef = doc(db, 'libraries', LIBRARY_ID, 'books', loan.bookId);
       const bsnap = await tx.get(bookRef);
       if (bsnap.exists()) {
-        tx.update(bookRef, {
-          available: (bsnap.data().available || 0) + 1,
-          _updatedAt: serverTimestamp()
-        });
+        tx.update(bookRef, { available: (bsnap.data().available || 0) + 1, _updatedAt: serverTimestamp() });
       }
-      tx.update(loanRef, {
-        returned: true,
-        returnDate: returnDate || new Date().toISOString().slice(0,10),
-        _updatedAt: serverTimestamp()
-      });
+      tx.update(loanRef, { returned: true, returnDate: returnDate || new Date().toISOString().slice(0,10), _updatedAt: serverTimestamp() });
     });
   },
 
-  /* ---------- bulk import ---------- */
+  /* bulk */
   async bulkUpsertStudents(students) {
     const batch = writeBatch(db);
     for (const s of students) {
       batch.set(doc(db, 'libraries', LIBRARY_ID, 'students', s.id),
         { id: s.id, name: s.name, grade: s.grade, _updatedAt: serverTimestamp() }, { merge: true });
       batch.set(doc(db, 'libraries', LIBRARY_ID, 'users', s.id),
-        { id: s.id, username: s.id, password: s.password, name: s.name,
-          role: 'student', grade: s.grade, _updatedAt: serverTimestamp() }, { merge: true });
+        { id: s.id, username: s.id, password: s.password, name: s.name, role: 'student', grade: s.grade, _updatedAt: serverTimestamp() }, { merge: true });
     }
     await batch.commit();
   },
 
-  /* ---------- replace-all (admin restore) ---------- */
+  /* ---------- LEGACY: read parent-doc arrays ---------- */
+  async readLegacy() {
+    const rootSnap = await getDoc(doc(db, 'libraries', LIBRARY_ID));
+    if (!rootSnap.exists()) return null;
+    const data = rootSnap.data();
+    const out = {};
+    let any = false;
+    for (const col of COLLECTIONS) {
+      if (Array.isArray(data[col])) {
+        out[col] = data[col];
+        if (data[col].length > 0) any = true;
+      }
+    }
+    if (data.settings) out.settings = data.settings;
+    return any || data.settings ? out : null;
+  },
+
+  /* ---------- LEGACY: merge arrays into subcollections ---------- */
+  async mergeLegacyToSubcollections() {
+    const rootRef = doc(db, 'libraries', LIBRARY_ID);
+    const rootSnap = await getDoc(rootRef);
+    if (!rootSnap.exists()) throw new Error('No library root doc.');
+    const data = rootSnap.data();
+
+    const counts = {};
+    for (const col of COLLECTIONS) {
+      const arr = Array.isArray(data[col]) ? data[col] : [];
+      if (!arr.length) continue;
+
+      const existing = await getDocs(collection(db, 'libraries', LIBRARY_ID, col));
+      const existingIds = new Set(existing.docs.map(d => d.id));
+
+      let batch = writeBatch(db);
+      let n = 0, added = 0;
+      for (const item of arr) {
+        const id = item.id || (Date.now() + '-' + Math.random().toString(36).slice(2,8));
+        if (existingIds.has(id)) continue; // don't clobber newer data
+        batch.set(doc(db, 'libraries', LIBRARY_ID, col, id),
+          { ...item, id, _updatedAt: serverTimestamp() }, { merge: true });
+        added++;
+        if (++n >= 450) { await batch.commit(); batch = writeBatch(db); n = 0; }
+      }
+      if (n > 0) await batch.commit();
+      counts[col] = { total: arr.length, added };
+    }
+    return counts;
+  },
+
+  /* ---------- LEGACY: remove arrays from parent doc ---------- */
+  async deleteLegacyArrays() {
+    const rootRef = doc(db, 'libraries', LIBRARY_ID);
+    const rootSnap = await getDoc(rootRef);
+    if (!rootSnap.exists()) return;
+    const data = rootSnap.data();
+    const cleanup = {};
+    let n = 0;
+    for (const col of COLLECTIONS) {
+      if (Array.isArray(data[col])) { cleanup[col] = deleteField(); n++; }
+    }
+    if (n > 0) {
+      await setDoc(rootRef, cleanup, { merge: true });
+    }
+    return n;
+  },
+
+  /* pull users for login fallback */
+  async pullUsers() {
+    const snap = await getDocs(collection(db, 'libraries', LIBRARY_ID, 'users'));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  },
+
+  /* seed defaults only if truly empty */
+  async seedIfEmpty(defaultData) {
+    // Check both subcollection AND legacy arrays
+    const usersSnap = await getDocs(collection(db, 'libraries', LIBRARY_ID, 'users'));
+    const rootSnap = await getDoc(doc(db, 'libraries', LIBRARY_ID));
+    const legacyUsers = rootSnap.exists() && Array.isArray(rootSnap.data().users) ? rootSnap.data().users : [];
+
+    if (!usersSnap.empty || legacyUsers.length > 0) return false;
+
+    // Seed the subcollections
+    for (const col of COLLECTIONS) {
+      const arr = Array.isArray(defaultData[col]) ? defaultData[col] : [];
+      if (!arr.length) continue;
+      let batch = writeBatch(db);
+      let n = 0;
+      for (const item of arr) {
+        const id = item.id || (Date.now() + '-' + Math.random().toString(36).slice(2,8));
+        batch.set(doc(db, 'libraries', LIBRARY_ID, col, id),
+          { ...item, id, _updatedAt: serverTimestamp() }, { merge: true });
+        if (++n >= 450) { await batch.commit(); batch = writeBatch(db); n = 0; }
+      }
+      if (n > 0) await batch.commit();
+    }
+    if (defaultData.settings) await this.updateSettings(defaultData.settings);
+    return true;
+  },
+
+  /* admin replace-all */
   async replaceAll(data) {
-    // Wipe every collection first
     for (const col of COLLECTIONS) {
       const snap = await getDocs(collection(db, 'libraries', LIBRARY_ID, col));
       let batch = writeBatch(db);
@@ -880,7 +975,6 @@ const FB = {
       });
       if (n > 0) await batch.commit();
     }
-    // Re-write from provided data
     for (const col of COLLECTIONS) {
       const arr = Array.isArray(data[col]) ? data[col] : [];
       let batch = writeBatch(db);
@@ -894,20 +988,8 @@ const FB = {
       if (n > 0) await batch.commit();
     }
     if (data.settings) await this.updateSettings(data.settings);
-  },
-
-  /* ---------- one-shot pull for login ---------- */
-  async pullUsers() {
-    const snap = await getDocs(collection(db, 'libraries', LIBRARY_ID, 'users'));
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  },
-
-  /* ---------- seed if empty ---------- */
-  async seedIfEmpty(defaultData) {
-    const usersSnap = await getDocs(collection(db, 'libraries', LIBRARY_ID, 'users'));
-    if (!usersSnap.empty) return false;
-    await this.replaceAll(defaultData);
-    return true;
+    // Also clear legacy arrays
+    await this.deleteLegacyArrays();
   }
 };
 window.FB = FB;
@@ -933,7 +1015,7 @@ try {
     if (!user) {
       try { await signInAnonymously(auth); }
       catch (e) {
-        console.warn('[FB] anonymous sign-in failed — cloud sync disabled.', e.message);
+        console.warn('[FB] anonymous sign-in failed.', e.message);
         setCloudStatus('Local only', 'offline');
       }
       return;
@@ -942,13 +1024,13 @@ try {
     FB.ready = true;
     setCloudStatus('Cloud connected', 'online');
 
-    // Seed if this is a fresh project
+    // Seed defaults ONLY if both subcollections and legacy arrays are empty
     try {
       const seeded = await FB.seedIfEmpty(window.buildDefaultData ? window.buildDefaultData() : {});
       if (seeded) console.info('[FB] Seeded default library.');
     } catch (e) { console.warn('[FB] seed failed', e); }
 
-    // Subscribe to every collection
+    // Snapshot each collection → merged into window.appData by the app
     COLLECTIONS.forEach(col => {
       const q = query(collection(db, 'libraries', LIBRARY_ID, col));
       const unsub = onSnapshot(q, (snap) => {
@@ -958,23 +1040,23 @@ try {
           const tb = b._updatedAt?.seconds ?? 0;
           return ta - tb;
         });
-        window.appData[col] = arr;
-        localStorage.setItem('pyp_library_data_v1', JSON.stringify(window.appData));
-        if (typeof window.renderAll === 'function' && window.currentUser) window.renderAll();
-        if (typeof window.refreshLoginHint === 'function' && !window.currentUser) window.refreshLoginHint();
+        if (typeof window.onCloudCollectionUpdate === 'function') {
+          window.onCloudCollectionUpdate(col, arr);
+        }
       }, (err) => console.warn(`[FB] snapshot ${col}`, err));
       unsubscribers.push(unsub);
     });
 
-    // Root settings listener
+    // Root doc snapshot → legacy arrays + settings
     const rootRef = doc(db, 'libraries', LIBRARY_ID);
     const sunsub = onSnapshot(rootRef, (snap) => {
-      if (!snap.exists()) return;
-      const data = snap.data();
-      if (data.settings) {
-        window.appData.settings = data.settings;
-        localStorage.setItem('pyp_library_data_v1', JSON.stringify(window.appData));
-        if (typeof window.renderSettings === 'function' && window.currentUser) window.renderSettings();
+      const data = snap.exists() ? snap.data() : {};
+      const legacy = {};
+      for (const col of COLLECTIONS) {
+        if (Array.isArray(data[col]) && data[col].length) legacy[col] = data[col];
+      }
+      if (typeof window.onCloudLegacyUpdate === 'function') {
+        window.onCloudLegacyUpdate(legacy, data.settings || null);
       }
     });
     unsubscribers.push(sunsub);
@@ -985,18 +1067,24 @@ try {
 }
 </script>
 
-<!-- ========================= MAIN APP SCRIPT ========================= -->
+<!-- ========================= APP SCRIPT ========================= -->
 <script>
 const STORAGE_KEY = 'pyp_library_data_v1';
 const SESSION_KEY = 'pyp_library_session';
 
+// Cloud subcollections (new) and legacy arrays (old) are kept separately,
+// then merged in a single "view" that every render uses.
+let cloudData = { books: [], users: [], students: [], teachers: [], loans: [], borrowRequests: [], purchases: [], emails: [], notifications: [], settings: {} };
+let legacyData = { books: [], users: [], students: [], teachers: [], loans: [], borrowRequests: [], purchases: [], emails: [], notifications: [], settings: {} };
+
+// The merged view that all renders read from. Each item gets a `__source` field.
 let appData = { books: [], users: [], students: [], teachers: [], loans: [], borrowRequests: [], purchases: [], emails: [], notifications: [], settings: {} };
+
 let currentUser = null;
 let editingBookId = null;
 let selectedNewBookLang = null;
 
-window.appData = appData;
-window.currentUser = currentUser;
+window.currentUser = null;
 
 const LANGUAGES = [
   { code: 'en', flag: '🇬🇧', native: 'English', en: 'English' },
@@ -1027,24 +1115,175 @@ function buildDefaultData() {
 }
 window.buildDefaultData = buildDefaultData;
 
-// Cold-boot cache: lets the login screen show while Firestore connects
-function loadCache() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) { appData = buildDefaultData(); window.appData = appData; return; }
-  try {
-    const parsed = JSON.parse(raw);
-    if (parsed && Array.isArray(parsed.books) && Array.isArray(parsed.users) && parsed.users.length > 0) {
-      appData = parsed;
-      window.appData = appData;
-      return;
+/* ============================================================
+   MERGE ENGINE — cloud + legacy → appData
+   ============================================================ */
+function mergeData() {
+  const merged = {};
+  const collections = ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications'];
+
+  for (const col of collections) {
+    const cloudArr = Array.isArray(cloudData[col]) ? cloudData[col] : [];
+    const legacyArr = Array.isArray(legacyData[col]) ? legacyData[col] : [];
+
+    // Build a map keyed by id
+    const byId = new Map();
+
+    // Cloud wins on id collision (it's the current source of truth)
+    for (const item of cloudArr) {
+      const id = item.id || `__cloud_${Math.random().toString(36).slice(2,8)}`;
+      byId.set(id, { ...item, __source: 'cloud' });
     }
-  } catch (e) { console.warn('bad cached data', e); }
-  appData = buildDefaultData();
+
+    // Legacy items get added only if not already present in cloud
+    for (const item of legacyArr) {
+      const id = item.id || `__legacy_${Math.random().toString(36).slice(2,8)}`;
+      if (!byId.has(id)) {
+        byId.set(id, { ...item, __source: 'legacy' });
+      }
+    }
+
+    merged[col] = Array.from(byId.values());
+  }
+
+  // Settings: cloud wins if present, else legacy
+  merged.settings = Object.keys(cloudData.settings || {}).length
+    ? cloudData.settings
+    : (legacyData.settings || {});
+
+  appData = merged;
   window.appData = appData;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
 }
 
-function cacheLocally() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+/* Called by the Firebase module when a subcollection changes */
+function onCloudCollectionUpdate(col, arr) {
+  cloudData[col] = arr;
+  mergeData();
+  updateLegacyBanner();
+  if (currentUser) renderAll();
+}
+window.onCloudCollectionUpdate = onCloudCollectionUpdate;
+
+/* Called by the Firebase module when the root doc (legacy arrays + settings) changes */
+function onCloudLegacyUpdate(legacyArrays, settings) {
+  legacyData = { ...legacyData, ...legacyArrays };
+  // Clear out collections that no longer exist in legacy doc
+  for (const col of ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications']) {
+    if (!legacyArrays[col]) legacyData[col] = [];
+  }
+  if (settings) legacyData.settings = settings;
+  mergeData();
+  updateLegacyBanner();
+  if (currentUser) renderAll();
+  // Also refresh the settings tab summary
+  updateLegacySummary();
+}
+window.onCloudLegacyUpdate = onCloudLegacyUpdate;
+
+/* ============================================================
+   LEGACY UI
+   ============================================================ */
+function legacyCounts() {
+  const counts = {};
+  let total = 0;
+  for (const col of ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications']) {
+    const n = (legacyData[col] || []).length;
+    if (n > 0) { counts[col] = n; total += n; }
+  }
+  return { counts, total };
+}
+
+function updateLegacyBanner() {
+  const banner = document.getElementById('legacyBanner');
+  const textEl = document.getElementById('legacyBannerText');
+  if (!banner) return;
+
+  const { counts, total } = legacyCounts();
+  if (total === 0) {
+    banner.classList.add('hidden');
+    return;
+  }
+
+  const summary = Object.entries(counts)
+    .map(([k, v]) => `${v} ${k}`)
+    .join(', ');
+  textEl.textContent = `Merged view includes ${total} legacy item(s): ${summary}.`;
+  banner.classList.remove('hidden');
+}
+
+function updateLegacySummary() {
+  const el = document.getElementById('legacySummary');
+  if (!el) return;
+  const { counts, total } = legacyCounts();
+  if (total === 0) {
+    el.innerHTML = '<span class="badge badge-green">✓ No legacy data detected</span>';
+    return;
+  }
+  const rows = Object.entries(counts).map(([k, v]) =>
+    `<div class="book-mini"><span class="title">${esc(k)}</span><span class="meta">${v} item(s)</span></div>`
+  ).join('');
+  el.innerHTML = `<div class="badge badge-orange mb-12">⚠️ ${total} legacy item(s) currently merged into the app</div>${rows}`;
+}
+
+async function openLegacyInspector() {
+  const modal = document.getElementById('legacyModal');
+  const body = document.getElementById('legacyInspectorBody');
+  body.innerHTML = '<p class="text-muted">Loading legacy data…</p>';
+  modal.classList.add('active');
+  try {
+    const fresh = await window.FB.readLegacy();
+    if (!fresh) {
+      body.innerHTML = '<p class="text-muted">No legacy data on the parent document.</p>';
+      return;
+    }
+    let html = '';
+    for (const col of ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications']) {
+      const arr = fresh[col] || [];
+      if (!arr.length) continue;
+      html += `<div class="form-section"><div class="form-section-head"><i class="fas fa-database"></i> ${esc(col)} (${arr.length})</div>`;
+      html += '<div class="table-wrap"><table><thead><tr><th>ID</th><th>Preview</th></tr></thead><tbody>';
+      for (const item of arr.slice(0, 50)) {
+        const preview = item.title || item.name || item.bookTitle || JSON.stringify(item).slice(0, 80);
+        html += `<tr><td>${esc(item.id || '—')}</td><td>${esc(preview)}</td></tr>`;
+      }
+      if (arr.length > 50) html += `<tr><td colspan="2" class="text-muted">…and ${arr.length - 50} more</td></tr>`;
+      html += '</tbody></table></div></div>';
+    }
+    body.innerHTML = html || '<p class="text-muted">No legacy data.</p>';
+  } catch (e) {
+    body.innerHTML = `<p class="text-muted">Error: ${esc(e.message)}</p>`;
+  }
+}
+
+function closeLegacyInspector() {
+  document.getElementById('legacyModal').classList.remove('active');
+}
+
+async function mergeLegacyToCloud() {
+  if (!confirm('Copy all legacy data into Firestore subcollections?\n\nExisting items with the same ID will NOT be overwritten.')) return;
+  try {
+    const counts = await window.FB.mergeLegacyToSubcollections();
+    const summary = Object.entries(counts).map(([k, v]) => `${k}: ${v.added}/${v.total}`).join(', ');
+    showToast(`✅ Merged. ${summary}`, 'success');
+    // Ask to clean up the parent doc
+    if (confirm('Legacy data copied. Remove the old arrays from the parent document now?\n\n(Recommended — the app will keep working from subcollections only.)')) {
+      const n = await window.FB.deleteLegacyArrays();
+      showToast(`Removed ${n} legacy array field(s).`, 'info');
+    }
+  } catch (e) {
+    showToast('Merge failed: ' + e.message, 'error');
+  }
+}
+
+async function deleteLegacyData() {
+  if (!confirm('Permanently remove the legacy arrays from the parent document?\n\nThis does NOT delete the subcollection data. Only do this after you\'ve merged.')) return;
+  try {
+    const n = await window.FB.deleteLegacyArrays();
+    showToast(`Removed ${n} legacy array field(s).`, 'info');
+  } catch (e) {
+    showToast('Delete failed: ' + e.message, 'error');
+  }
 }
 
 /* ============================================================
@@ -1061,19 +1300,16 @@ async function handleLogin() {
     return;
   }
 
-  // Ensure we have the freshest users from the cloud
+  // Ensure we have the freshest users
   if (window.FB && window.FB.ready) {
     try {
       const remoteUsers = await window.FB.pullUsers();
       if (remoteUsers.length) {
-        appData.users = remoteUsers;
-        window.appData = appData;
-        cacheLocally();
+        cloudData.users = remoteUsers;
+        mergeData();
       }
     } catch (e) { console.warn('[login] cloud pull failed', e); }
   }
-
-  if (!appData.users || appData.users.length === 0) loadCache();
 
   const user = appData.users.find(u =>
     (u.username === username || u.id === username) && u.password === password);
@@ -1097,20 +1333,10 @@ async function handleLogin() {
   showToast(`Welcome, ${user.name}!`, 'success');
 }
 
-function refreshLoginHint() {
-  // Re-point appData users at fresh cloud data so login works even if the tab
-  // was open before another device created the admin account.
-  if (window.appData && Array.isArray(window.appData.users)) {
-    appData.users = window.appData.users;
-  }
-}
-window.refreshLoginHint = refreshLoginHint;
-
 function applyRoleVisibility(user) {
   const role = user.role;
   document.getElementById('currentUserDisplay').textContent = user.name || user.username;
   document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
-
   document.querySelectorAll('.admin-only').forEach(el => el.classList.toggle('hidden', role !== 'admin'));
   document.querySelectorAll('.staff-only').forEach(el => el.classList.toggle('hidden', !['admin','librarian'].includes(role)));
   document.querySelectorAll('.student-only').forEach(el => el.classList.toggle('hidden', role !== 'student'));
@@ -1142,7 +1368,15 @@ function renderAll() {
   renderDashboard(); renderCatalogue(); renderLoans(); renderMyBooks();
   renderRequests(); renderStudents(); renderTeachers(); renderReports();
   renderPurchases(); renderEmails(); renderUsers(); renderSettings();
+  updateLegacyBanner(); updateLegacySummary();
   applyRoleVisibility(currentUser);
+}
+
+function sourceBadge(src) {
+  if (!document.getElementById('showLegacySources')?.checked) return '';
+  return src === 'legacy'
+    ? '<span class="badge badge-orange">legacy</span>'
+    : '<span class="badge badge-blue">cloud</span>';
 }
 
 function renderDashboard() {
@@ -1158,7 +1392,7 @@ function renderDashboard() {
 
   const od = appData.loans.filter(l => !l.returned && l.dueDate && new Date(l.dueDate) < new Date());
   document.getElementById('overdueList').innerHTML = od.length
-    ? od.map(l => `<div class="book-mini"><span class="title">${esc(l.bookTitle || l.bookId)}</span><span class="meta">Due ${fmtDate(l.dueDate)}</span></div>`).join('')
+    ? od.map(l => `<div class="book-mini"><span class="title">${esc(l.bookTitle || l.bookId)}</span><span class="meta">Due ${fmtDate(l.dueDate)} ${sourceBadge(l.__source)}</span></div>`).join('')
     : '<p class="text-muted">🎉 No overdue books.</p>';
 
   const counts = {};
@@ -1174,9 +1408,15 @@ function renderDashboard() {
 
 function renderCatalogue() {
   const tbody = document.getElementById('catalogueTableBody');
+  const countEl = document.getElementById('catalogueCount');
   if (!appData.books.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="text-muted text-center">No books in catalogue.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="text-muted text-center">No books in catalogue.</td></tr>';
+    if (countEl) countEl.textContent = '0 books';
     return;
+  }
+  if (countEl) {
+    const legacyN = appData.books.filter(b => b.__source === 'legacy').length;
+    countEl.textContent = `${appData.books.length} book(s)${legacyN ? ` — ${legacyN} from legacy` : ''}`;
   }
   tbody.innerHTML = appData.books.map(b => `
     <tr>
@@ -1187,6 +1427,7 @@ function renderCatalogue() {
       <td>${b.copies || 0}</td>
       <td>${b.available ?? b.copies ?? 0}</td>
       <td>${esc(b.barcode || b.id || '—')}</td>
+      <td>${sourceBadge(b.__source)}</td>
       <td>
         <button class="btn btn-sm btn-primary staff-only" onclick="openEditBook('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
         <button class="btn btn-sm btn-danger staff-only" onclick="deleteBook('${b.id}')" title="Delete"><i class="fas fa-trash"></i></button>
@@ -1199,7 +1440,7 @@ function renderLoans() {
   const tbody = document.getElementById('loansTableBody');
   const active = appData.loans.filter(l => !l.returned);
   if (!active.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="text-muted text-center">No active loans.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-muted text-center">No active loans.</td></tr>';
     return;
   }
   tbody.innerHTML = active.map(l => {
@@ -1210,6 +1451,7 @@ function renderLoans() {
       <td>${fmtDate(l.borrowDate)}</td>
       <td>${fmtDate(l.dueDate)}</td>
       <td>${overdue ? '<span class="badge badge-red">Overdue</span>' : '<span class="badge badge-green">On time</span>'}</td>
+      <td>${sourceBadge(l.__source)}</td>
     </tr>`;
   }).join('');
 }
@@ -1237,14 +1479,11 @@ function renderMyBooks() {
 function renderRequests() {
   const list = document.getElementById('pendingRequestsList');
   const pending = appData.borrowRequests.filter(r => r.status === 'pending');
-  if (!pending.length) {
-    list.innerHTML = '<p class="text-muted">No pending requests.</p>';
-    return;
-  }
+  if (!pending.length) { list.innerHTML = '<p class="text-muted">No pending requests.</p>'; return; }
   list.innerHTML = pending.map(r => `
     <div class="request-card">
       <div class="info">
-        <div class="title">${esc(r.bookTitle || r.bookId)}</div>
+        <div class="title">${esc(r.bookTitle || r.bookId)} ${sourceBadge(r.__source)}</div>
         <div class="meta">Requested by ${esc(r.studentId)} on ${fmtDate(r.date)}</div>
       </div>
       <div class="actions">
@@ -1260,7 +1499,7 @@ function renderStudents() {
   list.innerHTML = appData.students.map(s => `
     <div class="book-mini">
       <span class="title">${esc(s.name)}</span>
-      <span class="meta">${esc(s.id)} • Grade ${esc(s.grade || '—')}</span>
+      <span class="meta">${esc(s.id)} • Grade ${esc(s.grade || '—')} ${sourceBadge(s.__source)}</span>
     </div>`).join('');
 }
 
@@ -1270,7 +1509,7 @@ function renderTeachers() {
   list.innerHTML = appData.teachers.map(t => `
     <div class="book-mini">
       <span class="title">${esc(t.name)}</span>
-      <span class="meta">Grade ${esc(t.grade || '—')}</span>
+      <span class="meta">Grade ${esc(t.grade || '—')} ${sourceBadge(t.__source)}</span>
     </div>`).join('');
 }
 
@@ -1287,7 +1526,7 @@ function renderPurchases() {
   list.innerHTML = appData.purchases.map(p => `
     <div class="book-mini">
       <span class="title">${esc(p.title)}</span>
-      <span class="meta">${p.qty} × $${p.price} — ${esc(p.supplier || '—')}</span>
+      <span class="meta">${p.qty} × $${p.price} — ${esc(p.supplier || '—')} ${sourceBadge(p.__source)}</span>
     </div>`).join('');
 }
 
@@ -1297,7 +1536,7 @@ function renderEmails() {
   list.innerHTML = appData.emails.slice(-30).reverse().map(e => `
     <div class="book-mini">
       <span class="title">${esc(e.subject)}</span>
-      <span class="meta">To: ${esc(e.to)} • ${fmtDate(e.date)}</span>
+      <span class="meta">To: ${esc(e.to)} • ${fmtDate(e.date)} ${sourceBadge(e.__source)}</span>
     </div>`).join('');
 }
 
@@ -1308,6 +1547,7 @@ function renderUsers() {
       <td>${esc(u.name || '—')}</td>
       <td>${esc(u.id || u.username)}</td>
       <td><span class="badge badge-blue">${esc(u.role)}</span></td>
+      <td>${sourceBadge(u.__source)}</td>
       <td>
         ${u.username !== 'admin' ? `<button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')"><i class="fas fa-trash"></i></button>` : '<span class="text-muted">—</span>'}
       </td>
@@ -1321,7 +1561,7 @@ function renderSettings() {
 }
 
 /* ============================================================
-   LANGUAGE PICKER
+   LANGUAGE PICKER + BOOK MODAL
    ============================================================ */
 function openLanguagePicker() {
   selectedNewBookLang = null;
@@ -1350,22 +1590,15 @@ function proceedToBookForm() {
 }
 function backToLanguageStep() { closeBookModal(); openLanguagePicker(); }
 
-/* ============================================================
-   DUPLICATE DETECTION
-   ============================================================ */
-function normalizeSmart(s) {
-  return String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-}
+function normalizeSmart(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
 function findDuplicateBook(data) {
   const nTitle   = normalizeSmart(data.title);
   const nAuthor  = normalizeSmart(data.author);
   const nIsbn    = normalizeSmart(data.isbn);
   const nBarcode = normalizeSmart(data.barcode);
   const excludeId = data.excludeId || null;
-
   if (nBarcode) {
-    const hit = appData.books.find(x =>
-      x.id !== excludeId &&
+    const hit = appData.books.find(x => x.id !== excludeId &&
       (normalizeSmart(x.barcode) === nBarcode || normalizeSmart(x.id) === nBarcode));
     if (hit) return { book: hit, matchType: 'barcode' };
   }
@@ -1396,29 +1629,18 @@ function checkDuplicateLive() {
     if (!warn) return;
     if (editingBookId) { warn.classList.remove('show','danger'); warn.innerHTML=''; return; }
     const dup = findDuplicateBook({
-      title:   document.getElementById('bookFormTitle').value,
-      author:  document.getElementById('bookFormAuthor').value,
-      isbn:    document.getElementById('bookFormIsbn13').value || document.getElementById('bookFormIsbn10').value,
+      title: document.getElementById('bookFormTitle').value,
+      author: document.getElementById('bookFormAuthor').value,
+      isbn: document.getElementById('bookFormIsbn13').value || document.getElementById('bookFormIsbn10').value,
       barcode: document.getElementById('bookFormBarcode').value
     });
     if (!dup) { warn.classList.remove('show','danger'); warn.innerHTML=''; return; }
-    const reasonText =
-      dup.matchType === 'barcode' ? `The barcode "${esc(dup.book.barcode || dup.book.id)}" is already used by:` :
-      dup.matchType === 'isbn'    ? `The ISBN "${esc(dup.book.isbn)}" is already used by:` :
-                                    `A book with a very similar title/author already exists:`;
-    warn.innerHTML =
-      `<i class="fas fa-exclamation-triangle"></i>
-       <strong>Possible duplicate.</strong> ${reasonText}
-       <span class="dup-meta"><b>${esc(dup.book.title)}</b> — ${esc(dup.book.author || 'Unknown author')}
-         · ID: ${esc(dup.book.id)} · Available: ${dup.book.available ?? dup.book.copies} / ${dup.book.copies}</span>
-       <span class="dup-meta">You can still save if this is a different edition or a separate copy.</span>`;
+    warn.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <strong>Possible duplicate.</strong>
+      <span class="dup-meta"><b>${esc(dup.book.title)}</b> — ${esc(dup.book.author || 'Unknown')} (${esc(dup.book.id)})</span>`;
     warn.classList.add('show','danger');
   }, 400);
 }
 
-/* ============================================================
-   BOOK MODAL
-   ============================================================ */
 function openBookModal(id) {
   editingBookId = id || null;
   const modal  = document.getElementById('bookModal');
@@ -1437,12 +1659,15 @@ function openBookModal(id) {
   if (editingBookId) {
     const b = appData.books.find(x => x.id === editingBookId);
     if (!b) { showToast('Book not found.', 'error'); return; }
+    if (b.__source === 'legacy') {
+      showToast('This book is legacy-only. Merge first (Settings → Legacy Data) to edit it.', 'warning');
+      return;
+    }
     title.textContent = 'Edit Book';
     sub.textContent   = `Editing: ${b.title}`;
     icon.className    = 'fas fa-edit';
     label.textContent = 'Save Changes';
     banner.style.display = 'none';
-
     document.getElementById('bookFormTitle').value     = b.title || '';
     document.getElementById('bookFormAuthor').value    = b.author || '';
     document.getElementById('bookFormIsbn13').value    = b.isbn || '';
@@ -1454,7 +1679,7 @@ function openBookModal(id) {
     document.getElementById('bookFormSummary').value   = b.summary || '';
   } else {
     title.textContent = 'Add New Book';
-    sub.textContent   = 'Fill in the details below. Fields marked * are required.';
+    sub.textContent   = 'Fields marked * are required.';
     icon.className    = 'fas fa-book-medical';
     label.textContent = 'Save Book';
     banner.style.display = 'flex';
@@ -1481,26 +1706,12 @@ async function saveBookForm() {
   const year    = document.getElementById('bookFormYear').value.trim();
   const summary = document.getElementById('bookFormSummary').value.trim();
 
-  if (!title) {
-    showToast('Title is required.', 'error');
-    document.getElementById('bookFormTitle').focus();
-    return;
-  }
+  if (!title) { showToast('Title is required.', 'error'); document.getElementById('bookFormTitle').focus(); return; }
 
   if (!editingBookId) {
     const dup = findDuplicateBook({ title, author, isbn, barcode });
     if (dup) {
-      const reasonText =
-        dup.matchType === 'barcode' ? `the exact same barcode (${dup.book.barcode || dup.book.id})` :
-        dup.matchType === 'isbn'    ? `the exact same ISBN (${dup.book.isbn})` :
-                                      `a highly similar title and author`;
-      if (!confirm(
-        `⚠️ DUPLICATE WARNING\n\n` +
-        `A book matching ${reasonText} already exists:\n\n  • ${dup.book.title}\n  • by ${dup.book.author || '—'}\n  • Barcode: ${dup.book.barcode || dup.book.id}\n\n` +
-        `Are you sure you want to add this as a separate new entry?`)) {
-        showToast('Duplicate blocked. Edit the existing book to add copies.', 'info');
-        return;
-      }
+      if (!confirm(`⚠️ Duplicate warning: "${dup.book.title}" (${dup.book.id}) already exists. Add anyway?`)) return;
     }
   }
 
@@ -1522,34 +1733,31 @@ async function saveBookForm() {
       const newId = 'BK-' + Date.now().toString().slice(-6);
       await window.FB.upsertDoc('books', newId, {
         title, author, grade, copies, available: copies,
-        isbn: isbn || '',
-        barcode: barcode || newId,
+        isbn: isbn || '', barcode: barcode || newId,
         publisher, year, summary,
         language: selectedNewBookLang || 'en'
       });
-      showToast(`✅ "${title}" added (${copies} ${copies === 1 ? 'copy' : 'copies'}).`, 'success');
+      showToast(`✅ "${title}" added.`, 'success');
     }
     closeBookModal();
-    // onSnapshot will refresh the UI
   } catch (e) {
-    console.error(e);
-    showToast('Failed to save: ' + e.message, 'error');
-  } finally {
-    saveBtn.disabled = false;
-  }
+    showToast('Save failed: ' + e.message, 'error');
+  } finally { saveBtn.disabled = false; }
 }
-
 function openEditBook(id) { openBookModal(id); }
 
 /* ============================================================
-   OTHER MUTATIONS (all async → Firestore)
+   OTHER MUTATIONS
    ============================================================ */
 async function deleteBook(id) {
+  const b = appData.books.find(x => x.id === id);
+  if (b && b.__source === 'legacy') {
+    showToast('Legacy-only book. Merge first to delete.', 'warning');
+    return;
+  }
   if (!confirm('Delete this book?')) return;
-  try {
-    await window.FB.deleteDocById('books', id);
-    showToast('Book deleted.', 'info');
-  } catch (e) { showToast('Delete failed: ' + e.message, 'error'); }
+  try { await window.FB.deleteDocById('books', id); showToast('Deleted.', 'info'); }
+  catch (e) { showToast(e.message, 'error'); }
 }
 
 async function addStudent() {
@@ -1557,20 +1765,19 @@ async function addStudent() {
   const grade    = document.getElementById('studentGrade').value;
   const id       = document.getElementById('studentId').value.trim();
   const password = document.getElementById('studentPassword').value.trim();
-  if (!name || !id || !password) { showToast('Name, ID, password required.', 'error'); return; }
-  if (appData.users.some(u => u.id === id || u.username === id)) { showToast('ID already exists.', 'error'); return; }
+  if (!name || !id || !password) { showToast('All fields required.', 'error'); return; }
+  if (appData.users.some(u => u.id === id || u.username === id)) { showToast('ID exists.', 'error'); return; }
   try {
     await window.FB.upsertDoc('students', id, { id, name, grade });
     await window.FB.upsertDoc('users', id, { id, username: id, password, name, role: 'student', grade });
     ['studentName','studentGrade','studentId','studentPassword'].forEach(k => document.getElementById(k).value = '');
-    showToast(`Student "${name}" added.`, 'success');
-  } catch (e) { showToast('Failed: ' + e.message, 'error'); }
+    showToast('Student added.', 'success');
+  } catch (e) { showToast(e.message, 'error'); }
 }
 
 function downloadStudentTemplate() {
   const ws = XLSX.utils.json_to_sheet([
-    { Name: "Emma Johnson", ID: "STU-100", Grade: "3", Password: "password123" },
-    { Name: "Liam Smith", ID: "STU-101", Grade: "2", Password: "password456" }
+    { Name: "Emma Johnson", ID: "STU-100", Grade: "3", Password: "password123" }
   ]);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Students");
@@ -1581,7 +1788,6 @@ async function importStudents(ev) {
   const file = ev.target.files[0];
   ev.target.value = '';
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = async (e) => {
     try {
@@ -1589,8 +1795,7 @@ async function importStudents(ev) {
       const workbook = XLSX.read(data, { type: 'array' });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(worksheet);
-      if (!rows.length) { showToast('❌ The file is empty.', 'error'); return; }
-
+      if (!rows.length) { showToast('Empty file.', 'error'); return; }
       const toAdd = [];
       let skipped = 0, errors = 0;
       rows.forEach(row => {
@@ -1602,21 +1807,11 @@ async function importStudents(ev) {
         if (appData.users.some(u => u.id === id || u.username === id)) { skipped++; return; }
         toAdd.push({ id, name, grade, password });
       });
-
-      if (toAdd.length === 0) {
-        showToast(`Nothing to import. ${skipped} skipped, ${errors} invalid.`, 'warning');
-        return;
-      }
-
+      if (toAdd.length === 0) { showToast(`Nothing to import (${skipped} skipped, ${errors} invalid).`, 'warning'); return; }
       await window.FB.bulkUpsertStudents(toAdd);
-
-      let msg = `✅ Imported ${toAdd.length} student(s).`;
-      if (skipped) msg += ` ${skipped} skipped (already exist).`;
-      if (errors)  msg += ` ${errors} failed (missing Name/ID).`;
-      showToast(msg, 'success');
+      showToast(`✅ Imported ${toAdd.length}. ${skipped} skipped, ${errors} invalid.`, 'success');
     } catch (err) {
-      console.error("Import error:", err);
-      showToast('❌ Failed to parse file.', 'error');
+      showToast('Parse failed.', 'error');
     }
   };
   reader.readAsArrayBuffer(file);
@@ -1631,7 +1826,7 @@ async function addTeacher() {
     await window.FB.upsertDoc('teachers', tid, { id: tid, name, grade });
     ['teacherName','teacherGrade'].forEach(k => document.getElementById(k).value = '');
     showToast('Teacher added.', 'success');
-  } catch (e) { showToast('Failed: ' + e.message, 'error'); }
+  } catch (e) { showToast(e.message, 'error'); }
 }
 
 async function borrowBook() {
@@ -1643,24 +1838,28 @@ async function borrowBook() {
 
   const book = appData.books.find(b => b.id === bookKey || b.barcode === bookKey || b.title === bookKey);
   if (!book) { showToast('Book not found.', 'error'); return; }
+  if (book.__source === 'legacy') {
+    showToast('Legacy-only book. Merge first to borrow.', 'warning');
+    return;
+  }
 
   const btn = document.getElementById('borrowBtn');
   btn.disabled = true;
   try {
     await window.FB.borrowAtomic(book.id, studentId, borrowDate, dueDate);
-    showToast(`"${book.title}" borrowed by ${studentId}.`, 'success');
+    showToast(`"${book.title}" borrowed.`, 'success');
     document.getElementById('borrowResult').innerHTML =
       `<div class="badge badge-green">✅ Borrowed. Due ${fmtDate(dueDate)}</div>`;
-  } catch (e) {
-    showToast(e.message, 'error');
-  } finally { btn.disabled = false; }
+  } catch (e) { showToast(e.message, 'error'); }
+  finally { btn.disabled = false; }
 }
 
 async function returnBook() {
   const bookKey    = document.getElementById('returnBookBarcode').value.trim();
   const returnDate = document.getElementById('returnDate').value || new Date().toISOString().slice(0,10);
   const loan = appData.loans.find(l => !l.returned && (l.bookId === bookKey || l.bookTitle === bookKey));
-  if (!loan) { showToast('This book is not currently borrowed.', 'error'); return; }
+  if (!loan) { showToast('Book not currently borrowed.', 'error'); return; }
+  if (loan.__source === 'legacy') { showToast('Legacy-only loan. Merge first to return.', 'warning'); return; }
 
   const btn = document.getElementById('returnBtn');
   btn.disabled = true;
@@ -1669,32 +1868,31 @@ async function returnBook() {
     showToast(`"${loan.bookTitle}" returned.`, 'success');
     document.getElementById('returnResult').innerHTML =
       `<div class="badge badge-green">✅ Returned on ${fmtDate(returnDate)}</div>`;
-  } catch (e) {
-    showToast(e.message, 'error');
-  } finally { btn.disabled = false; }
+  } catch (e) { showToast(e.message, 'error'); }
+  finally { btn.disabled = false; }
 }
 
 async function approveRequest(id) {
   const r = appData.borrowRequests.find(x => x.id === id);
-  if (!r) return;
+  if (!r || r.__source === 'legacy') { showToast('Cannot approve legacy request. Merge first.', 'warning'); return; }
   try {
     const book = appData.books.find(b => b.id === r.bookId);
-    if (book && book.available > 0) {
+    if (book && book.available > 0 && book.__source !== 'legacy') {
       await window.FB.borrowAtomic(book.id, r.studentId,
         new Date().toISOString().slice(0,10),
         addDays(new Date().toISOString().slice(0,10), appData.settings?.loanDays || 14));
     }
     await window.FB.upsertDoc('borrowRequests', id, { status: 'approved' });
-    showToast('Request approved.', 'success');
+    showToast('Approved.', 'success');
   } catch (e) { showToast(e.message, 'error'); }
 }
 
 async function rejectRequest(id) {
   const r = appData.borrowRequests.find(x => x.id === id);
-  if (!r) return;
+  if (!r || r.__source === 'legacy') { showToast('Cannot edit legacy request.', 'warning'); return; }
   try {
     await window.FB.upsertDoc('borrowRequests', id, { status: 'rejected' });
-    showToast('Request rejected.', 'info');
+    showToast('Rejected.', 'info');
   } catch (e) { showToast(e.message, 'error'); }
 }
 
@@ -1715,9 +1913,9 @@ async function recordPurchase() {
 }
 
 async function clearEmails() {
-  if (!confirm('Delete all emails?')) return;
+  if (!confirm('Clear cloud emails?')) return;
   try {
-    await window.FB.replaceAll({ ...appData, emails: [] });
+    await window.FB.replaceAll({ ...cloudData, emails: [] });
     showToast('Emails cleared.', 'info');
   } catch (e) { showToast(e.message, 'error'); }
 }
@@ -1731,16 +1929,14 @@ async function createUserAccount() {
   if (appData.users.some(u => u.id === id || u.username === id)) { showToast('ID exists.', 'error'); return; }
   try {
     await window.FB.upsertDoc('users', id, { id, username: id, password, name, role });
-    showToast(`User "${id}" created.`, 'success');
+    showToast('User created.', 'success');
   } catch (e) { showToast(e.message, 'error'); }
 }
 
 async function deleteUser(id) {
   if (!confirm('Delete this user?')) return;
-  try {
-    await window.FB.deleteDocById('users', id);
-    showToast('User deleted.', 'info');
-  } catch (e) { showToast(e.message, 'error'); }
+  try { await window.FB.deleteDocById('users', id); showToast('Deleted.', 'info'); }
+  catch (e) { showToast(e.message, 'error'); }
 }
 
 async function saveSettings() {
@@ -1754,52 +1950,46 @@ async function saveSettings() {
 }
 
 function exportData() {
-  const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
+  // Export the merged view
+  const exportObj = { ...appData };
+  delete exportObj.__source;
+  const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = `pyp-library-backup-${new Date().toISOString().slice(0,10)}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast('✅ Data exported.', 'success');
+  showToast('Exported.', 'success');
 }
 
 async function importData(ev) {
   const file = ev.target.files && ev.target.files[0];
   ev.target.value = '';
-  if (!file) { showToast('No file selected.', 'error'); return; }
-
-  if (!confirm('⚠️ This will REPLACE all cloud data with the file. Continue?')) return;
-
+  if (!file) return;
+  if (!confirm('Replace ALL cloud data with this file?')) return;
   const reader = new FileReader();
   reader.onload = async (e) => {
     let parsed;
     try { parsed = JSON.parse(e.target.result); }
-    catch { showToast('❌ Not a valid JSON file.', 'error'); return; }
-
+    catch { showToast('Invalid JSON.', 'error'); return; }
     const root = (parsed && parsed.data && parsed.data.books) ? parsed.data : parsed;
     if (!root || !Array.isArray(root.books) || !Array.isArray(root.users) || root.users.length === 0) {
-      showToast('❌ File must contain books and users arrays.', 'error'); return;
+      showToast('File must contain books and users.', 'error'); return;
     }
-
     try {
       await window.FB.replaceAll(root);
-      showToast('✅ Cloud data replaced.', 'success');
-    } catch (err) {
-      console.error(err);
-      showToast('Import failed: ' + err.message, 'error');
-    }
+      showToast('Import complete.', 'success');
+    } catch (err) { showToast(err.message, 'error'); }
   };
   reader.readAsText(file);
 }
 
 async function resetAllData() {
-  if (!confirm('Reset ALL cloud data to defaults? Every device will see the reset.')) return;
+  if (!confirm('Reset ALL cloud data (subcollections + legacy) to defaults?')) return;
   try {
     await window.FB.replaceAll(buildDefaultData());
-    showToast('All data reset.', 'success');
+    showToast('Reset complete.', 'success');
   } catch (e) { showToast(e.message, 'error'); }
 }
 
@@ -1825,7 +2015,7 @@ function performSearch() {
     results.map(b => `
       <div class="book-mini">
         <div><span class="title">${esc(b.title)}</span> <span class="meta">by ${esc(b.author || '—')}</span></div>
-        <span class="badge badge-blue">${b.available ?? b.copies} available</span>
+        <span class="badge badge-blue">${b.available ?? b.copies} available</span> ${sourceBadge(b.__source)}
       </div>`).join('');
 }
 function clearSearch() {
@@ -1838,10 +2028,8 @@ function pypFind() {
   const box = document.getElementById('pypResults');
   if (!results.length) { box.innerHTML = '<p class="text-muted">No books found.</p>'; return; }
   box.innerHTML = `<p class="text-muted mb-12">${results.length} book(s) found.</p>` +
-    results.map(b => `
-      <div class="book-mini">
-        <div><span class="title">${esc(b.title)}</span> <span class="meta">Grade ${esc(b.grade || '—')}</span></div>
-      </div>`).join('');
+    results.map(b => `<div class="book-mini"><div><span class="title">${esc(b.title)}</span>
+      <span class="meta">Grade ${esc(b.grade || '—')}</span></div>${sourceBadge(b.__source)}</div>`).join('');
 }
 
 /* ============================================================
@@ -1870,7 +2058,25 @@ function showToast(msg, type = 'info') {
 /* ============================================================
    BOOT
    ============================================================ */
-loadCache();  // shows cached users while Firestore connects
+// Cold-boot cache (mostly cosmetic — the merge engine rebuilds appData)
+(function seedFromCache() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    cloudData = buildDefaultData();
+    mergeData();
+    return;
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && Array.isArray(parsed.books)) {
+      cloudData = { ...buildDefaultData(), ...parsed };
+      mergeData();
+      return;
+    }
+  } catch {}
+  cloudData = buildDefaultData();
+  mergeData();
+})();
 
 (function restoreSession() {
   const sess = sessionStorage.getItem(SESSION_KEY);
@@ -1890,18 +2096,10 @@ loadCache();  // shows cached users while Firestore connects
 })();
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
-    if (document.activeElement?.id === 'loginUsername') {
-      document.getElementById('loginPassword').focus();
-      e.preventDefault();
-    }
-  }
   if (e.key === 'Escape') {
     if (document.getElementById('bookModal').classList.contains('active')) closeBookModal();
     if (document.getElementById('languageModal').classList.contains('active')) closeLanguagePicker();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && document.getElementById('bookModal').classList.contains('active')) {
-    saveBookForm();
+    if (document.getElementById('legacyModal').classList.contains('active')) closeLegacyInspector();
   }
 });
 </script>
