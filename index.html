@@ -22,11 +22,9 @@ html[dir="rtl"] body { font-family: 'Cairo', 'Segoe UI', sans-serif; }
 a { text-decoration: none; color: var(--primary); }
 button { cursor: pointer; font-family: inherit; }
 input, select, textarea { font-family: inherit; font-size: .95rem; }
-
 .app { max-width: 1400px; margin: 0 auto; background: #fff; border-radius: var(--radius);
   box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; min-height: 95vh; }
 
-/* LOGIN */
 .login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
   display: flex; align-items: center; justify-content: center; z-index: 100000; padding: 20px; overflow-y: auto; }
@@ -48,11 +46,15 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
   background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; border: none;
   font-weight: 700; transition: .25s; margin-top: 6px; }
 .login-card .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,.4); }
+.login-card .btn-login:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
 .login-card .login-error { background: #fee2e2; color: #991b1b; padding: 10px 14px; border-radius: 10px;
   font-size: .85rem; margin-bottom: 14px; display: none; }
 .login-card .login-error.show { display: block; }
+.login-card .boot-status { background: #eff6ff; color: #1e40af; padding: 10px 14px; border-radius: 10px;
+  font-size: .82rem; margin-top: 14px; display: none; }
+.login-card .boot-status.show { display: block; }
+.login-card .boot-status.error { background: #fee2e2; color: #991b1b; }
 
-/* HEADER */
 .app-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff;
   padding: 18px 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
 .app-header h1 { font-weight: 700; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
@@ -67,22 +69,21 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .cloud-status { font-size: .8rem; padding: 4px 12px; border-radius: 30px; background: rgba(255,255,255,.15); display:flex; align-items:center; gap:6px; }
 .cloud-status.online { background: rgba(34,197,94,.3); }
 .cloud-status.offline { background: rgba(239,68,68,.3); }
+.cloud-status.syncing { background: rgba(234,179,8,.35); }
 
-/* NAV */
 .nav-tabs { display: flex; flex-wrap: wrap; gap: 4px; background: #f1f5f9; padding: 8px 16px;
   border-bottom: 1px solid var(--gray-light); }
 .nav-tabs button { background: transparent; border: none; padding: 8px 18px; border-radius: 30px;
   font-weight: 500; font-size: .9rem; color: #475569; transition: .25s; display: flex; align-items: center; gap: 8px; }
 .nav-tabs button:hover { background: #dbeafe; color: var(--primary); }
 .nav-tabs button.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,.3); }
+.nav-tabs button.hidden-tab { display: none !important; }
 
-/* MAIN */
 .main-content { padding: 24px 28px; flex: 1; overflow-y: auto; background: #fafcff; }
 .tab-panel { display: none; animation: fadeIn .3s ease; }
 .tab-panel.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* CARDS */
 .card { background: #fff; border-radius: var(--radius); padding: 20px 24px;
   box-shadow: var(--shadow); border: 1px solid #edf2f7; margin-bottom: 20px; }
 .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 14px;
@@ -92,7 +93,6 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 @media (max-width: 900px) { .grid-2, .grid-4 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 600px) { .grid-2, .grid-4 { grid-template-columns: 1fr; } .main-content { padding: 16px; } }
 
-/* FORMS */
 .form-group { margin-bottom: 14px; }
 .form-group label { display: block; font-weight: 500; font-size: .85rem; color: #475569; margin-bottom: 4px; }
 .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px;
@@ -103,7 +103,6 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
 
-/* BUTTONS */
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none;
   border-radius: 30px; font-weight: 600; font-size: .9rem; transition: .25s; background: var(--gray-light); color: #1e293b; }
 .btn-primary { background: var(--primary); color: #fff; }
@@ -122,34 +121,30 @@ input, select, textarea { font-family: inherit; font-size: .95rem; }
 .btn-block { width: 100%; justify-content: center; }
 .btn:disabled { opacity: .6; cursor: not-allowed; }
 
-/* TABLE */
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 table th { background: #f1f5f9; text-align: left; padding: 12px 14px; font-weight: 600; color: #334155;
   border-bottom: 2px solid #e2e8f0; }
 table td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
 table tr:hover td { background: #f8fafc; }
+html[dir="rtl"] table th, html[dir="rtl"] table td { text-align: right; }
 .badge { display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: .75rem; font-weight: 600; }
 .badge-green { background: #dcfce7; color: #166534; }
 .badge-red { background: #fee2e2; color: #991b1b; }
 .badge-yellow { background: #fef9c3; color: #854d0e; }
 .badge-blue { background: #dbeafe; color: #1e40af; }
 .badge-gray { background: #f1f5f9; color: #475569; }
-.badge-purple { background: #ede9fe; color: #5b21b6; }
 .badge-orange { background: #ffedd5; color: #9a3412; }
 
-/* STATS */
 .stat-card { background: #fff; padding: 18px 20px; border-radius: var(--radius);
   border: 1px solid #edf2f7; box-shadow: var(--shadow); text-align: center; }
 .stat-card .number { font-size: 2rem; font-weight: 700; color: var(--primary); }
 .stat-card .label { font-size: .85rem; color: #64748b; margin-top: 4px; }
 
-/* SEARCH */
 .search-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
 .search-bar input, .search-bar select { padding: 10px 16px; border: 1.5px solid var(--gray-light);
   border-radius: 30px; flex: 1; min-width: 160px; background: #fff; }
 
-/* TOAST */
 .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 99999;
   display: flex; flex-direction: column; gap: 10px; }
 .toast { padding: 14px 22px; border-radius: var(--radius); color: #fff; font-weight: 500;
@@ -160,7 +155,6 @@ table tr:hover td { background: #f8fafc; }
 .toast-warning { background: var(--warning); }
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* MISC */
 .flex { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .flex-between { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
 .mt-12 { margin-top: 12px; } .mb-12 { margin-bottom: 12px; }
@@ -177,21 +171,18 @@ table tr:hover td { background: #f8fafc; }
 .request-card .info { flex: 1; min-width: 200px; }
 .request-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-/* LEGACY BANNER */
-.legacy-banner {
-  background: linear-gradient(135deg, #fef3c7, #fed7aa);
-  border: 2px solid #f59e0b; border-radius: var(--radius);
+.merge-banner {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border: 2px solid #3b82f6; border-radius: var(--radius);
   padding: 14px 18px; margin-bottom: 16px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  color: #78350f;
+  color: #1e40af;
 }
-.legacy-banner i { font-size: 1.4rem; color: #d97706; }
-.legacy-banner .text { flex: 1; min-width: 200px; }
-.legacy-banner strong { display: block; font-size: .95rem; margin-bottom: 2px; }
-.legacy-banner .sub { font-size: .82rem; opacity: .85; }
-.legacy-banner .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.merge-banner .text { flex: 1; min-width: 200px; }
+.merge-banner strong { display: block; font-size: .95rem; margin-bottom: 2px; }
+.merge-banner .sub { font-size: .82rem; opacity: .85; }
+.merge-banner i { font-size: 1.4rem; }
 
-/* MODALS */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(15, 23, 42, .55);
   backdrop-filter: blur(4px); z-index: 50000;
@@ -229,7 +220,6 @@ table tr:hover td { background: #f8fafc; }
   padding: 16px 26px; background: #f8fafc; border-top: 1px solid var(--gray-light);
   display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;
 }
-
 .form-section {
   border: 1px solid #eef2f7; border-radius: 12px; padding: 16px 18px;
   margin-bottom: 14px; background: #fbfdff;
@@ -252,7 +242,6 @@ table tr:hover td { background: #f8fafc; }
 .dup-warning.show { display: block; }
 .dup-warning.danger { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
 
-/* LANGUAGE PICKER */
 .language-picker-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 12px; margin-bottom: 6px;
@@ -277,7 +266,6 @@ table tr:hover td { background: #f8fafc; }
 .language-picker-card .lang-flag { font-size: 2.2rem; line-height: 1; }
 .language-picker-card .lang-native { font-weight: 700; color: #0f172a; font-size: 1.05rem; }
 .language-picker-card .lang-en { font-size: 0.8rem; color: #64748b; }
-
 .chosen-info-banner {
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
   background: linear-gradient(135deg, #eff6ff, #f5f3ff); border: 1.5px solid #bfdbfe;
@@ -297,7 +285,8 @@ table tr:hover td { background: #f8fafc; }
       <p>Sign in to access the library system</p>
     </div>
     <div class="login-error" id="loginError"></div>
-    <div class="form-group">
+    <div class="boot-status" id="bootStatus">Connecting to shared cloud library…</div>
+    <div class="form-group" style="margin-top:14px;">
       <label><i class="fas fa-id-card"></i> Student ID / Username</label>
       <input type="text" id="loginUsername" placeholder="e.g. admin" autocomplete="username" />
     </div>
@@ -306,8 +295,9 @@ table tr:hover td { background: #f8fafc; }
       <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password"
              onkeydown="if(event.key==='Enter')handleLogin()" />
     </div>
-    <button class="btn-login" onclick="handleLogin()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
-    <div id="loginHint" class="text-muted text-center mt-12" style="font-size:.8rem;"></div>
+    <button class="btn-login" id="loginBtn" onclick="handleLogin()" disabled>
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </button>
   </div>
 </div>
 
@@ -344,19 +334,15 @@ table tr:hover td { background: #f8fafc; }
 
   <div class="main-content">
 
-    <!-- LEGACY BANNER (shown when old + new data both exist) -->
-    <div id="legacyBanner" class="legacy-banner hidden">
-      <i class="fas fa-exclamation-triangle"></i>
+    <div id="mergeBanner" class="merge-banner hidden">
+      <i class="fas fa-layer-group"></i>
       <div class="text">
-        <strong>Old data detected</strong>
-        <span class="sub" id="legacyBannerText">You are seeing legacy + new data merged together.</span>
+        <strong id="mergeBannerTitle">Merged view active</strong>
+        <span class="sub" id="mergeBannerSub">Old data + new data shown together.</span>
       </div>
       <div class="actions">
-        <button class="btn btn-sm btn-warning" onclick="openLegacyInspector()">
-          <i class="fas fa-eye"></i> Inspect
-        </button>
-        <button class="btn btn-sm btn-success" onclick="mergeLegacyToCloud()">
-          <i class="fas fa-code-branch"></i> Merge to Firestore
+        <button class="btn btn-sm btn-primary" onclick="showMergeDetails()" id="mergeDetailsBtn">
+          <i class="fas fa-info-circle"></i> Details
         </button>
       </div>
     </div>
@@ -392,7 +378,7 @@ table tr:hover td { background: #f8fafc; }
         <div class="flex-between mb-12">
           <span class="text-muted" id="catalogueCount">—</span>
           <label class="text-muted" style="font-size:.85rem; cursor:pointer;">
-            <input type="checkbox" id="showLegacySources" checked onchange="renderCatalogue()" style="vertical-align:middle; margin-right:4px;" />
+            <input type="checkbox" id="showSources" checked onchange="renderCatalogue()" style="vertical-align:middle; margin-right:4px;" />
             Show source badges
           </label>
         </div>
@@ -474,7 +460,7 @@ table tr:hover td { background: #f8fafc; }
       </div>
     </div>
 
-    <!-- PYP FINDER -->
+    <!-- PYP -->
     <div class="tab-panel" id="panel-pyp">
       <h2 style="margin-bottom:16px;"><i class="fas fa-globe-asia" style="color:var(--secondary);"></i> PYP Book Finder</h2>
       <div class="card">
@@ -489,7 +475,7 @@ table tr:hover td { background: #f8fafc; }
         </div>
         <button class="btn btn-primary btn-block" onclick="pypFind()"><i class="fas fa-search"></i> Find PYP Books</button>
       </div>
-      <div id="pypResults" class="card"><p class="text-muted">Use the filters above to find PYP-aligned books.</p></div>
+      <div id="pypResults" class="card"><p class="text-muted">Use the filters above.</p></div>
     </div>
 
     <!-- REQUESTS -->
@@ -585,8 +571,7 @@ table tr:hover td { background: #f8fafc; }
       <h2 style="margin-bottom:16px;"><i class="fas fa-envelope-open-text" style="color:var(--secondary);"></i> Email Outbox</h2>
       <div class="card">
         <div class="flex-between mb-12">
-          <div class="card-title" style="margin-bottom:0;"><i class="fas fa-paper-plane"></i> Borrow / Return confirmations</div>
-          <button class="btn btn-sm btn-danger" onclick="clearEmails()"><i class="fas fa-trash"></i> Clear</button>
+          <div class="card-title" style="margin-bottom:0;"><i class="fas fa-paper-plane"></i> Confirmations</div>
         </div>
         <div id="emailList"><p class="text-muted">No emails yet.</p></div>
       </div>
@@ -626,6 +611,18 @@ table tr:hover td { background: #f8fafc; }
     <div class="tab-panel" id="panel-settings">
       <h2 style="margin-bottom:16px;"><i class="fas fa-cog" style="color:var(--gray);"></i> Settings</h2>
       <div class="card">
+        <div class="card-title"><i class="fas fa-layer-group"></i> Data Sources</div>
+        <p class="text-muted mb-12" id="dataSourcesDetail">Checking…</p>
+        <div class="flex">
+          <button class="btn btn-primary" onclick="showMergeDetails()"><i class="fas fa-info-circle"></i> Show Details</button>
+          <button class="btn btn-outline" onclick="forceResync()"><i class="fas fa-sync"></i> Refresh from Cloud</button>
+        </div>
+        <p class="text-muted mt-12" style="font-size:.82rem;">
+          <i class="fas fa-shield-alt"></i>
+          <b>This app never deletes data from Firestore.</b> Old parent-document arrays and new subcollections are both read and shown together. Deleting a book/student/user only deletes the subcollection document — the legacy array copy (if any) stays intact.
+        </p>
+      </div>
+      <div class="card">
         <div class="card-title"><i class="fas fa-envelope"></i> Library Settings</div>
         <div class="form-row">
           <div class="form-group"><label>Library Name</label><input type="text" id="setLibraryName" /></div>
@@ -634,57 +631,38 @@ table tr:hover td { background: #f8fafc; }
         <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> Save</button>
       </div>
       <div class="card">
-        <div class="card-title"><i class="fas fa-code-branch"></i> Legacy Data</div>
-        <p class="text-muted mb-12" id="legacySummary">Checking for legacy data…</p>
-        <div class="flex">
-          <button class="btn btn-warning" onclick="openLegacyInspector()"><i class="fas fa-eye"></i> Inspect Legacy Data</button>
-          <button class="btn btn-success" onclick="mergeLegacyToCloud()"><i class="fas fa-code-branch"></i> Merge Legacy → Firestore</button>
-          <button class="btn btn-danger" onclick="deleteLegacyData()"><i class="fas fa-trash"></i> Delete Legacy Data</button>
-        </div>
-      </div>
-      <div class="card">
         <div class="card-title"><i class="fas fa-file-import"></i> Backups</div>
         <div class="flex">
           <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Export JSON</button>
-          <button class="btn btn-outline" onclick="document.getElementById('importFileInput').click()"><i class="fas fa-file-import"></i> Import JSON</button>
-          <input type="file" id="importFileInput" accept=".json,application/json" style="display:none;" onchange="importData(event)" />
         </div>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="fas fa-database"></i> Reset</div>
-        <button class="btn btn-danger" onclick="resetAllData()"><i class="fas fa-trash"></i> Reset All Cloud Data</button>
+        <p class="text-muted mt-12" style="font-size:.82rem;">Export writes a file to your device. Nothing in Firestore is changed.</p>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- LEGACY INSPECTOR MODAL -->
-<div class="modal-overlay" id="legacyModal">
-  <div class="modal" style="max-width: 900px;" role="dialog" aria-modal="true">
+<!-- MERGE DETAILS MODAL -->
+<div class="modal-overlay" id="mergeDetailsModal">
+  <div class="modal" style="max-width:640px;" role="dialog" aria-modal="true">
     <div class="modal-header">
       <div class="title">
-        <i class="fas fa-code-branch"></i>
+        <i class="fas fa-layer-group"></i>
         <div>
-          <h2>Legacy Data Inspector</h2>
-          <p>Raw old-format data still stored on the parent document.</p>
+          <h2>Data Sources</h2>
+          <p>What the app is currently reading from.</p>
         </div>
       </div>
-      <button class="modal-close" onclick="closeLegacyInspector()" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
+      <button class="modal-close" onclick="closeMergeDetails()" aria-label="Close"><i class="fas fa-times"></i></button>
     </div>
-    <div class="modal-body" id="legacyInspectorBody">
-      <p class="text-muted">Loading…</p>
-    </div>
+    <div class="modal-body" id="mergeDetailsBody"><p class="text-muted">Loading…</p></div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeLegacyInspector()"><i class="fas fa-times"></i> Close</button>
-      <button class="btn btn-success" onclick="mergeLegacyToCloud()"><i class="fas fa-code-branch"></i> Merge into Firestore</button>
+      <button class="btn btn-ghost" onclick="closeMergeDetails()"><i class="fas fa-times"></i> Close</button>
     </div>
   </div>
 </div>
 
-<!-- LANGUAGE PICKER MODAL -->
+<!-- LANGUAGE PICKER -->
 <div class="modal-overlay" id="languageModal">
   <div class="modal" style="max-width: 650px;" role="dialog" aria-modal="true">
     <div class="modal-header">
@@ -784,7 +762,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, signInAnonymously, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, setDoc, deleteDoc, deleteField,
+  getFirestore, doc, getDoc, setDoc, deleteDoc,
   collection, onSnapshot, query, serverTimestamp,
   runTransaction, writeBatch, enableIndexedDbPersistence, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -803,30 +781,37 @@ const LIBRARY_ID = 'shared-library';
 const COLLECTIONS = ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications'];
 
 let db, auth, unsubscribers = [];
+const rootRef = () => doc(db, 'libraries', LIBRARY_ID);
+const colRef = (c) => collection(db, 'libraries', LIBRARY_ID, c);
 
 const FB = {
   ready: false,
 
-  /* single-doc helpers */
+  /* ---------- ADD-ONLY WRITES (no deletes) ---------- */
   async upsertDoc(col, id, data) {
+    // Writes only to subcollection. Parent-doc legacy arrays are NEVER touched.
     await setDoc(doc(db, 'libraries', LIBRARY_ID, col, id),
       { ...data, _updatedAt: serverTimestamp() }, { merge: true });
   },
+
+  /* ---------- SUBCOLLECTION ONLY DELETE (legacy arrays untouched) ---------- */
   async deleteDocById(col, id) {
     await deleteDoc(doc(db, 'libraries', LIBRARY_ID, col, id));
-  },
-  async updateSettings(settings) {
-    await setDoc(doc(db, 'libraries', LIBRARY_ID),
-      { settings, _updatedAt: serverTimestamp() }, { merge: true });
+    // NOTE: We do NOT touch libraries/shared-library/books[] etc.
+    // Old data on the parent doc is preserved forever.
   },
 
-  /* atomic borrow / return */
+  async updateSettings(settings) {
+    // Only updates the settings object — does not touch any array fields
+    await setDoc(rootRef(), { settings, _updatedAt: serverTimestamp() }, { merge: true });
+  },
+
   async borrowAtomic(bookId, studentId, borrowDate, dueDate) {
     const bookRef = doc(db, 'libraries', LIBRARY_ID, 'books', bookId);
     const loanRef = doc(collection(db, 'libraries', LIBRARY_ID, 'loans'));
     await runTransaction(db, async (tx) => {
       const snap = await tx.get(bookRef);
-      if (!snap.exists()) throw new Error('Book not found in cloud.');
+      if (!snap.exists()) throw new Error('Book not found in subcollection.');
       const b = snap.data();
       if ((b.available ?? 0) <= 0) throw new Error('No copies available.');
       tx.update(bookRef, { available: b.available - 1, _updatedAt: serverTimestamp() });
@@ -835,8 +820,8 @@ const FB = {
         studentId, borrowDate, dueDate, returned: false, _updatedAt: serverTimestamp()
       });
     });
-    return loanRef.id;
   },
+
   async returnAtomic(loanId, returnDate) {
     const loanRef = doc(db, 'libraries', LIBRARY_ID, 'loans', loanId);
     await runTransaction(db, async (tx) => {
@@ -853,7 +838,6 @@ const FB = {
     });
   },
 
-  /* bulk */
   async bulkUpsertStudents(students) {
     const batch = writeBatch(db);
     for (const s of students) {
@@ -865,87 +849,33 @@ const FB = {
     await batch.commit();
   },
 
-  /* ---------- LEGACY: read parent-doc arrays ---------- */
-  async readLegacy() {
-    const rootSnap = await getDoc(doc(db, 'libraries', LIBRARY_ID));
-    if (!rootSnap.exists()) return null;
-    const data = rootSnap.data();
+  /* ---------- READ-ONLY: pull legacy arrays from parent doc ---------- */
+  async readLegacyArrays() {
+    const rs = await getDoc(rootRef());
+    if (!rs.exists()) return {};
+    const data = rs.data();
     const out = {};
-    let any = false;
     for (const col of COLLECTIONS) {
-      if (Array.isArray(data[col])) {
-        out[col] = data[col];
-        if (data[col].length > 0) any = true;
-      }
+      if (Array.isArray(data[col]) && data[col].length > 0) out[col] = data[col];
     }
     if (data.settings) out.settings = data.settings;
-    return any || data.settings ? out : null;
+    return out;
   },
 
-  /* ---------- LEGACY: merge arrays into subcollections ---------- */
-  async mergeLegacyToSubcollections() {
-    const rootRef = doc(db, 'libraries', LIBRARY_ID);
-    const rootSnap = await getDoc(rootRef);
-    if (!rootSnap.exists()) throw new Error('No library root doc.');
-    const data = rootSnap.data();
-
-    const counts = {};
-    for (const col of COLLECTIONS) {
-      const arr = Array.isArray(data[col]) ? data[col] : [];
-      if (!arr.length) continue;
-
-      const existing = await getDocs(collection(db, 'libraries', LIBRARY_ID, col));
-      const existingIds = new Set(existing.docs.map(d => d.id));
-
-      let batch = writeBatch(db);
-      let n = 0, added = 0;
-      for (const item of arr) {
-        const id = item.id || (Date.now() + '-' + Math.random().toString(36).slice(2,8));
-        if (existingIds.has(id)) continue; // don't clobber newer data
-        batch.set(doc(db, 'libraries', LIBRARY_ID, col, id),
-          { ...item, id, _updatedAt: serverTimestamp() }, { merge: true });
-        added++;
-        if (++n >= 450) { await batch.commit(); batch = writeBatch(db); n = 0; }
-      }
-      if (n > 0) await batch.commit();
-      counts[col] = { total: arr.length, added };
-    }
-    return counts;
-  },
-
-  /* ---------- LEGACY: remove arrays from parent doc ---------- */
-  async deleteLegacyArrays() {
-    const rootRef = doc(db, 'libraries', LIBRARY_ID);
-    const rootSnap = await getDoc(rootRef);
-    if (!rootSnap.exists()) return;
-    const data = rootSnap.data();
-    const cleanup = {};
-    let n = 0;
-    for (const col of COLLECTIONS) {
-      if (Array.isArray(data[col])) { cleanup[col] = deleteField(); n++; }
-    }
-    if (n > 0) {
-      await setDoc(rootRef, cleanup, { merge: true });
-    }
-    return n;
-  },
-
-  /* pull users for login fallback */
+  /* Pull users once for login (subcollection only, as usual) */
   async pullUsers() {
-    const snap = await getDocs(collection(db, 'libraries', LIBRARY_ID, 'users'));
+    const snap = await getDocs(colRef('users'));
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   },
 
-  /* seed defaults only if truly empty */
+  /* Seed demo defaults ONLY if both subcollections and legacy arrays are empty.
+     This function NEVER deletes anything — it only writes when the store is empty. */
   async seedIfEmpty(defaultData) {
-    // Check both subcollection AND legacy arrays
-    const usersSnap = await getDocs(collection(db, 'libraries', LIBRARY_ID, 'users'));
-    const rootSnap = await getDoc(doc(db, 'libraries', LIBRARY_ID));
-    const legacyUsers = rootSnap.exists() && Array.isArray(rootSnap.data().users) ? rootSnap.data().users : [];
-
+    const usersSnap = await getDocs(colRef('users'));
+    const rs = await getDoc(rootRef());
+    const legacyUsers = rs.exists() && Array.isArray(rs.data().users) ? rs.data().users : [];
     if (!usersSnap.empty || legacyUsers.length > 0) return false;
 
-    // Seed the subcollections
     for (const col of COLLECTIONS) {
       const arr = Array.isArray(defaultData[col]) ? defaultData[col] : [];
       if (!arr.length) continue;
@@ -959,37 +889,8 @@ const FB = {
       }
       if (n > 0) await batch.commit();
     }
-    if (defaultData.settings) await this.updateSettings(defaultData.settings);
+    if (defaultData.settings) await FB.updateSettings(defaultData.settings);
     return true;
-  },
-
-  /* admin replace-all */
-  async replaceAll(data) {
-    for (const col of COLLECTIONS) {
-      const snap = await getDocs(collection(db, 'libraries', LIBRARY_ID, col));
-      let batch = writeBatch(db);
-      let n = 0;
-      snap.docs.forEach(d => {
-        batch.delete(d.ref);
-        if (++n >= 450) { batch.commit(); batch = writeBatch(db); n = 0; }
-      });
-      if (n > 0) await batch.commit();
-    }
-    for (const col of COLLECTIONS) {
-      const arr = Array.isArray(data[col]) ? data[col] : [];
-      let batch = writeBatch(db);
-      let n = 0;
-      for (const item of arr) {
-        const id = item.id || (Date.now() + '-' + Math.random().toString(36).slice(2,8));
-        batch.set(doc(db, 'libraries', LIBRARY_ID, col, id),
-          { ...item, id, _updatedAt: serverTimestamp() }, { merge: true });
-        if (++n >= 450) { await batch.commit(); batch = writeBatch(db); n = 0; }
-      }
-      if (n > 0) await batch.commit();
-    }
-    if (data.settings) await this.updateSettings(data.settings);
-    // Also clear legacy arrays
-    await this.deleteLegacyArrays();
   }
 };
 window.FB = FB;
@@ -999,6 +900,14 @@ function setCloudStatus(text, cls) {
   if (!el) return;
   el.className = 'cloud-status ' + (cls || '');
   el.innerHTML = `<i class="fas fa-cloud"></i> <span>${text}</span>`;
+}
+
+function setBootStatus(text, isError) {
+  const el = document.getElementById('bootStatus');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.toggle('show', !!text);
+  el.classList.toggle('error', !!isError);
 }
 
 try {
@@ -1015,55 +924,79 @@ try {
     if (!user) {
       try { await signInAnonymously(auth); }
       catch (e) {
-        console.warn('[FB] anonymous sign-in failed.', e.message);
+        console.warn('[FB] anonymous auth failed.', e.message);
         setCloudStatus('Local only', 'offline');
+        setBootStatus('Cloud unavailable — running from cache only.', true);
       }
       return;
     }
 
     FB.ready = true;
-    setCloudStatus('Cloud connected', 'online');
+    setCloudStatus('Syncing…', 'syncing');
+    setBootStatus('Loading shared library data from cloud…');
 
-    // Seed defaults ONLY if both subcollections and legacy arrays are empty
+    // Seed defaults ONLY if truly empty (never deletes)
     try {
       const seeded = await FB.seedIfEmpty(window.buildDefaultData ? window.buildDefaultData() : {});
-      if (seeded) console.info('[FB] Seeded default library.');
+      if (seeded) console.info('[FB] Seeded default library (was empty).');
     } catch (e) { console.warn('[FB] seed failed', e); }
 
-    // Snapshot each collection → merged into window.appData by the app
+    // Read legacy arrays once (read-only) so we have them even before snapshot fires
+    try {
+      const legacy = await FB.readLegacyArrays();
+      window.legacyData = legacy;
+      if (typeof window.onLegacyUpdate === 'function') window.onLegacyUpdate();
+    } catch (e) { console.warn('[FB] legacy read failed', e); }
+
+    // Attach snapshot listeners to every subcollection
+    let readyCount = 0;
+    const totalCollections = COLLECTIONS.length;
+    const onReady = () => {
+      readyCount++;
+      if (readyCount >= totalCollections) {
+        setCloudStatus('Cloud connected', 'online');
+        setBootStatus('');
+        const loginBtn = document.getElementById('loginBtn');
+        if (loginBtn) loginBtn.disabled = false;
+      }
+    };
+
     COLLECTIONS.forEach(col => {
-      const q = query(collection(db, 'libraries', LIBRARY_ID, col));
-      const unsub = onSnapshot(q, (snap) => {
+      const unsub = onSnapshot(colRef(col), (snap) => {
         const arr = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         arr.sort((a, b) => {
           const ta = a._updatedAt?.seconds ?? 0;
           const tb = b._updatedAt?.seconds ?? 0;
           return ta - tb;
         });
-        if (typeof window.onCloudCollectionUpdate === 'function') {
-          window.onCloudCollectionUpdate(col, arr);
-        }
-      }, (err) => console.warn(`[FB] snapshot ${col}`, err));
+        window.cloudData[col] = arr;
+        window.onCloudUpdate();
+        onReady();
+      }, (err) => {
+        console.warn(`[FB] snapshot ${col}`, err);
+        setCloudStatus('Cloud error', 'offline');
+      });
       unsubscribers.push(unsub);
     });
 
-    // Root doc snapshot → legacy arrays + settings
-    const rootRef = doc(db, 'libraries', LIBRARY_ID);
-    const sunsub = onSnapshot(rootRef, (snap) => {
-      const data = snap.exists() ? snap.data() : {};
+    // Root doc listener — also refreshes legacy arrays if anything changes there
+    const sunsub = onSnapshot(rootRef(), (snap) => {
+      if (!snap.exists()) return;
+      const data = snap.data();
       const legacy = {};
       for (const col of COLLECTIONS) {
-        if (Array.isArray(data[col]) && data[col].length) legacy[col] = data[col];
+        if (Array.isArray(data[col]) && data[col].length > 0) legacy[col] = data[col];
       }
-      if (typeof window.onCloudLegacyUpdate === 'function') {
-        window.onCloudLegacyUpdate(legacy, data.settings || null);
-      }
+      if (data.settings) legacy.settings = data.settings;
+      window.legacyData = legacy;
+      window.onLegacyUpdate();
     });
     unsubscribers.push(sunsub);
   });
 } catch (e) {
   console.warn('[FB] init failed', e);
   setCloudStatus('Local only', 'offline');
+  setBootStatus('Cloud unavailable — running from cache only.', true);
 }
 </script>
 
@@ -1072,19 +1005,24 @@ try {
 const STORAGE_KEY = 'pyp_library_data_v1';
 const SESSION_KEY = 'pyp_library_session';
 
-// Cloud subcollections (new) and legacy arrays (old) are kept separately,
-// then merged in a single "view" that every render uses.
-let cloudData = { books: [], users: [], students: [], teachers: [], loans: [], borrowRequests: [], purchases: [], emails: [], notifications: [], settings: {} };
-let legacyData = { books: [], users: [], students: [], teachers: [], loans: [], borrowRequests: [], purchases: [], emails: [], notifications: [], settings: {} };
+// Two sources — both read from Firestore, neither writes to the other
+window.cloudData = {
+  books: [], users: [], students: [], teachers: [], loans: [],
+  borrowRequests: [], purchases: [], emails: [], notifications: [],
+  settings: {}
+};
+window.legacyData = {};
 
-// The merged view that all renders read from. Each item gets a `__source` field.
-let appData = { books: [], users: [], students: [], teachers: [], loans: [], borrowRequests: [], purchases: [], emails: [], notifications: [], settings: {} };
+// Merged in-memory view — every render reads from this
+window.appData = {
+  books: [], users: [], students: [], teachers: [], loans: [],
+  borrowRequests: [], purchases: [], emails: [], notifications: [],
+  settings: {}
+};
 
 let currentUser = null;
 let editingBookId = null;
 let selectedNewBookLang = null;
-
-window.currentUser = null;
 
 const LANGUAGES = [
   { code: 'en', flag: '🇬🇧', native: 'English', en: 'English' },
@@ -1116,178 +1054,139 @@ function buildDefaultData() {
 window.buildDefaultData = buildDefaultData;
 
 /* ============================================================
-   MERGE ENGINE — cloud + legacy → appData
+   MERGE ENGINE — cloud subcollections + legacy arrays → appData
    ============================================================ */
-function mergeData() {
+function rebuildMergedView() {
   const merged = {};
   const collections = ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications'];
 
   for (const col of collections) {
-    const cloudArr = Array.isArray(cloudData[col]) ? cloudData[col] : [];
-    const legacyArr = Array.isArray(legacyData[col]) ? legacyData[col] : [];
+    const cloudArr = Array.isArray(window.cloudData[col]) ? window.cloudData[col] : [];
+    const legacyArr = Array.isArray(window.legacyData[col]) ? window.legacyData[col] : [];
 
-    // Build a map keyed by id
     const byId = new Map();
 
-    // Cloud wins on id collision (it's the current source of truth)
+    // 1) Add legacy items first (marked as 'legacy')
+    for (const item of legacyArr) {
+      const id = item.id || `__legacy_${Math.random().toString(36).slice(2,8)}`;
+      byId.set(id, { ...item, __source: 'legacy' });
+    }
+
+    // 2) Cloud items override (same ID → cloud wins; unique ID → both kept)
     for (const item of cloudArr) {
       const id = item.id || `__cloud_${Math.random().toString(36).slice(2,8)}`;
       byId.set(id, { ...item, __source: 'cloud' });
     }
 
-    // Legacy items get added only if not already present in cloud
-    for (const item of legacyArr) {
-      const id = item.id || `__legacy_${Math.random().toString(36).slice(2,8)}`;
-      if (!byId.has(id)) {
-        byId.set(id, { ...item, __source: 'legacy' });
-      }
-    }
-
     merged[col] = Array.from(byId.values());
   }
 
-  // Settings: cloud wins if present, else legacy
-  merged.settings = Object.keys(cloudData.settings || {}).length
-    ? cloudData.settings
-    : (legacyData.settings || {});
+  merged.settings = window.cloudData.settings && Object.keys(window.cloudData.settings).length
+    ? window.cloudData.settings
+    : (window.legacyData.settings || {});
 
-  appData = merged;
-  window.appData = appData;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+  window.appData = merged;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch {}
 }
 
-/* Called by the Firebase module when a subcollection changes */
-function onCloudCollectionUpdate(col, arr) {
-  cloudData[col] = arr;
-  mergeData();
-  updateLegacyBanner();
+window.onCloudUpdate = function() {
+  rebuildMergedView();
+  updateMergeBanner();
+  updateDataSourcesDetail();
   if (currentUser) renderAll();
-}
-window.onCloudCollectionUpdate = onCloudCollectionUpdate;
+};
 
-/* Called by the Firebase module when the root doc (legacy arrays + settings) changes */
-function onCloudLegacyUpdate(legacyArrays, settings) {
-  legacyData = { ...legacyData, ...legacyArrays };
-  // Clear out collections that no longer exist in legacy doc
-  for (const col of ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications']) {
-    if (!legacyArrays[col]) legacyData[col] = [];
-  }
-  if (settings) legacyData.settings = settings;
-  mergeData();
-  updateLegacyBanner();
+window.onLegacyUpdate = function() {
+  rebuildMergedView();
+  updateMergeBanner();
+  updateDataSourcesDetail();
   if (currentUser) renderAll();
-  // Also refresh the settings tab summary
-  updateLegacySummary();
-}
-window.onCloudLegacyUpdate = onCloudLegacyUpdate;
+};
 
-/* ============================================================
-   LEGACY UI
-   ============================================================ */
-function legacyCounts() {
-  const counts = {};
-  let total = 0;
+function sourceCounts() {
+  const counts = { legacy: {}, cloud: {}, legacyTotal: 0, cloudTotal: 0 };
   for (const col of ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications']) {
-    const n = (legacyData[col] || []).length;
-    if (n > 0) { counts[col] = n; total += n; }
+    const legacyN = (window.legacyData[col] || []).length;
+    const cloudN = (window.cloudData[col] || []).length;
+    if (legacyN > 0) { counts.legacy[col] = legacyN; counts.legacyTotal += legacyN; }
+    if (cloudN > 0) { counts.cloud[col] = cloudN; counts.cloudTotal += cloudN; }
   }
-  return { counts, total };
+  return counts;
 }
 
-function updateLegacyBanner() {
-  const banner = document.getElementById('legacyBanner');
-  const textEl = document.getElementById('legacyBannerText');
+function updateMergeBanner() {
+  const banner = document.getElementById('mergeBanner');
   if (!banner) return;
-
-  const { counts, total } = legacyCounts();
-  if (total === 0) {
-    banner.classList.add('hidden');
-    return;
-  }
-
-  const summary = Object.entries(counts)
-    .map(([k, v]) => `${v} ${k}`)
-    .join(', ');
-  textEl.textContent = `Merged view includes ${total} legacy item(s): ${summary}.`;
+  const { legacyTotal, cloudTotal } = sourceCounts();
+  if (legacyTotal === 0) { banner.classList.add('hidden'); return; }
   banner.classList.remove('hidden');
+  document.getElementById('mergeBannerTitle').textContent = 'Reading from 2 sources';
+  document.getElementById('mergeBannerSub').textContent =
+    `${legacyTotal} legacy item(s) on parent document + ${cloudTotal} item(s) in subcollections — both shown together, nothing deleted.`;
 }
 
-function updateLegacySummary() {
-  const el = document.getElementById('legacySummary');
+function updateDataSourcesDetail() {
+  const el = document.getElementById('dataSourcesDetail');
   if (!el) return;
-  const { counts, total } = legacyCounts();
-  if (total === 0) {
-    el.innerHTML = '<span class="badge badge-green">✓ No legacy data detected</span>';
+  const c = sourceCounts();
+  const rows = [];
+  for (const col of ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications']) {
+    const legacyN = c.legacy[col] || 0;
+    const cloudN = c.cloud[col] || 0;
+    if (legacyN + cloudN === 0) continue;
+    rows.push(`<tr><td>${esc(col)}</td><td>${legacyN}</td><td>${cloudN}</td><td>${legacyN + cloudN}</td></tr>`);
+  }
+  if (!rows.length) {
+    el.innerHTML = '<span class="badge badge-green">Empty</span>';
     return;
   }
-  const rows = Object.entries(counts).map(([k, v]) =>
-    `<div class="book-mini"><span class="title">${esc(k)}</span><span class="meta">${v} item(s)</span></div>`
-  ).join('');
-  el.innerHTML = `<div class="badge badge-orange mb-12">⚠️ ${total} legacy item(s) currently merged into the app</div>${rows}`;
+  el.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr><th>Collection</th><th>Legacy (parent doc)</th><th>Cloud (subcollection)</th><th>Merged view</th></tr></thead>
+    <tbody>${rows.join('')}</tbody></table></div>`;
 }
 
-async function openLegacyInspector() {
-  const modal = document.getElementById('legacyModal');
-  const body = document.getElementById('legacyInspectorBody');
-  body.innerHTML = '<p class="text-muted">Loading legacy data…</p>';
-  modal.classList.add('active');
-  try {
-    const fresh = await window.FB.readLegacy();
-    if (!fresh) {
-      body.innerHTML = '<p class="text-muted">No legacy data on the parent document.</p>';
-      return;
-    }
-    let html = '';
+window.showMergeDetails = function() {
+  const modal = document.getElementById('mergeDetailsModal');
+  const body = document.getElementById('mergeDetailsBody');
+  const c = sourceCounts();
+  let html = '';
+  if (c.legacyTotal === 0) {
+    html += '<div class="form-section"><div class="form-section-head"><i class="fas fa-check"></i> No legacy data</div><p>All data lives in the subcollections. Nothing to merge.</p></div>';
+  } else {
+    html += '<div class="form-section"><div class="form-section-head"><i class="fas fa-layer-group"></i> Both sources active</div>';
+    html += '<p class="mb-12">The app reads <b>both</b> sources and shows them together. Firestore is <b>not modified</b> by this merge — nothing is deleted.</p>';
+    html += '<div class="table-wrap"><table><thead><tr><th>Collection</th><th>Legacy (parent doc)</th><th>Cloud (subcollection)</th></tr></thead><tbody>';
     for (const col of ['books','users','students','teachers','loans','borrowRequests','purchases','emails','notifications']) {
-      const arr = fresh[col] || [];
-      if (!arr.length) continue;
-      html += `<div class="form-section"><div class="form-section-head"><i class="fas fa-database"></i> ${esc(col)} (${arr.length})</div>`;
-      html += '<div class="table-wrap"><table><thead><tr><th>ID</th><th>Preview</th></tr></thead><tbody>';
-      for (const item of arr.slice(0, 50)) {
-        const preview = item.title || item.name || item.bookTitle || JSON.stringify(item).slice(0, 80);
-        html += `<tr><td>${esc(item.id || '—')}</td><td>${esc(preview)}</td></tr>`;
-      }
-      if (arr.length > 50) html += `<tr><td colspan="2" class="text-muted">…and ${arr.length - 50} more</td></tr>`;
-      html += '</tbody></table></div></div>';
+      const legacyN = c.legacy[col] || 0;
+      const cloudN = c.cloud[col] || 0;
+      if (legacyN + cloudN === 0) continue;
+      html += `<tr><td>${esc(col)}</td><td>${legacyN}</td><td>${cloudN}</td></tr>`;
     }
-    body.innerHTML = html || '<p class="text-muted">No legacy data.</p>';
-  } catch (e) {
-    body.innerHTML = `<p class="text-muted">Error: ${esc(e.message)}</p>`;
+    html += '</tbody></table></div></div>';
   }
-}
+  body.innerHTML = html;
+  modal.classList.add('active');
+};
+window.closeMergeDetails = function() {
+  document.getElementById('mergeDetailsModal').classList.remove('active');
+};
 
-function closeLegacyInspector() {
-  document.getElementById('legacyModal').classList.remove('active');
-}
-
-async function mergeLegacyToCloud() {
-  if (!confirm('Copy all legacy data into Firestore subcollections?\n\nExisting items with the same ID will NOT be overwritten.')) return;
+window.forceResync = async function() {
+  showToast('Refreshing data from cloud…', 'info');
   try {
-    const counts = await window.FB.mergeLegacyToSubcollections();
-    const summary = Object.entries(counts).map(([k, v]) => `${k}: ${v.added}/${v.total}`).join(', ');
-    showToast(`✅ Merged. ${summary}`, 'success');
-    // Ask to clean up the parent doc
-    if (confirm('Legacy data copied. Remove the old arrays from the parent document now?\n\n(Recommended — the app will keep working from subcollections only.)')) {
-      const n = await window.FB.deleteLegacyArrays();
-      showToast(`Removed ${n} legacy array field(s).`, 'info');
-    }
+    const users = await window.FB.pullUsers();
+    if (users.length) { window.cloudData.users = users; window.onCloudUpdate(); }
+    const legacy = await window.FB.readLegacyArrays();
+    window.legacyData = legacy;
+    window.onLegacyUpdate();
+    showToast('✅ Resynced.', 'success');
   } catch (e) {
-    showToast('Merge failed: ' + e.message, 'error');
+    showToast('Resync failed: ' + e.message, 'error');
   }
-}
-
-async function deleteLegacyData() {
-  if (!confirm('Permanently remove the legacy arrays from the parent document?\n\nThis does NOT delete the subcollection data. Only do this after you\'ve merged.')) return;
-  try {
-    const n = await window.FB.deleteLegacyArrays();
-    showToast(`Removed ${n} legacy array field(s).`, 'info');
-  } catch (e) {
-    showToast('Delete failed: ' + e.message, 'error');
-  }
-}
+};
 
 /* ============================================================
-   LOGIN
+   LOGIN — pulls users from BOTH sources so all devices can log in
    ============================================================ */
 async function handleLogin() {
   const username = document.getElementById('loginUsername').value.trim();
@@ -1300,18 +1199,23 @@ async function handleLogin() {
     return;
   }
 
-  // Ensure we have the freshest users
-  if (window.FB && window.FB.ready) {
-    try {
-      const remoteUsers = await window.FB.pullUsers();
-      if (remoteUsers.length) {
-        cloudData.users = remoteUsers;
-        mergeData();
-      }
-    } catch (e) { console.warn('[login] cloud pull failed', e); }
-  }
+  // Pull fresh users from cloud subcollection
+  try {
+    const remoteUsers = await window.FB.pullUsers();
+    if (remoteUsers.length) window.cloudData.users = remoteUsers;
+  } catch (e) { console.warn('[login] pull failed', e); }
 
-  const user = appData.users.find(u =>
+  // Pull fresh users from legacy arrays
+  try {
+    const legacy = await window.FB.readLegacyArrays();
+    window.legacyData = legacy;
+  } catch (e) { console.warn('[login] legacy pull failed', e); }
+
+  // Merge in memory
+  rebuildMergedView();
+
+  // Try login against the merged view
+  const user = (window.appData.users || []).find(u =>
     (u.username === username || u.id === username) && u.password === password);
 
   if (!user) {
@@ -1368,39 +1272,40 @@ function renderAll() {
   renderDashboard(); renderCatalogue(); renderLoans(); renderMyBooks();
   renderRequests(); renderStudents(); renderTeachers(); renderReports();
   renderPurchases(); renderEmails(); renderUsers(); renderSettings();
-  updateLegacyBanner(); updateLegacySummary();
+  updateMergeBanner(); updateDataSourcesDetail();
   applyRoleVisibility(currentUser);
 }
 
 function sourceBadge(src) {
-  if (!document.getElementById('showLegacySources')?.checked) return '';
+  if (!document.getElementById('showSources')?.checked) return '';
   return src === 'legacy'
     ? '<span class="badge badge-orange">legacy</span>'
     : '<span class="badge badge-blue">cloud</span>';
 }
 
 function renderDashboard() {
-  const totalBooks = appData.books.reduce((s, b) => s + (Number(b.copies) || 0), 0);
-  const borrowed   = appData.loans.filter(l => !l.returned).length;
-  const overdue    = appData.loans.filter(l => !l.returned && l.dueDate && new Date(l.dueDate) < new Date()).length;
-  const pending    = appData.borrowRequests.filter(r => r.status === 'pending').length;
+  const d = window.appData;
+  const totalBooks = (d.books || []).reduce((s, b) => s + (Number(b.copies) || 0), 0);
+  const borrowed   = (d.loans || []).filter(l => !l.returned).length;
+  const overdue    = (d.loans || []).filter(l => !l.returned && l.dueDate && new Date(l.dueDate) < new Date()).length;
+  const pending    = (d.borrowRequests || []).filter(r => r.status === 'pending').length;
 
   document.getElementById('statBooks').textContent    = totalBooks;
   document.getElementById('statBorrowed').textContent = borrowed;
   document.getElementById('statOverdue').textContent  = overdue;
   document.getElementById('statPending').textContent  = pending;
 
-  const od = appData.loans.filter(l => !l.returned && l.dueDate && new Date(l.dueDate) < new Date());
+  const od = (d.loans || []).filter(l => !l.returned && l.dueDate && new Date(l.dueDate) < new Date());
   document.getElementById('overdueList').innerHTML = od.length
     ? od.map(l => `<div class="book-mini"><span class="title">${esc(l.bookTitle || l.bookId)}</span><span class="meta">Due ${fmtDate(l.dueDate)} ${sourceBadge(l.__source)}</span></div>`).join('')
     : '<p class="text-muted">🎉 No overdue books.</p>';
 
   const counts = {};
-  appData.loans.forEach(l => { counts[l.bookId] = (counts[l.bookId] || 0) + 1; });
+  (d.loans || []).forEach(l => { counts[l.bookId] = (counts[l.bookId] || 0) + 1; });
   const top = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,5);
   document.getElementById('mostBorrowed').innerHTML = top.length
     ? top.map(([id, n]) => {
-        const b = appData.books.find(x => x.id === id);
+        const b = (d.books || []).find(x => x.id === id);
         return `<div class="book-mini"><span class="title">${esc(b ? b.title : id)}</span><span class="meta">${n} borrows</span></div>`;
       }).join('')
     : '<p class="text-muted">No data yet.</p>';
@@ -1409,16 +1314,17 @@ function renderDashboard() {
 function renderCatalogue() {
   const tbody = document.getElementById('catalogueTableBody');
   const countEl = document.getElementById('catalogueCount');
-  if (!appData.books.length) {
+  const books = window.appData.books || [];
+  if (!books.length) {
     tbody.innerHTML = '<tr><td colspan="9" class="text-muted text-center">No books in catalogue.</td></tr>';
     if (countEl) countEl.textContent = '0 books';
     return;
   }
   if (countEl) {
-    const legacyN = appData.books.filter(b => b.__source === 'legacy').length;
-    countEl.textContent = `${appData.books.length} book(s)${legacyN ? ` — ${legacyN} from legacy` : ''}`;
+    const legacyN = books.filter(b => b.__source === 'legacy').length;
+    countEl.textContent = `${books.length} book(s)${legacyN ? ` — ${legacyN} from legacy` : ''}`;
   }
-  tbody.innerHTML = appData.books.map(b => `
+  tbody.innerHTML = books.map(b => `
     <tr>
       <td>${esc(b.title)}</td>
       <td>${esc(b.author || '—')}</td>
@@ -1429,8 +1335,10 @@ function renderCatalogue() {
       <td>${esc(b.barcode || b.id || '—')}</td>
       <td>${sourceBadge(b.__source)}</td>
       <td>
-        <button class="btn btn-sm btn-primary staff-only" onclick="openEditBook('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-sm btn-danger staff-only" onclick="deleteBook('${b.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+        ${b.__source === 'legacy'
+          ? '<span class="text-muted" style="font-size:.75rem;">read-only</span>'
+          : `<button class="btn btn-sm btn-primary staff-only" onclick="openEditBook('${b.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+             <button class="btn btn-sm btn-danger staff-only" onclick="deleteBook('${b.id}')" title="Delete from cloud"><i class="fas fa-trash"></i></button>`}
       </td>
     </tr>`).join('');
   if (currentUser) applyRoleVisibility(currentUser);
@@ -1438,7 +1346,7 @@ function renderCatalogue() {
 
 function renderLoans() {
   const tbody = document.getElementById('loansTableBody');
-  const active = appData.loans.filter(l => !l.returned);
+  const active = (window.appData.loans || []).filter(l => !l.returned);
   if (!active.length) {
     tbody.innerHTML = '<tr><td colspan="6" class="text-muted text-center">No active loans.</td></tr>';
     return;
@@ -1459,7 +1367,7 @@ function renderLoans() {
 function renderMyBooks() {
   if (!currentUser || currentUser.role !== 'student') return;
   const tbody = document.getElementById('myBooksTableBody');
-  const mine = appData.loans.filter(l => !l.returned && l.studentId === currentUser.id);
+  const mine = (window.appData.loans || []).filter(l => !l.returned && l.studentId === currentUser.id);
   if (!mine.length) {
     tbody.innerHTML = '<tr><td colspan="5" class="text-muted text-center">No books borrowed.</td></tr>';
     return;
@@ -1478,7 +1386,7 @@ function renderMyBooks() {
 
 function renderRequests() {
   const list = document.getElementById('pendingRequestsList');
-  const pending = appData.borrowRequests.filter(r => r.status === 'pending');
+  const pending = (window.appData.borrowRequests || []).filter(r => r.status === 'pending');
   if (!pending.length) { list.innerHTML = '<p class="text-muted">No pending requests.</p>'; return; }
   list.innerHTML = pending.map(r => `
     <div class="request-card">
@@ -1487,16 +1395,19 @@ function renderRequests() {
         <div class="meta">Requested by ${esc(r.studentId)} on ${fmtDate(r.date)}</div>
       </div>
       <div class="actions">
-        <button class="btn btn-sm btn-success" onclick="approveRequest('${r.id}')"><i class="fas fa-check"></i> Approve</button>
-        <button class="btn btn-sm btn-danger" onclick="rejectRequest('${r.id}')"><i class="fas fa-times"></i> Reject</button>
+        ${r.__source === 'legacy'
+          ? '<span class="text-muted" style="font-size:.75rem;">legacy request — read only</span>'
+          : `<button class="btn btn-sm btn-success" onclick="approveRequest('${r.id}')"><i class="fas fa-check"></i> Approve</button>
+             <button class="btn btn-sm btn-danger" onclick="rejectRequest('${r.id}')"><i class="fas fa-times"></i> Reject</button>`}
       </div>
     </div>`).join('');
 }
 
 function renderStudents() {
   const list = document.getElementById('studentList');
-  if (!appData.students.length) { list.innerHTML = '<p class="text-muted">No students yet.</p>'; return; }
-  list.innerHTML = appData.students.map(s => `
+  const students = window.appData.students || [];
+  if (!students.length) { list.innerHTML = '<p class="text-muted">No students yet.</p>'; return; }
+  list.innerHTML = students.map(s => `
     <div class="book-mini">
       <span class="title">${esc(s.name)}</span>
       <span class="meta">${esc(s.id)} • Grade ${esc(s.grade || '—')} ${sourceBadge(s.__source)}</span>
@@ -1505,8 +1416,9 @@ function renderStudents() {
 
 function renderTeachers() {
   const list = document.getElementById('teacherList');
-  if (!appData.teachers.length) { list.innerHTML = '<p class="text-muted">No teachers yet.</p>'; return; }
-  list.innerHTML = appData.teachers.map(t => `
+  const teachers = window.appData.teachers || [];
+  if (!teachers.length) { list.innerHTML = '<p class="text-muted">No teachers yet.</p>'; return; }
+  list.innerHTML = teachers.map(t => `
     <div class="book-mini">
       <span class="title">${esc(t.name)}</span>
       <span class="meta">Grade ${esc(t.grade || '—')} ${sourceBadge(t.__source)}</span>
@@ -1514,16 +1426,18 @@ function renderTeachers() {
 }
 
 function renderReports() {
-  document.getElementById('reportBooks').textContent    = appData.books.length;
-  document.getElementById('reportCopies').textContent   = appData.books.reduce((s,b) => s + (Number(b.copies)||0), 0);
-  document.getElementById('reportBorrowed').textContent = appData.loans.filter(l => !l.returned).length;
-  document.getElementById('reportStudents').textContent = appData.students.length;
+  const d = window.appData;
+  document.getElementById('reportBooks').textContent    = (d.books || []).length;
+  document.getElementById('reportCopies').textContent   = (d.books || []).reduce((s,b) => s + (Number(b.copies)||0), 0);
+  document.getElementById('reportBorrowed').textContent = (d.loans || []).filter(l => !l.returned).length;
+  document.getElementById('reportStudents').textContent = (d.students || []).length;
 }
 
 function renderPurchases() {
   const list = document.getElementById('purchaseHistory');
-  if (!appData.purchases.length) { list.innerHTML = '<p class="text-muted">No purchases yet.</p>'; return; }
-  list.innerHTML = appData.purchases.map(p => `
+  const purchases = window.appData.purchases || [];
+  if (!purchases.length) { list.innerHTML = '<p class="text-muted">No purchases yet.</p>'; return; }
+  list.innerHTML = purchases.map(p => `
     <div class="book-mini">
       <span class="title">${esc(p.title)}</span>
       <span class="meta">${p.qty} × $${p.price} — ${esc(p.supplier || '—')} ${sourceBadge(p.__source)}</span>
@@ -1532,8 +1446,9 @@ function renderPurchases() {
 
 function renderEmails() {
   const list = document.getElementById('emailList');
-  if (!appData.emails.length) { list.innerHTML = '<p class="text-muted">No emails yet.</p>'; return; }
-  list.innerHTML = appData.emails.slice(-30).reverse().map(e => `
+  const emails = window.appData.emails || [];
+  if (!emails.length) { list.innerHTML = '<p class="text-muted">No emails yet.</p>'; return; }
+  list.innerHTML = emails.slice(-30).reverse().map(e => `
     <div class="book-mini">
       <span class="title">${esc(e.subject)}</span>
       <span class="meta">To: ${esc(e.to)} • ${fmtDate(e.date)} ${sourceBadge(e.__source)}</span>
@@ -1542,26 +1457,30 @@ function renderEmails() {
 
 function renderUsers() {
   const tbody = document.getElementById('userAccountsTableBody');
-  tbody.innerHTML = appData.users.map(u => `
+  tbody.innerHTML = (window.appData.users || []).map(u => `
     <tr>
       <td>${esc(u.name || '—')}</td>
       <td>${esc(u.id || u.username)}</td>
       <td><span class="badge badge-blue">${esc(u.role)}</span></td>
       <td>${sourceBadge(u.__source)}</td>
       <td>
-        ${u.username !== 'admin' ? `<button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')"><i class="fas fa-trash"></i></button>` : '<span class="text-muted">—</span>'}
+        ${u.__source === 'legacy'
+          ? '<span class="text-muted" style="font-size:.75rem;">read-only</span>'
+          : (u.username !== 'admin'
+              ? `<button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')"><i class="fas fa-trash"></i></button>`
+              : '<span class="text-muted">—</span>')}
       </td>
     </tr>`).join('');
 }
 
 function renderSettings() {
-  const s = appData.settings || {};
+  const s = window.appData.settings || {};
   document.getElementById('setLibraryName').value = s.libraryName || '';
   document.getElementById('setLoanDays').value    = s.loanDays || 14;
 }
 
 /* ============================================================
-   LANGUAGE PICKER + BOOK MODAL
+   LANGUAGE + BOOK MODAL
    ============================================================ */
 function openLanguagePicker() {
   selectedNewBookLang = null;
@@ -1597,17 +1516,18 @@ function findDuplicateBook(data) {
   const nIsbn    = normalizeSmart(data.isbn);
   const nBarcode = normalizeSmart(data.barcode);
   const excludeId = data.excludeId || null;
+  const books = window.appData.books || [];
   if (nBarcode) {
-    const hit = appData.books.find(x => x.id !== excludeId &&
+    const hit = books.find(x => x.id !== excludeId &&
       (normalizeSmart(x.barcode) === nBarcode || normalizeSmart(x.id) === nBarcode));
     if (hit) return { book: hit, matchType: 'barcode' };
   }
   if (nIsbn && nIsbn.length >= 8) {
-    const hit = appData.books.find(x => x.id !== excludeId && normalizeSmart(x.isbn) === nIsbn);
+    const hit = books.find(x => x.id !== excludeId && normalizeSmart(x.isbn) === nIsbn);
     if (hit) return { book: hit, matchType: 'isbn' };
   }
   if (nTitle) {
-    const hit = appData.books.find(x => {
+    const hit = books.find(x => {
       if (x.id === excludeId) return false;
       const dbTitle = normalizeSmart(x.title);
       if (dbTitle === nTitle) return true;
@@ -1657,10 +1577,10 @@ function openBookModal(id) {
   document.getElementById('dupWarning').innerHTML = '';
 
   if (editingBookId) {
-    const b = appData.books.find(x => x.id === editingBookId);
+    const b = (window.appData.books || []).find(x => x.id === editingBookId);
     if (!b) { showToast('Book not found.', 'error'); return; }
     if (b.__source === 'legacy') {
-      showToast('This book is legacy-only. Merge first (Settings → Legacy Data) to edit it.', 'warning');
+      showToast('This is a legacy book (read-only). Add a new book to create an editable cloud copy.', 'warning');
       return;
     }
     title.textContent = 'Edit Book';
@@ -1710,16 +1630,14 @@ async function saveBookForm() {
 
   if (!editingBookId) {
     const dup = findDuplicateBook({ title, author, isbn, barcode });
-    if (dup) {
-      if (!confirm(`⚠️ Duplicate warning: "${dup.book.title}" (${dup.book.id}) already exists. Add anyway?`)) return;
-    }
+    if (dup && !confirm(`⚠️ Duplicate warning: "${dup.book.title}" (${dup.book.id}) already exists. Add anyway?`)) return;
   }
 
   const saveBtn = document.getElementById('bookFormSaveBtn');
   saveBtn.disabled = true;
   try {
     if (editingBookId) {
-      const b = appData.books.find(x => x.id === editingBookId);
+      const b = (window.appData.books || []).find(x => x.id === editingBookId);
       const copiesDelta = copies - (b.copies || 0);
       await window.FB.upsertDoc('books', editingBookId, {
         title, author, grade, copies,
@@ -1747,16 +1665,16 @@ async function saveBookForm() {
 function openEditBook(id) { openBookModal(id); }
 
 /* ============================================================
-   OTHER MUTATIONS
+   OTHER MUTATIONS (subcollection-only writes/deletes)
    ============================================================ */
 async function deleteBook(id) {
-  const b = appData.books.find(x => x.id === id);
+  const b = (window.appData.books || []).find(x => x.id === id);
   if (b && b.__source === 'legacy') {
-    showToast('Legacy-only book. Merge first to delete.', 'warning');
+    showToast('Legacy books are read-only. Only cloud subcollection items can be deleted.', 'warning');
     return;
   }
-  if (!confirm('Delete this book?')) return;
-  try { await window.FB.deleteDocById('books', id); showToast('Deleted.', 'info'); }
+  if (!confirm('Delete this book from the cloud subcollection?\n\nThe legacy array copy (if any) will remain intact.')) return;
+  try { await window.FB.deleteDocById('books', id); showToast('Deleted from cloud.', 'info'); }
   catch (e) { showToast(e.message, 'error'); }
 }
 
@@ -1766,7 +1684,7 @@ async function addStudent() {
   const id       = document.getElementById('studentId').value.trim();
   const password = document.getElementById('studentPassword').value.trim();
   if (!name || !id || !password) { showToast('All fields required.', 'error'); return; }
-  if (appData.users.some(u => u.id === id || u.username === id)) { showToast('ID exists.', 'error'); return; }
+  if ((window.appData.users || []).some(u => u.id === id || u.username === id)) { showToast('ID exists.', 'error'); return; }
   try {
     await window.FB.upsertDoc('students', id, { id, name, grade });
     await window.FB.upsertDoc('users', id, { id, username: id, password, name, role: 'student', grade });
@@ -1776,9 +1694,7 @@ async function addStudent() {
 }
 
 function downloadStudentTemplate() {
-  const ws = XLSX.utils.json_to_sheet([
-    { Name: "Emma Johnson", ID: "STU-100", Grade: "3", Password: "password123" }
-  ]);
+  const ws = XLSX.utils.json_to_sheet([{ Name: "Emma Johnson", ID: "STU-100", Grade: "3", Password: "password123" }]);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Students");
   XLSX.writeFile(wb, "Student_Import_Template.xlsx");
@@ -1804,15 +1720,13 @@ async function importStudents(ev) {
         const grade = row.Grade || row.grade || row.Class;
         const password = row.Password || row.password || '123456';
         if (!name || !id) { errors++; return; }
-        if (appData.users.some(u => u.id === id || u.username === id)) { skipped++; return; }
+        if ((window.appData.users || []).some(u => u.id === id || u.username === id)) { skipped++; return; }
         toAdd.push({ id, name, grade, password });
       });
       if (toAdd.length === 0) { showToast(`Nothing to import (${skipped} skipped, ${errors} invalid).`, 'warning'); return; }
       await window.FB.bulkUpsertStudents(toAdd);
-      showToast(`✅ Imported ${toAdd.length}. ${skipped} skipped, ${errors} invalid.`, 'success');
-    } catch (err) {
-      showToast('Parse failed.', 'error');
-    }
+      showToast(`✅ Imported ${toAdd.length}.`, 'success');
+    } catch (err) { showToast('Parse failed.', 'error'); }
   };
   reader.readAsArrayBuffer(file);
 }
@@ -1834,12 +1748,12 @@ async function borrowBook() {
   const bookKey    = document.getElementById('borrowBookBarcode').value.trim();
   const borrowDate = document.getElementById('borrowDate').value || new Date().toISOString().slice(0,10);
   const dueDate    = document.getElementById('borrowDueDate').value
-                     || addDays(borrowDate, appData.settings?.loanDays || 14);
+                     || addDays(borrowDate, window.appData.settings?.loanDays || 14);
 
-  const book = appData.books.find(b => b.id === bookKey || b.barcode === bookKey || b.title === bookKey);
+  const book = (window.appData.books || []).find(b => b.id === bookKey || b.barcode === bookKey || b.title === bookKey);
   if (!book) { showToast('Book not found.', 'error'); return; }
   if (book.__source === 'legacy') {
-    showToast('Legacy-only book. Merge first to borrow.', 'warning');
+    showToast('Legacy books are read-only. Add a cloud copy first.', 'warning');
     return;
   }
 
@@ -1857,9 +1771,9 @@ async function borrowBook() {
 async function returnBook() {
   const bookKey    = document.getElementById('returnBookBarcode').value.trim();
   const returnDate = document.getElementById('returnDate').value || new Date().toISOString().slice(0,10);
-  const loan = appData.loans.find(l => !l.returned && (l.bookId === bookKey || l.bookTitle === bookKey));
+  const loan = (window.appData.loans || []).find(l => !l.returned && (l.bookId === bookKey || l.bookTitle === bookKey));
   if (!loan) { showToast('Book not currently borrowed.', 'error'); return; }
-  if (loan.__source === 'legacy') { showToast('Legacy-only loan. Merge first to return.', 'warning'); return; }
+  if (loan.__source === 'legacy') { showToast('Legacy loans are read-only.', 'warning'); return; }
 
   const btn = document.getElementById('returnBtn');
   btn.disabled = true;
@@ -1873,14 +1787,15 @@ async function returnBook() {
 }
 
 async function approveRequest(id) {
-  const r = appData.borrowRequests.find(x => x.id === id);
-  if (!r || r.__source === 'legacy') { showToast('Cannot approve legacy request. Merge first.', 'warning'); return; }
+  const r = (window.appData.borrowRequests || []).find(x => x.id === id);
+  if (!r) return;
+  if (r.__source === 'legacy') { showToast('Legacy requests are read-only.', 'warning'); return; }
   try {
-    const book = appData.books.find(b => b.id === r.bookId);
-    if (book && book.available > 0 && book.__source !== 'legacy') {
+    const book = (window.appData.books || []).find(b => b.id === r.bookId && b.__source === 'cloud');
+    if (book && book.available > 0) {
       await window.FB.borrowAtomic(book.id, r.studentId,
         new Date().toISOString().slice(0,10),
-        addDays(new Date().toISOString().slice(0,10), appData.settings?.loanDays || 14));
+        addDays(new Date().toISOString().slice(0,10), window.appData.settings?.loanDays || 14));
     }
     await window.FB.upsertDoc('borrowRequests', id, { status: 'approved' });
     showToast('Approved.', 'success');
@@ -1888,8 +1803,8 @@ async function approveRequest(id) {
 }
 
 async function rejectRequest(id) {
-  const r = appData.borrowRequests.find(x => x.id === id);
-  if (!r || r.__source === 'legacy') { showToast('Cannot edit legacy request.', 'warning'); return; }
+  const r = (window.appData.borrowRequests || []).find(x => x.id === id);
+  if (!r || r.__source === 'legacy') { showToast('Legacy requests are read-only.', 'warning'); return; }
   try {
     await window.FB.upsertDoc('borrowRequests', id, { status: 'rejected' });
     showToast('Rejected.', 'info');
@@ -1912,21 +1827,13 @@ async function recordPurchase() {
   } catch (e) { showToast(e.message, 'error'); }
 }
 
-async function clearEmails() {
-  if (!confirm('Clear cloud emails?')) return;
-  try {
-    await window.FB.replaceAll({ ...cloudData, emails: [] });
-    showToast('Emails cleared.', 'info');
-  } catch (e) { showToast(e.message, 'error'); }
-}
-
 async function createUserAccount() {
   const name     = document.getElementById('newUserName').value.trim();
   const id       = document.getElementById('newUserId').value.trim();
   const password = document.getElementById('newUserPassword').value.trim();
   const role     = document.getElementById('newUserRole').value;
   if (!name || !id || !password) { showToast('All fields required.', 'error'); return; }
-  if (appData.users.some(u => u.id === id || u.username === id)) { showToast('ID exists.', 'error'); return; }
+  if ((window.appData.users || []).some(u => u.id === id || u.username === id)) { showToast('ID exists.', 'error'); return; }
   try {
     await window.FB.upsertDoc('users', id, { id, username: id, password, name, role });
     showToast('User created.', 'success');
@@ -1934,7 +1841,7 @@ async function createUserAccount() {
 }
 
 async function deleteUser(id) {
-  if (!confirm('Delete this user?')) return;
+  if (!confirm('Delete this user from cloud?\n\nLegacy array copy (if any) stays intact.')) return;
   try { await window.FB.deleteDocById('users', id); showToast('Deleted.', 'info'); }
   catch (e) { showToast(e.message, 'error'); }
 }
@@ -1950,10 +1857,7 @@ async function saveSettings() {
 }
 
 function exportData() {
-  // Export the merged view
-  const exportObj = { ...appData };
-  delete exportObj.__source;
-  const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(window.appData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -1963,43 +1867,13 @@ function exportData() {
   showToast('Exported.', 'success');
 }
 
-async function importData(ev) {
-  const file = ev.target.files && ev.target.files[0];
-  ev.target.value = '';
-  if (!file) return;
-  if (!confirm('Replace ALL cloud data with this file?')) return;
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    let parsed;
-    try { parsed = JSON.parse(e.target.result); }
-    catch { showToast('Invalid JSON.', 'error'); return; }
-    const root = (parsed && parsed.data && parsed.data.books) ? parsed.data : parsed;
-    if (!root || !Array.isArray(root.books) || !Array.isArray(root.users) || root.users.length === 0) {
-      showToast('File must contain books and users.', 'error'); return;
-    }
-    try {
-      await window.FB.replaceAll(root);
-      showToast('Import complete.', 'success');
-    } catch (err) { showToast(err.message, 'error'); }
-  };
-  reader.readAsText(file);
-}
-
-async function resetAllData() {
-  if (!confirm('Reset ALL cloud data (subcollections + legacy) to defaults?')) return;
-  try {
-    await window.FB.replaceAll(buildDefaultData());
-    showToast('Reset complete.', 'success');
-  } catch (e) { showToast(e.message, 'error'); }
-}
-
 /* ============================================================
    SEARCH / PYP
    ============================================================ */
 function performSearch() {
   const q = document.getElementById('searchQuery').value.trim().toLowerCase();
   const field = document.getElementById('searchField').value;
-  const results = appData.books.filter(b => {
+  const results = (window.appData.books || []).filter(b => {
     if (!q) return false;
     const inTitle  = (b.title || '').toLowerCase().includes(q);
     const inAuthor = (b.author || '').toLowerCase().includes(q);
@@ -2015,7 +1889,7 @@ function performSearch() {
     results.map(b => `
       <div class="book-mini">
         <div><span class="title">${esc(b.title)}</span> <span class="meta">by ${esc(b.author || '—')}</span></div>
-        <span class="badge badge-blue">${b.available ?? b.copies} available</span> ${sourceBadge(b.__source)}
+        <div><span class="badge badge-blue">${b.available ?? b.copies} available</span> ${sourceBadge(b.__source)}</div>
       </div>`).join('');
 }
 function clearSearch() {
@@ -2024,7 +1898,7 @@ function clearSearch() {
 }
 function pypFind() {
   const grade = document.getElementById('pypGrade').value;
-  const results = appData.books.filter(b => !grade || b.grade === grade);
+  const results = (window.appData.books || []).filter(b => !grade || b.grade === grade);
   const box = document.getElementById('pypResults');
   if (!results.length) { box.innerHTML = '<p class="text-muted">No books found.</p>'; return; }
   box.innerHTML = `<p class="text-muted mb-12">${results.length} book(s) found.</p>` +
@@ -2054,28 +1928,23 @@ function showToast(msg, type = 'info') {
   document.getElementById('toastContainer').appendChild(el);
   setTimeout(() => el.remove(), 3500);
 }
+window.showToast = showToast;
 
 /* ============================================================
    BOOT
    ============================================================ */
-// Cold-boot cache (mostly cosmetic — the merge engine rebuilds appData)
-(function seedFromCache() {
+(function loadCache() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    cloudData = buildDefaultData();
-    mergeData();
-    return;
-  }
+  if (!raw) return;
   try {
     const parsed = JSON.parse(raw);
-    if (parsed && Array.isArray(parsed.books)) {
-      cloudData = { ...buildDefaultData(), ...parsed };
-      mergeData();
-      return;
+    if (parsed && parsed.books) {
+      // Show cached data immediately while Firestore connects
+      window.appData = parsed;
+      updateMergeBanner();
+      updateDataSourcesDetail();
     }
   } catch {}
-  cloudData = buildDefaultData();
-  mergeData();
 })();
 
 (function restoreSession() {
@@ -2083,7 +1952,7 @@ function showToast(msg, type = 'info') {
   if (!sess) return;
   try {
     const s = JSON.parse(sess);
-    const u = appData.users.find(x => x.id === s.id || x.username === s.username);
+    const u = (window.appData.users || []).find(x => x.id === s.id || x.username === s.username);
     if (u) {
       currentUser = u;
       window.currentUser = u;
@@ -2099,7 +1968,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if (document.getElementById('bookModal').classList.contains('active')) closeBookModal();
     if (document.getElementById('languageModal').classList.contains('active')) closeLanguagePicker();
-    if (document.getElementById('legacyModal').classList.contains('active')) closeLegacyInspector();
+    if (document.getElementById('mergeDetailsModal').classList.contains('active')) closeMergeDetails();
   }
 });
 </script>
